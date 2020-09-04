@@ -5,40 +5,97 @@ using System;
 public class MapGenerator : MonoBehaviour {
 
 	public int width;
-	public int height;
-
-	public string seed;
+    public int width2;
+    public int height;
+    public int height2;
+    public int x1, x2;
+    public string seed;
 	public bool useRandomSeed;
+    public GameObject myPrefab;
+    public GameObject myPrefab2;
 
-	[Range(0,100)]
+    [Range(0,100)]
 	public int randomFillPercent;
 
+    bool Norte, Sul, Leste, Oeste;
 	int[,] map;
+    GameObject[,] Map;
 
-	void Start() {
+    void Start() {
 		GenerateMap();
+        Draw();
 	}
 
 	void Update() {
 		if (Input.GetMouseButtonDown(0)) {
-			GenerateMap();
-		}
-	}
+            Debug.Log("Clique");
+            DestroyMap();
+            GenerateMap();
+            Draw();
+        }if (Input.GetMouseButtonDown(1)) {
+            ChecarColisao(x1, x2);
+        }
+    }
 
 	void GenerateMap() {
+        width2 = width;
+        height2 = height;
 		map = new int[width,height];
-		RandomFillMap();
+        Map = new GameObject[width, height];
+        RandomFillMap();
 
 		for (int i = 0; i < 5; i ++) {
 			SmoothMap();
 		}
 
-		MeshGenerator meshGen = GetComponent<MeshGenerator>();
-		meshGen.GenerateMesh(map, 1);
+		//MeshGenerator meshGen = GetComponent<MeshGenerator>();
+		//meshGen.GenerateMesh(map, 1);
 	}
 
+    void Draw()
+    {
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+            {
+                if (map[i, j] == 0)
+                    Map[i,j] = Instantiate(myPrefab, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                else if (map[i, j] == 1)
+                    Map[i, j] = Instantiate(myPrefab2, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+            }
+    }
+void ChecarColisao(int x, int y)
+    {
+        Norte = false;
+        Sul = false;
+        Leste = false;
+        Oeste = false;
+        if(map[x, y - 1] == 1)
+        Norte = true;
 
-	void RandomFillMap() {
+        if (map[x, y + 1] == 1)
+            Sul = true;
+
+        if (map[x + 1, y] == 1)
+           Leste = true;
+
+        if (map[x - 1, y] == 1)
+            Oeste = true;
+
+        Debug.Log(Norte);
+        Debug.Log(Sul);
+        Debug.Log(Leste);
+        Debug.Log(Oeste);
+    }
+    void DestroyMap()
+    {
+        for (int i = 0; i < width2; i++)
+            for (int j = 0; j < height2; j++)
+            {
+                Destroy(Map[i, j]);
+            }
+    }
+
+    void RandomFillMap() {
 		if (useRandomSeed) {
 			seed = Time.time.ToString();
 		}
