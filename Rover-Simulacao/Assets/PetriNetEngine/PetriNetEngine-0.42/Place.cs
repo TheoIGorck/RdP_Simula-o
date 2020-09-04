@@ -29,7 +29,7 @@ namespace RdPengine
         private Del CallAutoExec;
         private Dictionary<String,Del> callbacksWhenTokensAdded = new Dictionary<String,Del>();
         private Dictionary<String,Del> callbacksWhenTokensRemoved = new Dictionary<String,Del>();
-        
+
         public bool AutoExec
         {
             get => _autoExec;

@@ -106,8 +106,8 @@
         </place>
         <place>
             <id>17</id>
-            <x>-350</x>
-            <y>279</y>
+            <x>-387</x>
+            <y>281</y>
             <label>Quadrante:Colisão</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
@@ -162,40 +162,40 @@
         </place>
         <place>
             <id>39</id>
-            <x>-738</x>
-            <y>31</y>
+            <x>-752</x>
+            <y>32</y>
             <label>Oeste</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
             <id>41</id>
-            <x>-564</x>
-            <y>246</y>
+            <x>-561</x>
+            <y>276</y>
             <label>Sul</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
             <id>38</id>
-            <x>-567</x>
-            <y>31</y>
+            <x>-566</x>
+            <y>29</y>
             <label>Deslocar</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
             <id>44</id>
-            <x>-568</x>
-            <y>-185</y>
+            <x>-569</x>
+            <y>-239</y>
             <label>Norte</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
             <id>36</id>
-            <x>-375</x>
-            <y>28</y>
+            <x>-358</x>
+            <y>26</y>
             <label>Leste</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
@@ -224,6 +224,22 @@
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
+        <place>
+            <id>55</id>
+            <x>342</x>
+            <y>-207</y>
+            <label>Morto</label>
+            <tokens>0</tokens>
+            <isStatic>false</isStatic>
+        </place>
+        <place>
+            <id>56</id>
+            <x>316</x>
+            <y>93</y>
+            <label>RecarregandoEscudo</label>
+            <tokens>0</tokens>
+            <isStatic>false</isStatic>
+        </place>
         <transition>
             <id>10</id>
             <x>-21</x>
@@ -234,7 +250,7 @@
             <id>12</id>
             <x>115</x>
             <y>24</y>
-            <label/>
+            <label>TransiçãoDefender</label>
         </transition>
         <transition>
             <id>20</id>
@@ -252,13 +268,13 @@
             <id>23</id>
             <x>-189</x>
             <y>-233</y>
-            <label/>
+            <label>TransiçãoRecarregaCombustível</label>
         </transition>
         <transition>
             <id>24</id>
             <x>-100</x>
             <y>221</y>
-            <label/>
+            <label>TransiçãoResgatar</label>
         </transition>
         <transition>
             <id>25</id>
@@ -270,7 +286,7 @@
             <id>26</id>
             <x>-101</x>
             <y>-364</y>
-            <label/>
+            <label>TransiçãoRecarregaMunição</label>
         </transition>
         <transition>
             <id>27</id>
@@ -280,8 +296,8 @@
         </transition>
         <transition>
             <id>29</id>
-            <x>-350</x>
-            <y>211</y>
+            <x>-313</x>
+            <y>281</y>
             <label/>
         </transition>
         <transition>
@@ -292,14 +308,14 @@
         </transition>
         <transition>
             <id>37</id>
-            <x>-480</x>
-            <y>30</y>
+            <x>-463</x>
+            <y>28</y>
             <label/>
         </transition>
         <transition>
             <id>45</id>
             <x>-657</x>
-            <y>31</y>
+            <y>30</y>
             <label/>
         </transition>
         <transition>
@@ -316,7 +332,7 @@
         </transition>
         <transition>
             <id>43</id>
-            <x>-564</x>
+            <x>-563</x>
             <y>172</y>
             <label/>
         </transition>
@@ -350,58 +366,426 @@
             <y>286</y>
             <label>LimpaResgatar</label>
         </transition>
+        <transition>
+            <id>54</id>
+            <x>271</x>
+            <y>-208</y>
+            <label/>
+        </transition>
+        <transition>
+            <id>57</id>
+            <x>420</x>
+            <y>26</y>
+            <label>TransiçãoRecarregarEscudo</label>
+        </transition>
+        <transition>
+            <id>58</id>
+            <x>317</x>
+            <y>168</y>
+            <label>LimpaRecarga</label>
+        </transition>
         <arc>
             <type>regular</type>
-            <sourceId>52</sourceId>
-            <destinationId>23</destinationId>
+            <sourceId>57</sourceId>
+            <destinationId>56</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>5</sourceId>
+            <destinationId>57</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>56</sourceId>
+            <destinationId>58</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>56</sourceId>
+            <destinationId>12</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>54</sourceId>
+            <destinationId>55</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>1</sourceId>
+            <destinationId>54</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>reset</type>
-            <sourceId>52</sourceId>
-            <destinationId>50</destinationId>
+            <sourceId>2</sourceId>
+            <destinationId>25</destinationId>
             <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-117</x>
+                <y>-48</y>
+            </breakPoint>
         </arc>
         <arc>
             <type>reset</type>
-            <sourceId>53</sourceId>
-            <destinationId>49</destinationId>
+            <sourceId>3</sourceId>
+            <destinationId>27</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-35</x>
+                <y>-268</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>17</sourceId>
+            <destinationId>29</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>53</sourceId>
+            <sourceId>27</sourceId>
+            <destinationId>3</destinationId>
+            <multiplicity>30</multiplicity>
+            <breakPoint>
+                <x>34</x>
+                <y>-261</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>9</sourceId>
+            <destinationId>27</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>26</sourceId>
+            <destinationId>9</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>15</sourceId>
             <destinationId>26</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>51</sourceId>
+            <sourceId>25</sourceId>
+            <destinationId>2</destinationId>
+            <multiplicity>100</multiplicity>
+            <breakPoint>
+                <x>-167</x>
+                <y>-23</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>8</sourceId>
+            <destinationId>25</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>23</sourceId>
+            <destinationId>8</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>6</sourceId>
+            <destinationId>22</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>24</sourceId>
+            <destinationId>6</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>13</sourceId>
             <destinationId>24</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>reset</type>
-            <sourceId>51</sourceId>
-            <destinationId>48</destinationId>
+            <type>regular</type>
+            <sourceId>16</sourceId>
+            <destinationId>23</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>reset</type>
-            <sourceId>35</sourceId>
-            <destinationId>47</destinationId>
+            <type>regular</type>
+            <sourceId>20</sourceId>
+            <destinationId>19</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>reset</type>
-            <sourceId>32</sourceId>
-            <destinationId>46</destinationId>
+            <type>regular</type>
+            <sourceId>14</sourceId>
+            <destinationId>20</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>21</sourceId>
+            <destinationId>20</destinationId>
+            <multiplicity>3</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>22</sourceId>
+            <destinationId>21</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
             <sourceId>2</sourceId>
+            <destinationId>22</destinationId>
+            <multiplicity>2</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>2</sourceId>
+            <destinationId>12</destinationId>
+            <multiplicity>5</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>10</sourceId>
+            <destinationId>4</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>3</sourceId>
+            <destinationId>10</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>12</sourceId>
+            <destinationId>5</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>18</sourceId>
+            <destinationId>30</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>1</sourceId>
+            <destinationId>30</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>32</sourceId>
+            <destinationId>10</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>18</sourceId>
+            <destinationId>10</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>33</sourceId>
+            <destinationId>30</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>5</sourceId>
+            <destinationId>30</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>35</sourceId>
+            <destinationId>12</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>2</sourceId>
+            <destinationId>29</destinationId>
+            <multiplicity>2</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>36</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>36</sourceId>
             <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-577</x>
+                <y>106</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>reset</type>
+            <sourceId>38</sourceId>
+            <destinationId>42</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>44</sourceId>
+            <destinationId>43</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>36</sourceId>
+            <destinationId>37</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>39</sourceId>
+            <destinationId>43</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>41</sourceId>
+            <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-650</x>
+                <y>218</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>44</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>45</sourceId>
+            <destinationId>38</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>40</sourceId>
+            <destinationId>38</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>36</sourceId>
+            <destinationId>43</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>39</sourceId>
+            <destinationId>37</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>37</sourceId>
+            <destinationId>38</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>39</sourceId>
+            <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>43</sourceId>
+            <destinationId>38</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>44</sourceId>
+            <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-654</x>
+                <y>-153</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>41</sourceId>
+            <destinationId>37</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-482</x>
+                <y>215</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>41</sourceId>
+            <destinationId>43</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-601</x>
+                <y>214</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>41</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>39</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>44</sourceId>
+            <destinationId>37</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-484</x>
+                <y>-155</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>2</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>-392</x>
+                <y>-68</y>
+            </breakPoint>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>2</sourceId>
+            <destinationId>37</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
@@ -417,370 +801,84 @@
         <arc>
             <type>regular</type>
             <sourceId>2</sourceId>
-            <destinationId>37</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>2</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-392</x>
-                <y>-68</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>44</sourceId>
-            <destinationId>37</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-484</x>
-                <y>-155</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>39</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>41</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>41</sourceId>
-            <destinationId>43</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>41</sourceId>
-            <destinationId>37</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-482</x>
-                <y>215</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>44</sourceId>
             <destinationId>45</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-654</x>
-                <y>-153</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>43</sourceId>
-            <destinationId>38</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>39</sourceId>
-            <destinationId>45</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>37</sourceId>
-            <destinationId>38</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>39</sourceId>
-            <destinationId>37</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>36</sourceId>
-            <destinationId>43</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-437</x>
-                <y>71</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>40</sourceId>
-            <destinationId>38</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>45</sourceId>
-            <destinationId>38</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>44</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>41</sourceId>
-            <destinationId>45</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-650</x>
-                <y>218</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>39</sourceId>
-            <destinationId>43</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>36</sourceId>
-            <destinationId>37</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>44</sourceId>
-            <destinationId>43</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>reset</type>
-            <sourceId>38</sourceId>
-            <destinationId>42</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>36</sourceId>
-            <destinationId>45</destinationId>
-            <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-577</x>
-                <y>106</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>36</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>2</sourceId>
-            <destinationId>29</destinationId>
-            <multiplicity>2</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>35</sourceId>
-            <destinationId>12</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>5</sourceId>
-            <destinationId>30</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>33</sourceId>
-            <destinationId>30</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>18</sourceId>
-            <destinationId>10</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
             <sourceId>32</sourceId>
-            <destinationId>10</destinationId>
+            <destinationId>46</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>reset</type>
+            <sourceId>35</sourceId>
+            <destinationId>47</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>reset</type>
+            <sourceId>51</sourceId>
+            <destinationId>48</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>1</sourceId>
-            <destinationId>30</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>18</sourceId>
-            <destinationId>30</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>12</sourceId>
-            <destinationId>5</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>3</sourceId>
-            <destinationId>10</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>10</sourceId>
-            <destinationId>4</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>2</sourceId>
-            <destinationId>12</destinationId>
-            <multiplicity>5</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>2</sourceId>
-            <destinationId>22</destinationId>
-            <multiplicity>2</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>22</sourceId>
-            <destinationId>21</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>21</sourceId>
-            <destinationId>20</destinationId>
-            <multiplicity>3</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>14</sourceId>
-            <destinationId>20</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>20</sourceId>
-            <destinationId>19</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>16</sourceId>
-            <destinationId>23</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>13</sourceId>
+            <sourceId>51</sourceId>
             <destinationId>24</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>24</sourceId>
-            <destinationId>6</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>6</sourceId>
-            <destinationId>22</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>23</sourceId>
-            <destinationId>8</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>8</sourceId>
-            <destinationId>25</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>25</sourceId>
-            <destinationId>2</destinationId>
-            <multiplicity>100</multiplicity>
-            <breakPoint>
-                <x>-167</x>
-                <y>-23</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>regular</type>
-            <sourceId>15</sourceId>
+            <sourceId>53</sourceId>
             <destinationId>26</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>regular</type>
-            <sourceId>26</sourceId>
-            <destinationId>9</destinationId>
+            <type>reset</type>
+            <sourceId>53</sourceId>
+            <destinationId>49</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>reset</type>
+            <sourceId>52</sourceId>
+            <destinationId>50</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>9</sourceId>
-            <destinationId>27</destinationId>
+            <sourceId>52</sourceId>
+            <destinationId>23</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>regular</type>
-            <sourceId>27</sourceId>
-            <destinationId>3</destinationId>
-            <multiplicity>30</multiplicity>
-            <breakPoint>
-                <x>34</x>
-                <y>-261</y>
-            </breakPoint>
-        </arc>
-        <arc>
-            <type>regular</type>
+            <type>inhibitor</type>
             <sourceId>17</sourceId>
-            <destinationId>29</destinationId>
+            <destinationId>43</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>reset</type>
-            <sourceId>3</sourceId>
-            <destinationId>27</destinationId>
+            <type>inhibitor</type>
+            <sourceId>17</sourceId>
+            <destinationId>37</destinationId>
             <multiplicity>1</multiplicity>
             <breakPoint>
-                <x>-35</x>
-                <y>-268</y>
+                <x>-397</x>
+                <y>106</y>
             </breakPoint>
         </arc>
         <arc>
-            <type>reset</type>
-            <sourceId>2</sourceId>
-            <destinationId>25</destinationId>
+            <type>inhibitor</type>
+            <sourceId>17</sourceId>
+            <destinationId>40</destinationId>
             <multiplicity>1</multiplicity>
-            <breakPoint>
-                <x>-117</x>
-                <y>-48</y>
-            </breakPoint>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>17</sourceId>
+            <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
         </arc>
     </subnet>
     <roles/>

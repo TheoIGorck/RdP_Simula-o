@@ -1,0 +1,359 @@
+Log: File reading events...
+subnet +++
+id:	
+x:	
+y:	
+label:	
+place:	  id:1  x:191  y:-209  label:Saúde  tokens:50  isStatic:false
+place:	  id:2  x:-98  y:24  label:Combustível  tokens:100  isStatic:false
+place:	  id:3  x:-20  y:-220  label:Munição  tokens:30  isStatic:false
+place:	  id:4  x:38  y:-147  label:Atacar  tokens:0  isStatic:false
+place:	  id:5  x:317  y:26  label:Defender  tokens:0  isStatic:false
+place:	  id:6  x:-100  y:151  label:Resgatar  tokens:0  isStatic:false
+place:	  id:8  x:-189  y:-168  label:RecarregaCombustível  tokens:0  isStatic:false
+place:	  id:9  x:-24  y:-364  label:RecarregaMunição  tokens:0  isStatic:false
+place:	  id:13  x:-100  y:285  label:Quadrante:Soldado   tokens:0  isStatic:false
+place:	  id:14  x:129  y:288  label:Quadrante:Portal  tokens:0  isStatic:false
+place:	  id:15  x:-183  y:-364  label:Quadrante:RecarregaMunição  tokens:0  isStatic:false
+place:	  id:16  x:-285  y:-233  label:Quadrante:RecarregaCombustível  tokens:0  isStatic:false
+place:	  id:17  x:-350  y:279  label:Quadrante:Colisão  tokens:0  isStatic:false
+place:	  id:18  x:87  y:-244  label:RobôNaVizinhança  tokens:0  isStatic:false
+place:	  id:19  x:208  y:210  label:Fim  tokens:0  isStatic:false
+place:	  id:21  x:125  y:108  label:SoldadosResgatados  tokens:0  isStatic:false
+place:	  id:32  x:-20  y:-90  label:BotãoAtacar  tokens:0  isStatic:false
+place:	  id:33  x:191  y:-80  label:TiroRecebido  tokens:0  isStatic:false
+place:	  id:35  x:114  y:-48  label:BotãoDefender  tokens:0  isStatic:false
+place:	  id:39  x:-752  y:32  label:Oeste  tokens:0  isStatic:false
+place:	  id:41  x:-561  y:276  label:Sul  tokens:0  isStatic:false
+place:	  id:38  x:-566  y:29  label:Deslocar  tokens:0  isStatic:false
+place:	  id:44  x:-569  y:-239  label:Norte  tokens:0  isStatic:false
+place:	  id:36  x:-359  y:29  label:Leste  tokens:0  isStatic:false
+place:	  id:51  x:-194  y:223  label:BotãoResgatar  tokens:0  isStatic:false
+place:	  id:52  x:-189  y:-290  label:BotãoRecarregaCombustível  tokens:0  isStatic:false
+place:	  id:53  x:-99  y:-427  label:BotãoRecarregaMunição  tokens:0  isStatic:false
+transition:	  id:10  x:-21  y:-147  label:TransiçãoAtacar
+transition:	  id:12  x:115  y:24  label:
+transition:	  id:20  x:127  y:208  label:
+transition:	  id:22  x:-22  y:108  label:
+transition:	  id:23  x:-189  y:-233  label:
+transition:	  id:24  x:-100  y:221  label:
+transition:	  id:25  x:-187  y:-99  label:
+transition:	  id:26  x:-101  y:-364  label:
+transition:	  id:27  x:16  y:-312  label:
+transition:	  id:29  x:-350  y:211  label:
+transition:	  id:30  x:191  y:-138  label:
+transition:	  id:37  x:-480  y:30  label:
+transition:	  id:45  x:-657  y:31  label:
+transition:	  id:42  x:-717  y:170  label:LimpaDeslocar
+transition:	  id:40  x:-568  y:-129  label:
+transition:	  id:43  x:-564  y:172  label:
+transition:	  id:46  x:-20  y:-21  label:LimpaAtacar
+transition:	  id:47  x:112  y:-119  label:LimpaDefender
+transition:	  id:49  x:33  y:-428  label:LimpaRecarregaMunição
+transition:	  id:50  x:-334  y:-290  label:LimpaRecarregaCombustível
+transition:	  id:48  x:-194  y:286  label:LimpaResgatar
+arc:	  type:reset  sourceId:2  destinationId:25  multiplicity:1  breakPoint:-117-48
+arc:	  type:reset  sourceId:3  destinationId:27  multiplicity:1  breakPoint:-35-268
+arc:	  type:regular  sourceId:17  destinationId:29  multiplicity:1
+arc:	  type:regular  sourceId:27  destinationId:3  multiplicity:30  breakPoint:34-261
+arc:	  type:regular  sourceId:9  destinationId:27  multiplicity:1
+arc:	  type:regular  sourceId:26  destinationId:9  multiplicity:1
+arc:	  type:regular  sourceId:15  destinationId:26  multiplicity:1
+arc:	  type:regular  sourceId:25  destinationId:2  multiplicity:100  breakPoint:-167-23
+arc:	  type:regular  sourceId:8  destinationId:25  multiplicity:1
+arc:	  type:regular  sourceId:23  destinationId:8  multiplicity:1
+arc:	  type:regular  sourceId:6  destinationId:22  multiplicity:1
+arc:	  type:regular  sourceId:24  destinationId:6  multiplicity:1
+arc:	  type:regular  sourceId:13  destinationId:24  multiplicity:1
+arc:	  type:regular  sourceId:16  destinationId:23  multiplicity:1
+arc:	  type:regular  sourceId:20  destinationId:19  multiplicity:1
+arc:	  type:regular  sourceId:14  destinationId:20  multiplicity:1
+arc:	  type:regular  sourceId:21  destinationId:20  multiplicity:3
+arc:	  type:regular  sourceId:22  destinationId:21  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:22  multiplicity:2
+arc:	  type:regular  sourceId:2  destinationId:12  multiplicity:5
+arc:	  type:regular  sourceId:10  destinationId:4  multiplicity:1
+arc:	  type:regular  sourceId:3  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:12  destinationId:5  multiplicity:1
+arc:	  type:regular  sourceId:18  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:1  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:32  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:18  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:33  destinationId:30  multiplicity:1
+arc:	  type:inhibitor  sourceId:5  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:35  destinationId:12  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:29  multiplicity:2
+arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:45  multiplicity:1  breakPoint:-577106
+arc:	  type:reset  sourceId:38  destinationId:42  multiplicity:1
+arc:	  type:inhibitor  sourceId:44  destinationId:43  multiplicity:1
+arc:	  type:regular  sourceId:36  destinationId:37  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:41  destinationId:45  multiplicity:1  breakPoint:-650218
+arc:	  type:regular  sourceId:44  destinationId:40  multiplicity:1
+arc:	  type:regular  sourceId:45  destinationId:38  multiplicity:3
+arc:	  type:regular  sourceId:40  destinationId:38  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:37  multiplicity:1
+arc:	  type:regular  sourceId:37  destinationId:38  multiplicity:4
+arc:	  type:regular  sourceId:39  destinationId:45  multiplicity:1
+arc:	  type:regular  sourceId:43  destinationId:38  multiplicity:2
+arc:	  type:inhibitor  sourceId:44  destinationId:45  multiplicity:1  breakPoint:-654-153
+arc:	  type:inhibitor  sourceId:41  destinationId:37  multiplicity:1  breakPoint:-482215
+arc:	  type:regular  sourceId:41  destinationId:43  multiplicity:1  breakPoint:-601214
+arc:	  type:inhibitor  sourceId:41  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:44  destinationId:37  multiplicity:1  breakPoint:-484-155
+arc:	  type:regular  sourceId:2  destinationId:40  multiplicity:1  breakPoint:-392-68
+arc:	  type:regular  sourceId:2  destinationId:37  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:43  multiplicity:1  breakPoint:-424142
+arc:	  type:regular  sourceId:2  destinationId:45  multiplicity:1
+arc:	  type:reset  sourceId:32  destinationId:46  multiplicity:1
+arc:	  type:reset  sourceId:35  destinationId:47  multiplicity:1
+arc:	  type:reset  sourceId:51  destinationId:48  multiplicity:1
+arc:	  type:regular  sourceId:51  destinationId:24  multiplicity:1
+arc:	  type:regular  sourceId:53  destinationId:26  multiplicity:1
+arc:	  type:reset  sourceId:53  destinationId:49  multiplicity:1
+arc:	  type:reset  sourceId:52  destinationId:50  multiplicity:1
+arc:	  type:regular  sourceId:52  destinationId:23  multiplicity:1
+
+
+Reference Places dictionary...
+Generated Arrays
+
+Places:
+id:1, lbl:Saúde, toks:50, conc:False
+id:2, lbl:Combustível, toks:100, conc:False
+id:3, lbl:Munição, toks:30, conc:False
+id:4, lbl:Atacar, toks:0, conc:False
+id:5, lbl:Defender, toks:0, conc:False
+id:6, lbl:Resgatar, toks:0, conc:False
+id:8, lbl:RecarregaCombustível, toks:0, conc:False
+id:9, lbl:RecarregaMunição, toks:0, conc:False
+id:13, lbl:Quadrante:Soldado , toks:0, conc:False
+id:14, lbl:Quadrante:Portal, toks:0, conc:False
+id:15, lbl:Quadrante:RecarregaMunição, toks:0, conc:False
+id:16, lbl:Quadrante:RecarregaCombustível, toks:0, conc:False
+id:17, lbl:Quadrante:Colisão, toks:0, conc:False
+id:18, lbl:RobôNaVizinhança, toks:0, conc:False
+id:19, lbl:Fim, toks:0, conc:False
+id:21, lbl:SoldadosResgatados, toks:0, conc:False
+id:32, lbl:BotãoAtacar, toks:0, conc:False
+id:33, lbl:TiroRecebido, toks:0, conc:False
+id:35, lbl:BotãoDefender, toks:0, conc:False
+id:39, lbl:Oeste, toks:0, conc:False
+id:41, lbl:Sul, toks:0, conc:False
+id:38, lbl:Deslocar, toks:0, conc:False
+id:44, lbl:Norte, toks:0, conc:False
+id:36, lbl:Leste, toks:0, conc:False
+id:51, lbl:BotãoResgatar, toks:0, conc:False
+id:52, lbl:BotãoRecarregaCombustível, toks:0, conc:False
+id:53, lbl:BotãoRecarregaMunição, toks:0, conc:False
+
+Transitions:
+id:10, lbl:TransiçãoAtacar, enab:True
+id:12, lbl:, enab:True
+id:20, lbl:, enab:True
+id:22, lbl:, enab:True
+id:23, lbl:, enab:True
+id:24, lbl:, enab:True
+id:25, lbl:, enab:True
+id:26, lbl:, enab:True
+id:27, lbl:, enab:True
+id:29, lbl:, enab:True
+id:30, lbl:, enab:True
+id:37, lbl:, enab:True
+id:45, lbl:, enab:True
+id:42, lbl:LimpaDeslocar, enab:True
+id:40, lbl:, enab:True
+id:43, lbl:, enab:True
+id:46, lbl:LimpaAtacar, enab:True
+id:47, lbl:LimpaDefender, enab:True
+id:49, lbl:LimpaRecarregaMunição, enab:True
+id:50, lbl:LimpaRecarregaCombustível, enab:True
+id:48, lbl:LimpaResgatar, enab:True
+
+Connections:
+src:2, dst:25, type:Reset, mul:1
+src:3, dst:27, type:Reset, mul:1
+src:17, dst:29, type:Regular, mul:1
+src:27, dst:3, type:Regular, mul:30
+src:9, dst:27, type:Regular, mul:1
+src:26, dst:9, type:Regular, mul:1
+src:15, dst:26, type:Regular, mul:1
+src:25, dst:2, type:Regular, mul:100
+src:8, dst:25, type:Regular, mul:1
+src:23, dst:8, type:Regular, mul:1
+src:6, dst:22, type:Regular, mul:1
+src:24, dst:6, type:Regular, mul:1
+src:13, dst:24, type:Regular, mul:1
+src:16, dst:23, type:Regular, mul:1
+src:20, dst:19, type:Regular, mul:1
+src:14, dst:20, type:Regular, mul:1
+src:21, dst:20, type:Regular, mul:3
+src:22, dst:21, type:Regular, mul:1
+src:2, dst:22, type:Regular, mul:2
+src:2, dst:12, type:Regular, mul:5
+src:10, dst:4, type:Regular, mul:1
+src:3, dst:10, type:Regular, mul:1
+src:12, dst:5, type:Regular, mul:1
+src:18, dst:30, type:Regular, mul:1
+src:1, dst:30, type:Regular, mul:1
+src:32, dst:10, type:Regular, mul:1
+src:18, dst:10, type:Regular, mul:1
+src:33, dst:30, type:Regular, mul:1
+src:5, dst:30, type:Inhibitor, mul:1
+src:35, dst:12, type:Regular, mul:1
+src:2, dst:29, type:Regular, mul:2
+src:36, dst:40, type:Inhibitor, mul:1
+src:36, dst:45, type:Inhibitor, mul:1
+src:38, dst:42, type:Reset, mul:1
+src:44, dst:43, type:Inhibitor, mul:1
+src:36, dst:37, type:Regular, mul:1
+src:39, dst:43, type:Inhibitor, mul:1
+src:41, dst:45, type:Inhibitor, mul:1
+src:44, dst:40, type:Regular, mul:1
+src:45, dst:38, type:Regular, mul:3
+src:40, dst:38, type:Regular, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:39, dst:37, type:Inhibitor, mul:1
+src:37, dst:38, type:Regular, mul:4
+src:39, dst:45, type:Regular, mul:1
+src:43, dst:38, type:Regular, mul:2
+src:44, dst:45, type:Inhibitor, mul:1
+src:41, dst:37, type:Inhibitor, mul:1
+src:41, dst:43, type:Regular, mul:1
+src:41, dst:40, type:Inhibitor, mul:1
+src:39, dst:40, type:Inhibitor, mul:1
+src:44, dst:37, type:Inhibitor, mul:1
+src:2, dst:40, type:Regular, mul:1
+src:2, dst:37, type:Regular, mul:1
+src:2, dst:43, type:Regular, mul:1
+src:2, dst:45, type:Regular, mul:1
+src:32, dst:46, type:Reset, mul:1
+src:35, dst:47, type:Reset, mul:1
+src:51, dst:48, type:Reset, mul:1
+src:51, dst:24, type:Regular, mul:1
+src:53, dst:26, type:Regular, mul:1
+src:53, dst:49, type:Reset, mul:1
+src:52, dst:50, type:Reset, mul:1
+src:52, dst:23, type:Regular, mul:1
+Generated Arrays
+
+Places:
+id:1, lbl:Saúde, toks:50, conc:False
+id:2, lbl:Combustível, toks:100, conc:True
+id:3, lbl:Munição, toks:30, conc:True
+id:4, lbl:Atacar, toks:0, conc:False
+id:5, lbl:Defender, toks:0, conc:False
+id:6, lbl:Resgatar, toks:0, conc:False
+id:8, lbl:RecarregaCombustível, toks:0, conc:False
+id:9, lbl:RecarregaMunição, toks:0, conc:False
+id:13, lbl:Quadrante:Soldado , toks:0, conc:False
+id:14, lbl:Quadrante:Portal, toks:0, conc:False
+id:15, lbl:Quadrante:RecarregaMunição, toks:0, conc:False
+id:16, lbl:Quadrante:RecarregaCombustível, toks:0, conc:False
+id:17, lbl:Quadrante:Colisão, toks:0, conc:False
+id:18, lbl:RobôNaVizinhança, toks:0, conc:True
+id:19, lbl:Fim, toks:0, conc:False
+id:21, lbl:SoldadosResgatados, toks:0, conc:False
+id:32, lbl:BotãoAtacar, toks:0, conc:True
+id:33, lbl:TiroRecebido, toks:0, conc:False
+id:35, lbl:BotãoDefender, toks:0, conc:True
+id:39, lbl:Oeste, toks:0, conc:False
+id:41, lbl:Sul, toks:0, conc:False
+id:38, lbl:Deslocar, toks:0, conc:False
+id:44, lbl:Norte, toks:0, conc:False
+id:36, lbl:Leste, toks:0, conc:False
+id:51, lbl:BotãoResgatar, toks:0, conc:True
+id:52, lbl:BotãoRecarregaCombustível, toks:0, conc:True
+id:53, lbl:BotãoRecarregaMunição, toks:0, conc:True
+
+Transitions:
+id:10, lbl:TransiçãoAtacar, enab:True
+id:12, lbl:, enab:True
+id:20, lbl:, enab:True
+id:22, lbl:, enab:True
+id:23, lbl:, enab:True
+id:24, lbl:, enab:True
+id:25, lbl:, enab:True
+id:26, lbl:, enab:True
+id:27, lbl:, enab:True
+id:29, lbl:, enab:True
+id:30, lbl:, enab:True
+id:37, lbl:, enab:True
+id:45, lbl:, enab:True
+id:42, lbl:LimpaDeslocar, enab:True
+id:40, lbl:, enab:True
+id:43, lbl:, enab:True
+id:46, lbl:LimpaAtacar, enab:True
+id:47, lbl:LimpaDefender, enab:True
+id:49, lbl:LimpaRecarregaMunição, enab:True
+id:50, lbl:LimpaRecarregaCombustível, enab:True
+id:48, lbl:LimpaResgatar, enab:True
+
+Connections:
+src:2, dst:25, type:Reset, mul:1
+src:3, dst:27, type:Reset, mul:1
+src:17, dst:29, type:Regular, mul:1
+src:27, dst:3, type:Regular, mul:30
+src:9, dst:27, type:Regular, mul:1
+src:26, dst:9, type:Regular, mul:1
+src:15, dst:26, type:Regular, mul:1
+src:25, dst:2, type:Regular, mul:100
+src:8, dst:25, type:Regular, mul:1
+src:23, dst:8, type:Regular, mul:1
+src:6, dst:22, type:Regular, mul:1
+src:24, dst:6, type:Regular, mul:1
+src:13, dst:24, type:Regular, mul:1
+src:16, dst:23, type:Regular, mul:1
+src:20, dst:19, type:Regular, mul:1
+src:14, dst:20, type:Regular, mul:1
+src:21, dst:20, type:Regular, mul:3
+src:22, dst:21, type:Regular, mul:1
+src:2, dst:22, type:Regular, mul:2
+src:2, dst:12, type:Regular, mul:5
+src:10, dst:4, type:Regular, mul:1
+src:3, dst:10, type:Regular, mul:1
+src:12, dst:5, type:Regular, mul:1
+src:18, dst:30, type:Regular, mul:1
+src:1, dst:30, type:Regular, mul:1
+src:32, dst:10, type:Regular, mul:1
+src:18, dst:10, type:Regular, mul:1
+src:33, dst:30, type:Regular, mul:1
+src:5, dst:30, type:Inhibitor, mul:1
+src:35, dst:12, type:Regular, mul:1
+src:2, dst:29, type:Regular, mul:2
+src:36, dst:40, type:Inhibitor, mul:1
+src:36, dst:45, type:Inhibitor, mul:1
+src:38, dst:42, type:Reset, mul:1
+src:44, dst:43, type:Inhibitor, mul:1
+src:36, dst:37, type:Regular, mul:1
+src:39, dst:43, type:Inhibitor, mul:1
+src:41, dst:45, type:Inhibitor, mul:1
+src:44, dst:40, type:Regular, mul:1
+src:45, dst:38, type:Regular, mul:3
+src:40, dst:38, type:Regular, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:39, dst:37, type:Inhibitor, mul:1
+src:37, dst:38, type:Regular, mul:4
+src:39, dst:45, type:Regular, mul:1
+src:43, dst:38, type:Regular, mul:2
+src:44, dst:45, type:Inhibitor, mul:1
+src:41, dst:37, type:Inhibitor, mul:1
+src:41, dst:43, type:Regular, mul:1
+src:41, dst:40, type:Inhibitor, mul:1
+src:39, dst:40, type:Inhibitor, mul:1
+src:44, dst:37, type:Inhibitor, mul:1
+src:2, dst:40, type:Regular, mul:1
+src:2, dst:37, type:Regular, mul:1
+src:2, dst:43, type:Regular, mul:1
+src:2, dst:45, type:Regular, mul:1
+src:32, dst:46, type:Reset, mul:1
+src:35, dst:47, type:Reset, mul:1
+src:51, dst:48, type:Reset, mul:1
+src:51, dst:24, type:Regular, mul:1
+src:53, dst:26, type:Regular, mul:1
+src:53, dst:49, type:Reset, mul:1
+src:52, dst:50, type:Reset, mul:1
+src:52, dst:23, type:Regular, mul:1
