@@ -327,17 +327,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   width2: 0
-  height: 20
+  height: 10
   height2: 0
   x1: 0
   x2: 0
-  seed: 50
+  seed: 500
   useRandomSeed: 0
   myPrefab: {fileID: -927199367670048503, guid: c64221a51038d554a8cd8780b0031134,
     type: 3}
   myPrefab2: {fileID: -927199367670048503, guid: 005ddfd6a2229f3409f15c83f570682c,
     type: 3}
-  randomFillPercent: 24
+  randomFillPercent: 11
 --- !u!4 &1311587780
 Transform:
   m_ObjectHideFlags: 0

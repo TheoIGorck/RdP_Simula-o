@@ -48,9 +48,15 @@ public class MapGenerator : MonoBehaviour {
 			SmoothMap();
 		}
 
-		//MeshGenerator meshGen = GetComponent<MeshGenerator>();
-		//meshGen.GenerateMesh(map, 1);
-	}
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                if (GetSurroundingWallCount(i, j) == 1)
+                    map[i, j] = 1;
+
+
+        //MeshGenerator meshGen = GetComponent<MeshGenerator>();
+        //meshGen.GenerateMesh(map, 1);
+    }
 
     void Draw()
     {
