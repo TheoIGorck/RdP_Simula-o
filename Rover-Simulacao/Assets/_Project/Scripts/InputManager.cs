@@ -11,19 +11,29 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            _roverController.AddTokensAtRoverPetriNet("Norte", 1);
+            _roverController.AddTokensAtRoverPetriNet("North", 1);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            _roverController.AddTokensAtRoverPetriNet("Sul", 1);
+            _roverController.AddTokensAtRoverPetriNet("South", 1);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            _roverController.AddTokensAtRoverPetriNet("Oeste", 1);
+            _roverController.AddTokensAtRoverPetriNet("West", 1);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            _roverController.AddTokensAtRoverPetriNet("Leste", 1);
+            _roverController.AddTokensAtRoverPetriNet("East", 1);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            _roverController.AddTokensAtRoverPetriNet("AttackButton", 1);
+        }
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            _roverController.AddTokensAtRoverPetriNet("DefendButton", 1);
         }
     }
 }

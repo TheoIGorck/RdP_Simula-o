@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b56f21e75c1d1b40838e4f65d0add7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _robot: []
 --- !u!4 &765434354
 Transform:
   m_ObjectHideFlags: 0
@@ -438,7 +439,7 @@ GameObject:
   - component: {fileID: 2083463587}
   - component: {fileID: 2083463586}
   m_Layer: 0
-  m_Name: GameSystem
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

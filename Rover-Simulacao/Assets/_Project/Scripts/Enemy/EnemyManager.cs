@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Robot[] _robot = default;
+
+    public void OnStart(int index)
     {
-        
+        _robot[index].OnStart();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnUpdate(int index)
     {
-        
+        _robot[index].OnUpdate();
+    }
+    
+    public bool IsRoverDead(int index)
+    {
+        return _robot[index].IsDead();
+    }
+
+    public int GetNumberOfRobots()
+    {
+        return _robot.Length;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class RoverController : MonoBehaviour
 {
     [SerializeField]
-    private Rover _rover;
+    private Rover _rover = default;
 
     public void OnStart()
     {
@@ -20,5 +20,15 @@ public class RoverController : MonoBehaviour
     public void AddTokensAtRoverPetriNet(string label, int nTokens)
     {
         _rover.AddTokensAtPlace(label, nTokens);
+    }
+
+    public bool IsRoverDead()
+    {
+        return _rover.IsDead();
+    }
+
+    public bool HasRoverArrivedAtTheEnd()
+    {
+       return _rover.HasArrivedAtTheEnd();
     }
 }
