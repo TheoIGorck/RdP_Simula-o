@@ -13,16 +13,42 @@ public class Rover : MonoBehaviour
     private bool _canUseShield = true;
     [SerializeField]
     private Transform _movePoint;
+    public MapGenerator M;
+    int posX, posY;
+    bool reset = true;
     
     public void OnAwake()
     {
+        
         _roverPetriNet = new PetriNet("Assets/_Project/PetriNets/Rover.pflow");
         SetPetriNetCallbacks();
         SetPetriNetTransitionsPriority();
     }
-    
+
+    private void FixedUpdate()
+    {
+        if (reset)
+        {
+            posX = M.getPlayerPositionX();
+            posY = M.getPlayerPositionY();
+            reset = false;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Clique");
+            posX = M.getPlayerPositionX();
+            posY = M.getPlayerPositionY();
+            M.DestroyMap();
+            M.GenerateMap();
+            M.Draw();
+        }
+        transform.position = new Vector3(posX + 0.5f, 1, posY + 0.5f);
+        M.ChecarColisao(posX,posY);
+    }
+
     public void OnUpdate()
     {
+       // M.ChecarColisao()
         _roverPetriNet.ExecCycle();
         HasRobotInNeighborhood();
         //Debug.Log(_roverPetriNet.GetPlaceByLabel("Combustível").Tokens);
@@ -130,26 +156,32 @@ public class Rover : MonoBehaviour
     
     private void MoveNorth()
     {
-        transform.position += Vector3.forward;
+        //transform.position += Vector3.forward;
         /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
         Debug.Log("Moving North!");
         if(Vector3.Distance(transform.position, _movePoint.position) <= 0.05f)
         {
             _movePoint.position += Vector3.forward;
         }*/
+        if (M.Norte == false)
+            posY++;
     }
 
     private void MoveSouth()
     {
-        transform.position += Vector3.back;
+        //transform.position += Vector3.back;
         /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
         Debug.Log("Moving South!");
         _movePoint.position += Vector3.back;*/
+        if (M.Sul == false)
+            posY--;
     }
 
     private void MoveWest()
     {
-        transform.position += Vector3.left;
+        if (M.Oeste == false)
+            posX--;
+        //transform.position += Vector3.left;
         /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
         Debug.Log("Moving West!");
         _movePoint.position += Vector3.left;*/
@@ -157,7 +189,9 @@ public class Rover : MonoBehaviour
 
     private void MoveEast()
     {
-        transform.position += Vector3.right;
+        if(M.Leste == false)
+        posX++;
+        //transform.position += Vector3.right;
         /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
         Debug.Log("Moving East!");
         _movePoint.position += Vector3.right;*/

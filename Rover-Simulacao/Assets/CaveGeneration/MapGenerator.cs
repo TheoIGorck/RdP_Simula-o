@@ -13,12 +13,16 @@ public class MapGenerator : MonoBehaviour {
 	public bool useRandomSeed;
     public GameObject myPrefab;
     public GameObject myPrefab2;
+    int playerPosX, playerPosY;
+    int posID;
 
     [Range(0,100)]
 	public int randomFillPercent;
 
-    bool Norte, Sul, Leste, Oeste;
+   public bool Norte, Sul, Leste, Oeste;
 	int[,] map;
+    int[,] mapID;
+    int ID = 0;
     GameObject[,] Map;
 
     void Start() {
@@ -27,20 +31,22 @@ public class MapGenerator : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("Clique");
-            DestroyMap();
-            GenerateMap();
-            Draw();
-        }if (Input.GetMouseButtonDown(1)) {
+        //if (Input.GetMouseButtonDown(0)) {
+        //          Debug.Log("Clique");
+        //          DestroyMap();
+        //          GenerateMap();
+        //          Draw();} 
+        if (Input.GetMouseButtonDown(1)) {
             ChecarColisao(x1, x2);
         }
     }
 
-	void GenerateMap() {
+    public void GenerateMap() {;
+        ID = 0;
         width2 = width;
         height2 = height;
 		map = new int[width,height];
+        mapID = new int[width, height];
         Map = new GameObject[width, height];
         RandomFillMap();
 
@@ -52,13 +58,27 @@ public class MapGenerator : MonoBehaviour {
             for (int j = 0; j < height; j++)
                 if (GetSurroundingWallCount(i, j) == 1)
                     map[i, j] = 1;
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                if (map[i,j] == 0)
+                    mapID[i, j] = ID++;
 
+       posID = UnityEngine.Random.Range(1, ID);
+                for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                if (mapID[i, j] == posID)
+                {
+                    playerPosX = i;
+                    playerPosY = j;
+                    Debug.Log(playerPosX);
+                    Debug.Log(playerPosY);
+                }
 
         //MeshGenerator meshGen = GetComponent<MeshGenerator>();
         //meshGen.GenerateMesh(map, 1);
     }
 
-    void Draw()
+  public  void Draw()
     {
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
@@ -69,16 +89,16 @@ public class MapGenerator : MonoBehaviour {
                     Map[i, j] = Instantiate(myPrefab2, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
             }
     }
-void ChecarColisao(int x, int y)
+   public void ChecarColisao(int x, int y)
     {
         Norte = false;
         Sul = false;
         Leste = false;
         Oeste = false;
-        if(map[x, y - 1] == 1)
+        if(map[x, y + 1] == 1)
         Norte = true;
 
-        if (map[x, y + 1] == 1)
+        if (map[x, y - 1] == 1)
             Sul = true;
 
         if (map[x + 1, y] == 1)
@@ -92,7 +112,18 @@ void ChecarColisao(int x, int y)
         Debug.Log(Leste);
         Debug.Log(Oeste);
     }
-    void DestroyMap()
+
+    public int getPlayerPositionX()
+    {
+        return playerPosX;
+    }
+
+    public int getPlayerPositionY()
+    {
+        return playerPosY;
+    }
+
+ public   void DestroyMap()
     {
         for (int i = 0; i < width2; i++)
             for (int j = 0; j < height2; j++)
