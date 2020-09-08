@@ -29,7 +29,6 @@ public class InputManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             _roverController.AddTokensAtRoverPetriNet("AttackButton", 1);
-            _roverController.AddTokensAtRoverPetriNet("RobotInNeighbourhood", 1);
         }
 
         if(Input.GetKeyDown(KeyCode.X))

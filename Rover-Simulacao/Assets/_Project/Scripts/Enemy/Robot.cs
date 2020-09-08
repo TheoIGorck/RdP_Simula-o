@@ -6,17 +6,27 @@ using UnityEngine;
 public class Robot : MonoBehaviour
 {
     private PetriNet _robotPetriNet;
+    [SerializeField]
+    private GameObject _bullet;
+    [SerializeField]
+    private GameObject _shootPoint;
+    private Quaternion _newRotation;
 
     public void OnAwake()
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
+        _newRotation = transform.rotation;
     }
     
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
-        HasRoverInNeighborhood();
+
+        if(IsDead())
+        {
+            Destroy(gameObject);
+        }
     }
 
     public bool IsDead()
@@ -31,16 +41,26 @@ public class Robot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.gameObject.CompareTag("RoverBullet"))
         {
             _robotPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
+            Debug.Log("Enemy Got Shoot!");
+            Destroy(other.gameObject);
+        }
+        else if(other.gameObject.CompareTag("Rover"))
+        {
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
+            Debug.Log("Rover in Neighbourhood!");
+            //transform.LookAt(other.gameObject.transform.position);
         }
     }
-
-    private bool HasRoverInNeighborhood()
+    
+    private void OnTriggerExit(Collider other)
     {
-        //Alguma lógica para saber se tem rover
-        return false;
+        if (other.gameObject.CompareTag("Rover"))
+        {
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
+        }
     }
 
     private void MoveNorth()
@@ -65,7 +85,10 @@ public class Robot : MonoBehaviour
 
     private void Attack()
     {
+        GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(Vector3.forward * 500);
         Debug.Log("Robot Attacking!");
+        Destroy(bullet, 2f);
     }
 
     private void SetPetriNetCallbacks()

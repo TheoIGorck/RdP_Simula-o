@@ -70,8 +70,8 @@ public class MapGenerator : MonoBehaviour {
                 {
                     playerPosX = i;
                     playerPosY = j;
-                    Debug.Log(playerPosX);
-                    Debug.Log(playerPosY);
+                    //Debug.Log(playerPosX);
+                    //Debug.Log(playerPosY);
                 }
 
         //MeshGenerator meshGen = GetComponent<MeshGenerator>();
@@ -107,10 +107,10 @@ public class MapGenerator : MonoBehaviour {
         if (map[x - 1, y] == 1)
             Oeste = true;
 
-        Debug.Log(Norte);
-        Debug.Log(Sul);
-        Debug.Log(Leste);
-        Debug.Log(Oeste);
+        //Debug.Log(Norte);
+        //Debug.Log(Sul);
+        //Debug.Log(Leste);
+        //Debug.Log(Oeste);
     }
 
     public int getPlayerPositionX()

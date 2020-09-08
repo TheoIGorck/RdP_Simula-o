@@ -9,6 +9,9 @@ TagManager:
   - Ammo
   - Portal
   - EnemyBullet
+  - Rover
+  - Enemy
+  - RoverBullet
   layers:
   - Default
   - TransparentFX

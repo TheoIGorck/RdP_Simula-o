@@ -3,56 +3,96 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Rover : MonoBehaviour
 {
+    public MapGenerator M;
+
     private PetriNet _roverPetriNet;
     private float _shieldTime = 3.0f;
     private float _shieldReloadTime = 3.0f;
     private float _moveSpeed = 5.0f;
+    private float _rotateSpeed = 5.0f;
     private bool _canUseShield = true;
+    private bool _reset = true;
+    private int _posX, _posY;
+    private Vector3 _direction = Vector3.zero;
+    private Quaternion _newRotation = Quaternion.identity;
     [SerializeField]
-    private Transform _movePoint;
-    public MapGenerator M;
-    int posX, posY;
-    bool reset = true;
-    
+    private GameObject _bullet;
+    [SerializeField]
+    private Transform _shootPoint;
+
+    //Placeholder - Fix it
+    [SerializeField]
+    private Text _ammoText = default;
+    [SerializeField]
+    private Text _healthText = default;
+    [SerializeField]
+    private Text _fuelText = default;
+    [SerializeField]
+    private Text _soldiersText = default;
+
     public void OnAwake()
     {
-        
         _roverPetriNet = new PetriNet("Assets/_Project/PetriNets/Rover.pflow");
         SetPetriNetCallbacks();
         SetPetriNetTransitionsPriority();
+
+        _newRotation = transform.rotation;
     }
 
     private void FixedUpdate()
     {
-        if (reset)
+        if (_reset)
         {
-            posX = M.getPlayerPositionX();
-            posY = M.getPlayerPositionY();
-            reset = false;
+            _posX = M.getPlayerPositionX();
+            _posY = M.getPlayerPositionY();
+            _reset = false;
         }
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Clique");
-            posX = M.getPlayerPositionX();
-            posY = M.getPlayerPositionY();
+            _posX = M.getPlayerPositionX();
+            _posY = M.getPlayerPositionY();
             M.DestroyMap();
             M.GenerateMap();
             M.Draw();
         }
-        transform.position = new Vector3(posX + 0.5f, 1, posY + 0.5f);
-        M.ChecarColisao(posX,posY);
+
+        transform.position = new Vector3(_posX + 0.5f, 1, _posY + 0.5f);
+        M.ChecarColisao(_posX, _posY);
     }
 
     public void OnUpdate()
     {
-       // M.ChecarColisao()
+        //Debug.Log(_roverPetriNet.GetPlaceByLabel("North").Tokens + ": " + M.Norte);
+
+        if (_roverPetriNet.GetPlaceByLabel("North").Tokens == 1 && M.Norte == true)
+        {
+            _roverPetriNet.GetPlaceByLabel("Quadrant:Collision").AddTokens(1);
+        }
+        else if (_roverPetriNet.GetPlaceByLabel("South").Tokens == 1 && M.Sul == true)
+        {
+            _roverPetriNet.GetPlaceByLabel("Quadrant:Collision").AddTokens(1);
+        }
+        else if (_roverPetriNet.GetPlaceByLabel("West").Tokens == 1 && M.Oeste == true)
+        {
+            _roverPetriNet.GetPlaceByLabel("Quadrant:Collision").AddTokens(1);
+        }
+        else if (_roverPetriNet.GetPlaceByLabel("East").Tokens == 1 && M.Leste == true)
+        {
+            _roverPetriNet.GetPlaceByLabel("Quadrant:Collision").AddTokens(1);
+        }
+
         _roverPetriNet.ExecCycle();
-        HasRobotInNeighborhood();
-        //Debug.Log(_roverPetriNet.GetPlaceByLabel("Combustível").Tokens);
-        //Debug.Log(_roverPetriNet.GetPlaceByLabel("Munição").Tokens);
+        
+        //Fix it
+        _ammoText.text = "Ammo: " + _roverPetriNet.GetPlaceByLabel("Ammo").Tokens.ToString();
+        _healthText.text = "Health: " + _roverPetriNet.GetPlaceByLabel("Health").Tokens.ToString();
+        _fuelText.text = "Fuel: " + _roverPetriNet.GetPlaceByLabel("Fuel").Tokens.ToString();
+        _soldiersText.text = "Rescued Soldiers: " + _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens.ToString();
     }
 
     public void AddTokensAtPlace(string label, int nTokens)
@@ -86,19 +126,19 @@ public class Rover : MonoBehaviour
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:RefillFuel").AddTokens(1);
             Destroy(other.gameObject);
-            Debug.Log("Fuel!");
+            //Debug.Log("Fuel!");
         }
         else if (other.gameObject.CompareTag("Ammo"))
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:ReloadAmmo").AddTokens(1);
             Destroy(other.gameObject);
-            Debug.Log("Ammo!");
+            //Debug.Log("Ammo!");
         }
         else if (other.gameObject.tag == "Soldier")
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:Soldier").AddTokens(1);
             Destroy(other.gameObject);
-            Debug.Log("Soldier!");
+            //Debug.Log("Soldier!");
         }
         else if (other.gameObject.CompareTag("Portal"))
         {
@@ -110,6 +150,19 @@ public class Rover : MonoBehaviour
             _roverPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
             Destroy(other.gameObject);
             Debug.Log("GotShot!");
+        }
+        else if (other.gameObject.CompareTag("Enemy"))
+        {
+            _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").AddTokens(1);
+            Debug.Log("Robot in Neighbourhood!");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").RemTokens(1);
         }
     }
 
@@ -147,59 +200,77 @@ public class Rover : MonoBehaviour
             yield return null;
         }
     }
-
-    private bool HasRobotInNeighborhood()
-    {
-        //Alguma lógica para saber se tem robô
-        return false;
-    }
     
     private void MoveNorth()
     {
-        //transform.position += Vector3.forward;
-        /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
-        Debug.Log("Moving North!");
-        if(Vector3.Distance(transform.position, _movePoint.position) <= 0.05f)
-        {
-            _movePoint.position += Vector3.forward;
-        }*/
         if (M.Norte == false)
-            posY++;
+        {
+            _posY++;
+            _direction = Vector3.forward;
+
+            if (_direction != Vector3.zero)
+            {
+                _newRotation = Quaternion.LookRotation(_direction);
+            }
+
+            transform.rotation = _newRotation; //Quaternion.Slerp(transform.rotation, _newRotation, _rotateSpeed * Time.deltaTime);
+        }
     }
 
     private void MoveSouth()
     {
-        //transform.position += Vector3.back;
-        /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
-        Debug.Log("Moving South!");
-        _movePoint.position += Vector3.back;*/
         if (M.Sul == false)
-            posY--;
+        { 
+            _posY--;
+            _direction = Vector3.back;
+
+            if (_direction != Vector3.zero)
+            {
+                _newRotation = Quaternion.LookRotation(_direction);
+            }
+
+            transform.rotation = _newRotation;  //Quaternion.Slerp(transform.rotation, _newRotation, _rotateSpeed * Time.deltaTime);
+        }
     }
 
     private void MoveWest()
     {
         if (M.Oeste == false)
-            posX--;
-        //transform.position += Vector3.left;
-        /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
-        Debug.Log("Moving West!");
-        _movePoint.position += Vector3.left;*/
+        {
+            _posX--;
+            _direction = Vector3.left;
+
+            if (_direction != Vector3.zero)
+            {
+                _newRotation = Quaternion.LookRotation(_direction);
+            }
+
+            transform.rotation = _newRotation; //Quaternion.Slerp(transform.rotation, _newRotation, _rotateSpeed * Time.deltaTime);
+        }
     }
 
     private void MoveEast()
     {
-        if(M.Leste == false)
-        posX++;
-        //transform.position += Vector3.right;
-        /*transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
-        Debug.Log("Moving East!");
-        _movePoint.position += Vector3.right;*/
+        if (M.Leste == false)
+        {
+            _posX++;
+            _direction = Vector3.right;
+
+            if(_direction != Vector3.zero)
+            {
+                _newRotation = Quaternion.LookRotation(_direction);
+            }
+
+            transform.rotation = _newRotation; //Quaternion.Slerp(transform.rotation, _newRotation, _rotateSpeed * Time.deltaTime);
+        }
     }
 
     private void Attack()
     {
-        Debug.Log("Attacking!");
+        GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(_direction * 500);
+        //Debug.Log("Attacking!");
+        Destroy(bullet, 2f);
     }
 
     private void Defend()
@@ -216,10 +287,10 @@ public class Rover : MonoBehaviour
     
     private void SetPetriNetCallbacks()
     {
-        _roverPetriNet.GetPlaceByLabel("North").AddCallback(MoveNorth, "MoveNorth", Tokens.In);
-        _roverPetriNet.GetPlaceByLabel("South").AddCallback(MoveSouth, "MoveSouth", Tokens.In);
-        _roverPetriNet.GetPlaceByLabel("West").AddCallback(MoveWest, "MoveWest", Tokens.In);
-        _roverPetriNet.GetPlaceByLabel("East").AddCallback(MoveEast, "MoveEast", Tokens.In);
+        _roverPetriNet.GetPlaceByLabel("MoveNorth").AddCallback(MoveNorth, "MoveNorth", Tokens.In);
+        _roverPetriNet.GetPlaceByLabel("MoveSouth").AddCallback(MoveSouth, "MoveSouth", Tokens.In);
+        _roverPetriNet.GetPlaceByLabel("MoveWest").AddCallback(MoveWest, "MoveWest", Tokens.In);
+        _roverPetriNet.GetPlaceByLabel("MoveEast").AddCallback(MoveEast, "MoveEast", Tokens.In);
         _roverPetriNet.GetPlaceByLabel("Attack").AddCallback(Attack, "Attack", Tokens.In);
         _roverPetriNet.GetPlaceByLabel("Defend").AddCallback(Defend, "Defend", Tokens.In);
         _roverPetriNet.GetPlaceByLabel("ReloadShield").AddCallback(ReloadShield, "ReloadShield", Tokens.In);
@@ -229,6 +300,10 @@ public class Rover : MonoBehaviour
     {
         _roverPetriNet.GetTransitionByLabel("AttackTransition").Priority = 1;
         _roverPetriNet.GetTransitionByLabel("DefendTransition").Priority = 1;
+        _roverPetriNet.GetTransitionByLabel("North").Priority = 1;
+        _roverPetriNet.GetTransitionByLabel("South").Priority = 1;
+        _roverPetriNet.GetTransitionByLabel("West").Priority = 1;
+        _roverPetriNet.GetTransitionByLabel("East").Priority = 1;
         //_roverPetriNet.GetTransitionByLabel("RescueTransition").Priority = 1;
     }
 }

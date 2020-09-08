@@ -9,12 +9,18 @@ public class EnemyManager : MonoBehaviour
 
     public void OnAwake(int index)
     {
-        _robot[index].OnAwake();
+        if (_robot[index] != null)
+        {
+            _robot[index].OnAwake();
+        }
     }
 
     public void OnUpdate(int index)
     {
-        _robot[index].OnUpdate();
+        if (_robot[index] != null)
+        {
+            _robot[index].OnUpdate();
+        }
     }
     
     public bool IsRoverDead(int index)
