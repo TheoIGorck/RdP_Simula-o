@@ -7,7 +7,7 @@ public class Robot : MonoBehaviour
 {
     private PetriNet _robotPetriNet;
 
-    public void OnStart()
+    public void OnAwake()
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();

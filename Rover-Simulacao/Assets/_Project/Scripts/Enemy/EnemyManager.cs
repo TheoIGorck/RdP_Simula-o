@@ -7,9 +7,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Robot[] _robot = default;
 
-    public void OnStart(int index)
+    public void OnAwake(int index)
     {
-        _robot[index].OnStart();
+        _robot[index].OnAwake();
     }
 
     public void OnUpdate(int index)

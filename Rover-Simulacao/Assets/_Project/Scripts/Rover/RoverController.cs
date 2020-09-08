@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,9 @@ public class RoverController : MonoBehaviour
     [SerializeField]
     private Rover _rover = default;
 
-    public void OnStart()
+    public void OnAwake()
     {
-        _rover.OnStart();
+        _rover.OnAwake();
     }
     
     public void OnUpdate()

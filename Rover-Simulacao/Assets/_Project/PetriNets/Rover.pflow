@@ -511,12 +511,6 @@
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
-            <type>inhibitor</type>
-            <sourceId>36</sourceId>
-            <destinationId>43</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
             <type>regular</type>
             <sourceId>44</sourceId>
             <destinationId>40</destinationId>
@@ -559,12 +553,6 @@
                 <x>-577</x>
                 <y>106</y>
             </breakPoint>
-        </arc>
-        <arc>
-            <type>inhibitor</type>
-            <sourceId>36</sourceId>
-            <destinationId>40</destinationId>
-            <multiplicity>1</multiplicity>
         </arc>
         <arc>
             <type>regular</type>
@@ -784,6 +772,18 @@
             <type>inhibitor</type>
             <sourceId>56</sourceId>
             <destinationId>12</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>36</sourceId>
+            <destinationId>43</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>36</sourceId>
+            <destinationId>40</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
     </subnet>

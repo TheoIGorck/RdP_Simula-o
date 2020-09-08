@@ -74,14 +74,12 @@ arc:	  type:inhibitor  sourceId:41  destinationId:37  multiplicity:1  breakPoint
 arc:	  type:inhibitor  sourceId:44  destinationId:45  multiplicity:1  breakPoint:-654-153
 arc:	  type:regular  sourceId:39  destinationId:45  multiplicity:1
 arc:	  type:inhibitor  sourceId:39  destinationId:37  multiplicity:1
-arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
 arc:	  type:regular  sourceId:44  destinationId:40  multiplicity:1
 arc:	  type:inhibitor  sourceId:41  destinationId:45  multiplicity:1  breakPoint:-650218
 arc:	  type:inhibitor  sourceId:39  destinationId:43  multiplicity:1
 arc:	  type:regular  sourceId:36  destinationId:37  multiplicity:1
 arc:	  type:inhibitor  sourceId:44  destinationId:43  multiplicity:1
 arc:	  type:inhibitor  sourceId:36  destinationId:45  multiplicity:1  breakPoint:-577106
-arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
 arc:	  type:regular  sourceId:2  destinationId:29  multiplicity:2
 arc:	  type:regular  sourceId:35  destinationId:12  multiplicity:1
 arc:	  type:inhibitor  sourceId:5  destinationId:30  multiplicity:1
@@ -116,6 +114,8 @@ arc:	  type:reset  sourceId:2  destinationId:25  multiplicity:1  breakPoint:-117
 arc:	  type:inhibitor  sourceId:1  destinationId:54  multiplicity:1
 arc:	  type:regular  sourceId:54  destinationId:55  multiplicity:1
 arc:	  type:inhibitor  sourceId:56  destinationId:12  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
 
 
 Reference Places dictionary...
@@ -196,14 +196,12 @@ src:41, dst:37, type:Inhibitor, mul:1
 src:44, dst:45, type:Inhibitor, mul:1
 src:39, dst:45, type:Regular, mul:1
 src:39, dst:37, type:Inhibitor, mul:1
-src:36, dst:43, type:Inhibitor, mul:1
 src:44, dst:40, type:Regular, mul:1
 src:41, dst:45, type:Inhibitor, mul:1
 src:39, dst:43, type:Inhibitor, mul:1
 src:36, dst:37, type:Regular, mul:1
 src:44, dst:43, type:Inhibitor, mul:1
 src:36, dst:45, type:Inhibitor, mul:1
-src:36, dst:40, type:Inhibitor, mul:1
 src:2, dst:29, type:Regular, mul:2
 src:35, dst:12, type:Regular, mul:1
 src:5, dst:30, type:Inhibitor, mul:1
@@ -238,6 +236,8 @@ src:2, dst:25, type:Reset, mul:1
 src:1, dst:54, type:Inhibitor, mul:1
 src:54, dst:55, type:Regular, mul:1
 src:56, dst:12, type:Inhibitor, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:36, dst:40, type:Inhibitor, mul:1
 Generated Arrays
 
 Places:
@@ -315,14 +315,12 @@ src:41, dst:37, type:Inhibitor, mul:1
 src:44, dst:45, type:Inhibitor, mul:1
 src:39, dst:45, type:Regular, mul:1
 src:39, dst:37, type:Inhibitor, mul:1
-src:36, dst:43, type:Inhibitor, mul:1
 src:44, dst:40, type:Regular, mul:1
 src:41, dst:45, type:Inhibitor, mul:1
 src:39, dst:43, type:Inhibitor, mul:1
 src:36, dst:37, type:Regular, mul:1
 src:44, dst:43, type:Inhibitor, mul:1
 src:36, dst:45, type:Inhibitor, mul:1
-src:36, dst:40, type:Inhibitor, mul:1
 src:2, dst:29, type:Regular, mul:2
 src:35, dst:12, type:Regular, mul:1
 src:5, dst:30, type:Inhibitor, mul:1
@@ -357,3 +355,5 @@ src:2, dst:25, type:Reset, mul:1
 src:1, dst:54, type:Inhibitor, mul:1
 src:54, dst:55, type:Regular, mul:1
 src:56, dst:12, type:Inhibitor, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:36, dst:40, type:Inhibitor, mul:1
