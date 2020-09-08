@@ -16,7 +16,7 @@ public class MapGenerator : MonoBehaviour {
     int playerPosX, playerPosY;
     int posID;
 
-    [Range(0,100)]
+    [Range(0,45)]
 	public int randomFillPercent;
 
    public bool Norte, Sul, Leste, Oeste;

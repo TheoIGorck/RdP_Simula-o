@@ -26,8 +26,13 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < _enemyManager.GetNumberOfRobots(); i++)
         {
             _enemyManager.OnUpdate(i);
-        }
 
+            if(_enemyManager.GetRobots(i).IsDead() == true)
+            {
+                _roverController.RemTokensAtRoverPetriNet("RobotInNeighbourhood", 1);
+            }
+        }
+        
         if (_roverController.IsRoverDead())
         {
             GameOver();

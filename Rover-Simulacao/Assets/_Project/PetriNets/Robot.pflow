@@ -18,8 +18,8 @@
         </place>
         <place>
             <id>40</id>
-            <x>-34</x>
-            <y>-412</y>
+            <x>-371</x>
+            <y>-480</y>
             <label>RoverInNeighbourhood</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
@@ -124,8 +124,14 @@
         </transition>
         <arc>
             <type>regular</type>
-            <sourceId>41</sourceId>
+            <sourceId>45</sourceId>
             <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>40</sourceId>
+            <destinationId>45</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
         <arc>
@@ -316,6 +322,12 @@
             <type>regular</type>
             <sourceId>40</sourceId>
             <destinationId>41</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>41</sourceId>
+            <destinationId>40</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
     </subnet>

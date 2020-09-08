@@ -28,6 +28,11 @@ public class EnemyManager : MonoBehaviour
         return _robot[index].IsDead();
     }
 
+    public Robot GetRobots(int index)
+    {
+        return _robot[index];
+    }
+
     public int GetNumberOfRobots()
     {
         return _robot.Length;

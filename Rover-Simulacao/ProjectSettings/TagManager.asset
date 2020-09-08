@@ -12,6 +12,8 @@ TagManager:
   - Rover
   - Enemy
   - RoverBullet
+  - RoverNeighbourhood
+  - EnemyNeighbourhood
   layers:
   - Default
   - TransparentFX
@@ -21,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - RoverNeighbourhood
+  - EnemyNeighbourhood
   - 
   - 
   - 

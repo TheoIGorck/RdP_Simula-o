@@ -12,17 +12,15 @@ public class Rover : MonoBehaviour
     private PetriNet _roverPetriNet;
     private float _shieldTime = 3.0f;
     private float _shieldReloadTime = 3.0f;
-    private float _moveSpeed = 5.0f;
-    private float _rotateSpeed = 5.0f;
     private bool _canUseShield = true;
     private bool _reset = true;
     private int _posX, _posY;
     private Vector3 _direction = Vector3.zero;
     private Quaternion _newRotation = Quaternion.identity;
     [SerializeField]
-    private GameObject _bullet;
+    private GameObject _bullet = default;
     [SerializeField]
-    private Transform _shootPoint;
+    private Transform _shootPoint = default;
 
     //Placeholder - Fix it
     [SerializeField]
@@ -100,6 +98,11 @@ public class Rover : MonoBehaviour
         _roverPetriNet.GetPlaceByLabel(label).AddTokens(nTokens);
     }
 
+    public void RemoveTokensAtPlace(string label, int nTokens)
+    {
+        _roverPetriNet.GetPlaceByLabel(label).RemTokens(nTokens);
+    }
+
     public bool IsDead()
     {
         if (_roverPetriNet.GetPlaceByLabel("Dead").Tokens > 0)
@@ -151,7 +154,7 @@ public class Rover : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log("GotShot!");
         }
-        else if (other.gameObject.CompareTag("Enemy"))
+        else if (other.gameObject.CompareTag("EnemyNeighbourhood"))
         {
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").AddTokens(1);
             Debug.Log("Robot in Neighbourhood!");
@@ -160,7 +163,7 @@ public class Rover : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("EnemyNeighbourhood"))
         {
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").RemTokens(1);
         }

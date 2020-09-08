@@ -23,6 +23,11 @@ public class RoverController : MonoBehaviour
         _rover.AddTokensAtPlace(label, nTokens);
     }
 
+    public void RemTokensAtRoverPetriNet(string label, int nTokens)
+    {
+        _rover.RemoveTokensAtPlace(label, nTokens);
+    }
+
     public bool IsRoverDead()
     {
         return _rover.IsDead();

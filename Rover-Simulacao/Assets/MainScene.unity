@@ -252,7 +252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581483648}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.146, y: 1, z: 6.43}
+  m_LocalPosition: {x: 4.09, y: 1, z: 6.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -396,12 +396,27 @@ PrefabInstance:
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
       propertyPath: useRandomSeed
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
       propertyPath: randomFillPercent
-      value: 1
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
+        type: 3}
+      propertyPath: width2
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
+        type: 3}
+      propertyPath: width
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
+        type: 3}
+      propertyPath: height
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3493176382486100708, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
@@ -547,7 +562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996536533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.85, y: 1, z: 6.43}
+  m_LocalPosition: {x: 8.13, y: 1, z: 6.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -631,6 +646,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053488415}
   m_CullTransparentMesh: 0
+--- !u!1 &1073320576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1073320577}
+  - component: {fileID: 1073320578}
+  m_Layer: 0
+  m_Name: Trigger
+  m_TagString: Rover
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1073320577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073320576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2137736336}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1073320578
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073320576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.013, y: 0.005, z: 0.013}
+  m_Center: {x: 0, y: 0.002, z: 0.0003}
 --- !u!1 &1107032185
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107032185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.75, y: 1, z: -1.28}
+  m_LocalPosition: {x: 12.46, y: 1, z: 9.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -736,6 +795,7 @@ GameObject:
   - component: {fileID: 1146914716}
   - component: {fileID: 1146914715}
   - component: {fileID: 1146914714}
+  - component: {fileID: 1146914719}
   - component: {fileID: 1146914718}
   m_Layer: 0
   m_Name: Robot
@@ -811,14 +871,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146914713}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.02, y: 1, z: 2.52}
+  m_LocalRotation: {x: 0, y: -0.01473783, z: -0, w: 0.9998914}
+  m_LocalPosition: {x: 3.559, y: 1, z: 2.499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1634044893}
   - {fileID: 1735714108}
-  - {fileID: 1923963448}
-  - {fileID: 1765295651}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -836,6 +894,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 2572007223979218854, guid: 7ff892c6a5a02534c9fb976b2535594b, type: 3}
   _shootPoint: {fileID: 1735714107}
+--- !u!54 &1146914719
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146914713}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &1336104582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,13 +1078,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383542277}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 5.22, y: 7.45, z: -6.63}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 7.62, y: 11.67, z: -3.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &1539346661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,9 +1266,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1634044893}
   - component: {fileID: 1634044894}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Neighbourhood
-  m_TagString: Enemy
+  m_TagString: EnemyNeighbourhood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1224,7 +1298,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 2, z: 5}
+  m_Size: {x: 3, y: 2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1646795342
 GameObject:
@@ -1394,11 +1468,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765295648}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.02, y: -1, z: -2.52}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1146914717}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1923963444
 GameObject:
@@ -1494,8 +1568,8 @@ RectTransform:
   - {fileID: 1539346662}
   - {fileID: 587647182}
   - {fileID: 1053488416}
-  m_Father: {fileID: 1146914717}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1598,9 +1672,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2075929979}
   - component: {fileID: 2075929980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Neighbourhood
-  m_TagString: Rover
+  m_TagString: RoverNeighbourhood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1630,7 +1704,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.05, y: 0.011, z: 0.05}
+  m_Size: {x: 0.03, y: 0.011, z: 0.03}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2083463585
 GameObject:
@@ -1693,7 +1767,7 @@ GameObject:
   - component: {fileID: 2137736340}
   m_Layer: 0
   m_Name: Rover
-  m_TagString: Rover
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1725,11 +1799,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2137736334}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 2075929979}
   - {fileID: 2058665639}
+  - {fileID: 1073320577}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1794,7 +1869,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &2137736340
 BoxCollider:
