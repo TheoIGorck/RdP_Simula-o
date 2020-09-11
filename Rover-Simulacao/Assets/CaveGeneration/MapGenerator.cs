@@ -1,6 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
+
+public struct TileCoordinates
+{
+    public int TileX;
+    public int TileY;
+
+    public TileCoordinates(int x, int y)
+    {
+        TileX = x;
+        TileY = y;
+    }
+}
 
 public class MapGenerator : MonoBehaviour {
 
@@ -19,8 +32,8 @@ public class MapGenerator : MonoBehaviour {
     [Range(0,45)]
 	public int randomFillPercent;
 
-   public bool Norte, Sul, Leste, Oeste;
-	int[,] map;
+    public bool Norte, Sul, Leste, Oeste;
+	public int[,] map;
     int[,] mapID;
     int ID = 0;
     GameObject[,] Map;
@@ -169,7 +182,7 @@ public class MapGenerator : MonoBehaviour {
 		int wallCount = 0;
 		for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX ++) {
 			for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY ++) {
-				if (neighbourX >= 0 && neighbourX < width && neighbourY >= 0 && neighbourY < height) {
+				if (IsInMapRange(neighbourX, neighbourY)) {
 					if (neighbourX != gridX || neighbourY != gridY) {
 						wallCount += map[neighbourX,neighbourY];
 					}
@@ -183,19 +196,121 @@ public class MapGenerator : MonoBehaviour {
 		return wallCount;
 	}
 
+    private void ProcessMapRegions()
+    {
+        List<List<TileCoordinates>> wallRegions = GetRegions(1);
+        int wallThresholdSize = 50;
 
-	void OnDrawGizmos() {
-		/*
-		if (map != null) {
-			for (int x = 0; x < width; x ++) {
-				for (int y = 0; y < height; y ++) {
-					Gizmos.color = (map[x,y] == 1)?Color.black:Color.white;
-					Vector3 pos = new Vector3(-width/2 + x + .5f,0, -height/2 + y+.5f);
-					Gizmos.DrawCube(pos,Vector3.one);
-				}
-			}
-		}
-		*/
-	}
+        foreach(List<TileCoordinates> wallRegion in wallRegions)
+        {
+            if(wallRegion.Count < wallThresholdSize)
+            {
+                foreach(TileCoordinates tile in wallRegion)
+                {
+                    map[tile.TileX, tile.TileY] = 0;
+                }
+            }
+        }
 
+        List<List<TileCoordinates>> roomRegions = GetRegions(0);
+        int roomThresholdSize = 50;
+
+        foreach (List<TileCoordinates> roomRegion in roomRegions)
+        {
+            if (roomRegion.Count < roomThresholdSize)
+            {
+                foreach (TileCoordinates tile in roomRegion)
+                {
+                    map[tile.TileX, tile.TileY] = 1;
+                }
+            }
+        }
+    }
+
+    private List<List<TileCoordinates>> GetRegions(int tileType)
+    {
+        List<List<TileCoordinates>> regions = new List<List<TileCoordinates>>();
+        int[,] mapFlags = new int[width, height];
+        
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < height; y++)
+            {
+                if(mapFlags[x,y] == 0 && map[x,y] == tileType)
+                {
+                    List<TileCoordinates> newRegion = FillRegion(x, y);
+                    regions.Add(newRegion);
+
+                    foreach(TileCoordinates tile in newRegion)
+                    {
+                        mapFlags[tile.TileX, tile.TileY] = 1;
+                    }
+                }
+            }
+        }
+
+        return regions;
+    }
+
+    private List<TileCoordinates> FillRegion(int startX, int startY) 
+    {
+        List<TileCoordinates> tiles = new List<TileCoordinates>();
+        int[,] mapFlags = new int[width, height]; //Indicates if the tile has been filled
+        int tileType = map[startX, startY];
+
+        Queue<TileCoordinates> tileQueue = new Queue<TileCoordinates>();
+        tileQueue.Enqueue(new TileCoordinates(startX, startY));
+        mapFlags[startX, startY] = 1;
+
+        while(tileQueue.Count > 0)
+        {
+            TileCoordinates tile = tileQueue.Dequeue();
+            tiles.Add(tile);
+
+            for(int x = tile.TileX - 1; x <= tile.TileX + 1; x++)
+            {
+                for (int y = tile.TileY - 1; y <= tile.TileY + 1; y++)
+                {
+                    if(IsInMapRange(x,y) && (x == tile.TileX || y == tile.TileY))
+                    {
+                        if(mapFlags[x,y] == 0 && map[x,y] == tileType)
+                        {
+                            mapFlags[x, y] = 1;
+                            tileQueue.Enqueue(new TileCoordinates(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        return tiles;
+    }
+
+    private bool IsInMapRange(int x, int y)
+    {
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(map != null)
+        {
+            for(int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if(map[x,y] == 0)
+                    {
+                        List<TileCoordinates> roomRegion = FillRegion(x, y);
+                        foreach(TileCoordinates tile in roomRegion)
+                        {
+                            Vector3 tilePosition = new Vector3(tile.TileX + 0.5f, 0, tile.TileY + 0.5f);
+                            Gizmos.color = Color.blue;
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

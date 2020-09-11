@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
+    public MapGenerator M;
+    private bool Norte = false;
+    private bool Sul = false;
+    private bool Leste = false;
+    private bool Oeste = false;
+    public int xPosition = 0;
+    public int yPosition = 0;
+
     [SerializeField]
     private GameObject _bullet = default;
     [SerializeField]
@@ -28,8 +36,10 @@ public class Robot : MonoBehaviour
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
+        ChecarColisao(xPosition, yPosition);
+        transform.position = new Vector3(xPosition + 0.5f, 1, yPosition + 0.5f);
 
-        if(IsDead())
+        if (IsDead())
         {
             StopCoroutine(AttackCoroutine());
             StopCoroutine(RandomizeMovePositionCoroutine());
@@ -88,27 +98,46 @@ public class Robot : MonoBehaviour
         }
     }
 
+    public void ChecarColisao(int x, int y)
+    {
+        Norte = false;
+        Sul = false;
+        Leste = false;
+        Oeste = false;
+        if (M.map[x, y + 1] == 1)
+            Norte = true;
+        
+        if (M.map[x, y - 1] == 1)
+            Sul = true;
+
+        if (M.map[x + 1, y] == 1)
+            Leste = true;
+
+        if (M.map[x - 1, y] == 1)
+            Oeste = true;
+    }
+
     private void MoveNorth()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+        yPosition++;
         Debug.Log("Robot Moving North!");
     }
 
     private void MoveSouth()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+        yPosition--;
         Debug.Log("Robot Moving South!");
     }
 
     private void MoveWest()
     {
-        transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+        xPosition--;
         Debug.Log("Robot Moving West!");
     }
 
     private void MoveEast()
     {
-        transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+        xPosition++;
         Debug.Log("Robot Moving East!");
     }
 
@@ -126,7 +155,7 @@ public class Robot : MonoBehaviour
         GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.transform.forward * 500);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         _isAttacking = false;
         Destroy(bullet);
@@ -137,16 +166,19 @@ public class Robot : MonoBehaviour
         _moveDirection = Random.Range(0, 4);
         Debug.Log(_moveDirection);
 
-        if (_moveDirection != _oldDirection)
+        /*if (_moveDirection != _oldDirection)
         {
-            InsertDirectionInPetriNet();
-        }
+            
+        }*/
+
+        InsertDirectionInPetriNet();
+
         _changeDirection = false;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
 
         _changeDirection = true;
-        _oldDirection = _moveDirection;
+        //_oldDirection = _moveDirection;
     }
 
     private void InsertDirectionInPetriNet()
@@ -154,16 +186,28 @@ public class Robot : MonoBehaviour
         switch (_moveDirection)
         {
             case 0:
-                _robotPetriNet.GetPlaceByLabel("North").AddTokens(1);
+                if (Norte == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("North").AddTokens(1);
+                }
                 break;
             case 1:
-                _robotPetriNet.GetPlaceByLabel("West").AddTokens(1);
+                if (Oeste == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("West").AddTokens(1);
+                }
                 break;
             case 2:
-                _robotPetriNet.GetPlaceByLabel("South").AddTokens(1);
+                if (Sul == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("South").AddTokens(1);
+                }
                 break;
             case 3:
-                _robotPetriNet.GetPlaceByLabel("East").AddTokens(1);
+                if (Leste == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("East").AddTokens(1);
+                }
                 break;
         }
     }

@@ -401,17 +401,17 @@ PrefabInstance:
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
       propertyPath: randomFillPercent
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
       propertyPath: width2
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
       propertyPath: width
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3493176382486100707, guid: 93c6e103994ef3f4da8a38ae87391860,
         type: 3}
@@ -871,7 +871,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146914713}
-  m_LocalRotation: {x: 0, y: -0.01473783, z: -0, w: 0.9998914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.559, y: 1, z: 2.499}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -892,6 +892,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28d9c9a44774034ab0c0828505570aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  M: {fileID: 1958389723}
+  xPosition: 5
+  yPosition: 1
   _bullet: {fileID: 2572007223979218854, guid: 7ff892c6a5a02534c9fb976b2535594b, type: 3}
   _shootPoint: {fileID: 1735714107}
 --- !u!54 &1146914719
