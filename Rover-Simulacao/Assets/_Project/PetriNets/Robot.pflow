@@ -18,8 +18,8 @@
         </place>
         <place>
             <id>40</id>
-            <x>-34</x>
-            <y>-412</y>
+            <x>-371</x>
+            <y>-480</y>
             <label>RoverInNeighbourhood</label>
             <tokens>0</tokens>
             <isStatic>false</isStatic>
@@ -29,7 +29,7 @@
             <x>-544</x>
             <y>-263</y>
             <label>Health</label>
-            <tokens>50</tokens>
+            <tokens>5</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
@@ -122,6 +122,18 @@
             <y>78</y>
             <label/>
         </transition>
+        <arc>
+            <type>regular</type>
+            <sourceId>45</sourceId>
+            <destinationId>40</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>40</sourceId>
+            <destinationId>45</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
         <arc>
             <type>inhibitor</type>
             <sourceId>50</sourceId>
@@ -272,12 +284,6 @@
         </arc>
         <arc>
             <type>regular</type>
-            <sourceId>40</sourceId>
-            <destinationId>41</destinationId>
-            <multiplicity>1</multiplicity>
-        </arc>
-        <arc>
-            <type>regular</type>
             <sourceId>41</sourceId>
             <destinationId>39</destinationId>
             <multiplicity>1</multiplicity>
@@ -310,6 +316,18 @@
             <type>inhibitor</type>
             <sourceId>44</sourceId>
             <destinationId>41</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>40</sourceId>
+            <destinationId>41</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>41</sourceId>
+            <destinationId>40</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
     </subnet>

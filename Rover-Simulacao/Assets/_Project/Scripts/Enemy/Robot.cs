@@ -5,18 +5,52 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
+    public MapGenerator M;
+    private bool Norte = false;
+    private bool Sul = false;
+    private bool Leste = false;
+    private bool Oeste = false;
+    public int xPosition = 0;
+    public int yPosition = 0;
+
+    [SerializeField]
+    private GameObject _bullet = default;
+    [SerializeField]
+    private GameObject _shootPoint = default;
     private PetriNet _robotPetriNet;
+    private Quaternion _newRotation;
+    private int _moveDirection;
+    private int _oldDirection;
+    private bool _isAttacking = false;
+    private bool _changeDirection = false;
 
     public void OnAwake()
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
+        _newRotation = transform.rotation;
+
+        StartCoroutine(RandomizeMovePositionCoroutine());
     }
     
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
-        HasRoverInNeighborhood();
+        ChecarColisao(xPosition, yPosition);
+        transform.position = new Vector3(xPosition + 0.5f, 1, yPosition + 0.5f);
+
+        if (IsDead())
+        {
+            StopCoroutine(AttackCoroutine());
+            StopCoroutine(RandomizeMovePositionCoroutine());
+            Destroy(gameObject);
+            _isAttacking = false;
+        }
+
+        if(_changeDirection && !_isAttacking)
+        {
+            StartCoroutine(RandomizeMovePositionCoroutine());
+        }
     }
 
     public bool IsDead()
@@ -31,41 +65,151 @@ public class Robot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.gameObject.CompareTag("RoverBullet"))
         {
             _robotPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
+            Debug.Log("Enemy Got Shoot!");
+            Destroy(other.gameObject);
+        }
+        else if(other.gameObject.CompareTag("RoverNeighbourhood"))
+        {
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
+            Debug.Log("Rover in Neighbourhood!");
+            //transform.LookAt(other.gameObject.transform.position);
         }
     }
 
-    private bool HasRoverInNeighborhood()
+    private void OnTriggerStay(Collider other)
     {
-        //Alguma lógica para saber se tem rover
-        return false;
+        if (other.gameObject.CompareTag("RoverNeighbourhood"))
+        {
+            transform.LookAt(other.gameObject.transform.position);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("RoverNeighbourhood"))
+        {
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
+            transform.rotation = Quaternion.identity;
+            StopCoroutine(AttackCoroutine());
+            _isAttacking = false;
+        }
+    }
+
+    public void ChecarColisao(int x, int y)
+    {
+        Norte = false;
+        Sul = false;
+        Leste = false;
+        Oeste = false;
+        if (M.map[x, y + 1] == 1)
+            Norte = true;
+        
+        if (M.map[x, y - 1] == 1)
+            Sul = true;
+
+        if (M.map[x + 1, y] == 1)
+            Leste = true;
+
+        if (M.map[x - 1, y] == 1)
+            Oeste = true;
     }
 
     private void MoveNorth()
     {
+        yPosition++;
         Debug.Log("Robot Moving North!");
     }
 
     private void MoveSouth()
     {
+        yPosition--;
         Debug.Log("Robot Moving South!");
     }
 
     private void MoveWest()
     {
+        xPosition--;
         Debug.Log("Robot Moving West!");
     }
 
     private void MoveEast()
     {
+        xPosition++;
         Debug.Log("Robot Moving East!");
     }
 
     private void Attack()
     {
-        Debug.Log("Robot Attacking!");
+        if (!_isAttacking)
+        {
+            StartCoroutine(AttackCoroutine());
+            _isAttacking = true;
+        }
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.transform.forward * 500);
+
+        yield return new WaitForSeconds(1f);
+
+        _isAttacking = false;
+        Destroy(bullet);
+    }
+
+    private IEnumerator RandomizeMovePositionCoroutine()
+    {
+        _moveDirection = Random.Range(0, 4);
+        Debug.Log(_moveDirection);
+
+        /*if (_moveDirection != _oldDirection)
+        {
+            
+        }*/
+
+        InsertDirectionInPetriNet();
+
+        _changeDirection = false;
+
+        yield return new WaitForSeconds(0.5f);
+
+        _changeDirection = true;
+        //_oldDirection = _moveDirection;
+    }
+
+    private void InsertDirectionInPetriNet()
+    {
+        switch (_moveDirection)
+        {
+            case 0:
+                if (Norte == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("North").AddTokens(1);
+                }
+                break;
+            case 1:
+                if (Oeste == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("West").AddTokens(1);
+                }
+                break;
+            case 2:
+                if (Sul == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("South").AddTokens(1);
+                }
+                break;
+            case 3:
+                if (Leste == false)
+                {
+                    _robotPetriNet.GetPlaceByLabel("East").AddTokens(1);
+                }
+                break;
+        }
     }
 
     private void SetPetriNetCallbacks()
