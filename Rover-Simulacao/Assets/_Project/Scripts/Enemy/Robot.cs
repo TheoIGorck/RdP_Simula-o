@@ -31,14 +31,14 @@ public class Robot : MonoBehaviour
         SetPetriNetCallbacks();
         _newRotation = transform.rotation;
 
-        StartCoroutine(RandomizeMovePositionCoroutine());
+        //StartCoroutine(RandomizeMovePositionCoroutine());
     }
     
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
         ChecarColisao(xPosition, yPosition);
-        transform.position = new Vector3(xPosition + 0.5f, 1, yPosition + 0.5f);
+        transform.position = new Vector3(xPosition + 0.5f, transform.position.y, yPosition + 0.5f);
 
         if (IsDead())
         {

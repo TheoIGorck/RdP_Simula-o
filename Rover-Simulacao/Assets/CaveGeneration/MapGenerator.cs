@@ -30,6 +30,11 @@ public class MapGenerator : MonoBehaviour {
     int posID;
     bool _canFill = true;
 
+    [SerializeField]
+    private List<GameObject> _fillObjects;
+    private int _currentObject = 0;
+    private bool _canInstantiate = true;
+
     [Range(0,45)]
 	public int randomFillPercent;
 
@@ -278,6 +283,11 @@ public class MapGenerator : MonoBehaviour {
                         {
                             mapFlags[x, y] = 1;
                             tileQueue.Enqueue(new TileCoordinates(x, y));
+
+                            /*if (_fillObjects != null && _currentObject < _fillObjects.Count)
+                            {
+                                PlaceObjectAtPosition(_fillObjects[_currentObject], new Vector3(x, 0.5f, y));
+                            }*/
                         }
                     }
                 }
@@ -290,6 +300,19 @@ public class MapGenerator : MonoBehaviour {
     private bool IsInMapRange(int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+    private void PlaceObjectAtPosition(GameObject newObject, Vector3 position)
+    {
+        //_canInstantiate = false;
+        if(_fillObjects.Contains(newObject))
+        {
+            Instantiate(newObject, position, Quaternion.identity);
+            _fillObjects.Remove(newObject);
+            _currentObject++;
+        }
+        
+        //_canInstantiate = true;
     }
 
     private void OnDrawGizmos()
@@ -305,9 +328,9 @@ public class MapGenerator : MonoBehaviour {
                         List<TileCoordinates> roomRegion = FillRegion(x, y);
                         foreach(TileCoordinates tile in roomRegion)
                         {
-                            Vector3 tilePosition = new Vector3(tile.TileX + 0.5f, 0, tile.TileY + 0.5f);
+                            /*Vector3 tilePosition = new Vector3(tile.TileX + 0.5f, 0, tile.TileY + 0.5f);
                             Gizmos.color = Color.blue;
-                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                            Gizmos.DrawCube(tilePosition, Vector3.one);*/
                         }
                     }
                 }
