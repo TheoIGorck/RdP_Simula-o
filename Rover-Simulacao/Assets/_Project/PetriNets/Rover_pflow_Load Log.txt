@@ -16,7 +16,7 @@ place:	  id:15  x:16  y:-393  label:Quadrant:ReloadAmmo  tokens:0  isStatic:fals
 place:	  id:16  x:-188  y:-178  label:Quadrant:RefillFuel  tokens:0  isStatic:false
 place:	  id:17  x:-387  y:281  label:Quadrant:Collision  tokens:0  isStatic:false
 place:	  id:18  x:87  y:-244  label:RobotInNeighbourhood  tokens:0  isStatic:false
-place:	  id:19  x:208  y:210  label:End  tokens:0  isStatic:false
+place:	  id:19  x:205  y:205  label:End  tokens:0  isStatic:false
 place:	  id:21  x:125  y:108  label:RescuedSoldiers  tokens:0  isStatic:false
 place:	  id:32  x:-20  y:-90  label:AttackButton  tokens:0  isStatic:false
 place:	  id:33  x:191  y:-80  label:GotShot  tokens:0  isStatic:false
@@ -41,7 +41,7 @@ transition:	  id:24  x:-100  y:221  label:RescueTransition
 transition:	  id:25  x:-187  y:-99  label:
 transition:	  id:27  x:16  y:-312  label:
 transition:	  id:29  x:-313  y:281  label:
-transition:	  id:30  x:191  y:-138  label:
+transition:	  id:30  x:191  y:-138  label:TakeDamageTransition
 transition:	  id:37  x:-481  y:29  label:East
 transition:	  id:45  x:-657  y:30  label:West
 transition:	  id:40  x:-568  y:-129  label:North
@@ -55,83 +55,89 @@ transition:	  id:75  x:-482  y:-291  label:
 transition:	  id:76  x:-831  y:34  label:
 transition:	  id:77  x:-561  y:357  label:
 transition:	  id:78  x:-344  y:120  label:
-arc:	  type:regular  sourceId:30  destinationId:18  multiplicity:1
-arc:	  type:regular  sourceId:62  destinationId:61  multiplicity:1
-arc:	  type:regular  sourceId:56  destinationId:61  multiplicity:1
-arc:	  type:regular  sourceId:59  destinationId:56  multiplicity:1
-arc:	  type:regular  sourceId:60  destinationId:59  multiplicity:1
-arc:	  type:regular  sourceId:5  destinationId:59  multiplicity:1
-arc:	  type:inhibitor  sourceId:17  destinationId:45  multiplicity:1
-arc:	  type:inhibitor  sourceId:17  destinationId:40  multiplicity:1
-arc:	  type:inhibitor  sourceId:17  destinationId:37  multiplicity:1  breakPoint:-405123
-arc:	  type:inhibitor  sourceId:17  destinationId:43  multiplicity:1
-arc:	  type:reset  sourceId:35  destinationId:47  multiplicity:1
-arc:	  type:reset  sourceId:32  destinationId:46  multiplicity:1
-arc:	  type:inhibitor  sourceId:44  destinationId:37  multiplicity:1  breakPoint:-484-155
-arc:	  type:inhibitor  sourceId:39  destinationId:40  multiplicity:1
-arc:	  type:inhibitor  sourceId:41  destinationId:40  multiplicity:1
-arc:	  type:regular  sourceId:41  destinationId:43  multiplicity:1  breakPoint:-581220
-arc:	  type:inhibitor  sourceId:41  destinationId:37  multiplicity:1  breakPoint:-482215
-arc:	  type:inhibitor  sourceId:44  destinationId:45  multiplicity:1  breakPoint:-654-153
-arc:	  type:regular  sourceId:39  destinationId:45  multiplicity:1
-arc:	  type:inhibitor  sourceId:39  destinationId:37  multiplicity:1
-arc:	  type:regular  sourceId:44  destinationId:40  multiplicity:1
-arc:	  type:inhibitor  sourceId:41  destinationId:45  multiplicity:1  breakPoint:-650218
-arc:	  type:inhibitor  sourceId:39  destinationId:43  multiplicity:1
-arc:	  type:regular  sourceId:36  destinationId:37  multiplicity:1
-arc:	  type:inhibitor  sourceId:44  destinationId:43  multiplicity:1
-arc:	  type:inhibitor  sourceId:36  destinationId:45  multiplicity:1  breakPoint:-577106
-arc:	  type:regular  sourceId:2  destinationId:29  multiplicity:2
-arc:	  type:regular  sourceId:35  destinationId:12  multiplicity:1
-arc:	  type:inhibitor  sourceId:5  destinationId:30  multiplicity:1
-arc:	  type:regular  sourceId:33  destinationId:30  multiplicity:1
-arc:	  type:regular  sourceId:18  destinationId:10  multiplicity:1
-arc:	  type:regular  sourceId:32  destinationId:10  multiplicity:1
-arc:	  type:regular  sourceId:1  destinationId:30  multiplicity:1
-arc:	  type:regular  sourceId:18  destinationId:30  multiplicity:1
-arc:	  type:regular  sourceId:12  destinationId:5  multiplicity:1
-arc:	  type:regular  sourceId:3  destinationId:10  multiplicity:1
-arc:	  type:regular  sourceId:10  destinationId:4  multiplicity:1
-arc:	  type:regular  sourceId:2  destinationId:12  multiplicity:5
-arc:	  type:regular  sourceId:2  destinationId:22  multiplicity:2
-arc:	  type:regular  sourceId:22  destinationId:21  multiplicity:1
-arc:	  type:regular  sourceId:21  destinationId:20  multiplicity:3
-arc:	  type:regular  sourceId:14  destinationId:20  multiplicity:1
-arc:	  type:regular  sourceId:20  destinationId:19  multiplicity:1
-arc:	  type:regular  sourceId:13  destinationId:24  multiplicity:1
-arc:	  type:regular  sourceId:24  destinationId:6  multiplicity:1
-arc:	  type:regular  sourceId:6  destinationId:22  multiplicity:1
-arc:	  type:regular  sourceId:25  destinationId:2  multiplicity:100  breakPoint:-193-40
-arc:	  type:regular  sourceId:27  destinationId:3  multiplicity:30  breakPoint:34-261
-arc:	  type:regular  sourceId:17  destinationId:29  multiplicity:1
-arc:	  type:reset  sourceId:3  destinationId:27  multiplicity:1  breakPoint:-35-268
-arc:	  type:reset  sourceId:2  destinationId:25  multiplicity:1  breakPoint:-143-36
-arc:	  type:inhibitor  sourceId:1  destinationId:54  multiplicity:1
-arc:	  type:regular  sourceId:54  destinationId:55  multiplicity:1
-arc:	  type:inhibitor  sourceId:56  destinationId:12  multiplicity:1
-arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
-arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
-arc:	  type:regular  sourceId:15  destinationId:27  multiplicity:1
-arc:	  type:regular  sourceId:16  destinationId:25  multiplicity:1
-arc:	  type:regular  sourceId:2  destinationId:40  multiplicity:1  breakPoint:-392-68
-arc:	  type:regular  sourceId:2  destinationId:37  multiplicity:1
-arc:	  type:regular  sourceId:2  destinationId:43  multiplicity:1  breakPoint:-424142
-arc:	  type:regular  sourceId:2  destinationId:45  multiplicity:1
-arc:	  type:regular  sourceId:40  destinationId:72  multiplicity:1
-arc:	  type:regular  sourceId:45  destinationId:73  multiplicity:1
-arc:	  type:regular  sourceId:37  destinationId:71  multiplicity:1
-arc:	  type:regular  sourceId:43  destinationId:74  multiplicity:1
-arc:	  type:inhibitor  sourceId:55  destinationId:12  multiplicity:1
-arc:	  type:inhibitor  sourceId:55  destinationId:10  multiplicity:1
-arc:	  type:inhibitor  sourceId:55  destinationId:37  multiplicity:1
-arc:	  type:inhibitor  sourceId:55  destinationId:40  multiplicity:1
-arc:	  type:inhibitor  sourceId:55  destinationId:45  multiplicity:1
-arc:	  type:reset  sourceId:55  destinationId:43  multiplicity:1
-arc:	  type:regular  sourceId:44  destinationId:75  multiplicity:1
-arc:	  type:reset  sourceId:36  destinationId:78  multiplicity:1
-arc:	  type:regular  sourceId:41  destinationId:77  multiplicity:1
-arc:	  type:regular  sourceId:39  destinationId:76  multiplicity:1
+transition:	  id:79  x:329  y:-86  label:
+transition:	  id:82  x:191  y:-18  label:
+arc:	  type:regular  sourceId:33  destinationId:82  multiplicity:1
+arc:	  type:inhibitor  sourceId:19  destinationId:79  multiplicity:1
+arc:	  type:regular  sourceId:79  destinationId:55  multiplicity:1
+arc:	  type:inhibitor  sourceId:2  destinationId:79  multiplicity:1
 arc:	  type:regular  sourceId:10  destinationId:18  multiplicity:1
+arc:	  type:regular  sourceId:39  destinationId:76  multiplicity:1
+arc:	  type:regular  sourceId:41  destinationId:77  multiplicity:1
+arc:	  type:reset  sourceId:36  destinationId:78  multiplicity:1
+arc:	  type:regular  sourceId:44  destinationId:75  multiplicity:1
+arc:	  type:reset  sourceId:55  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:55  destinationId:45  multiplicity:1
+arc:	  type:inhibitor  sourceId:55  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:55  destinationId:37  multiplicity:1
+arc:	  type:inhibitor  sourceId:55  destinationId:10  multiplicity:1
+arc:	  type:inhibitor  sourceId:55  destinationId:12  multiplicity:1
+arc:	  type:regular  sourceId:43  destinationId:74  multiplicity:1
+arc:	  type:regular  sourceId:37  destinationId:71  multiplicity:1
+arc:	  type:regular  sourceId:45  destinationId:73  multiplicity:1
+arc:	  type:regular  sourceId:40  destinationId:72  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:45  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:43  multiplicity:1  breakPoint:-424142
+arc:	  type:regular  sourceId:2  destinationId:37  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:40  multiplicity:1  breakPoint:-392-68
+arc:	  type:regular  sourceId:16  destinationId:25  multiplicity:1
+arc:	  type:regular  sourceId:15  destinationId:27  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:56  destinationId:12  multiplicity:1
+arc:	  type:regular  sourceId:54  destinationId:55  multiplicity:1
+arc:	  type:inhibitor  sourceId:1  destinationId:54  multiplicity:1
+arc:	  type:reset  sourceId:2  destinationId:25  multiplicity:1  breakPoint:-143-36
+arc:	  type:reset  sourceId:3  destinationId:27  multiplicity:1  breakPoint:-35-268
+arc:	  type:regular  sourceId:17  destinationId:29  multiplicity:1
+arc:	  type:regular  sourceId:27  destinationId:3  multiplicity:30  breakPoint:34-261
+arc:	  type:regular  sourceId:25  destinationId:2  multiplicity:100  breakPoint:-193-40
+arc:	  type:regular  sourceId:6  destinationId:22  multiplicity:1
+arc:	  type:regular  sourceId:24  destinationId:6  multiplicity:1
+arc:	  type:regular  sourceId:13  destinationId:24  multiplicity:1
+arc:	  type:regular  sourceId:20  destinationId:19  multiplicity:1
+arc:	  type:regular  sourceId:14  destinationId:20  multiplicity:1
+arc:	  type:regular  sourceId:21  destinationId:20  multiplicity:3
+arc:	  type:regular  sourceId:22  destinationId:21  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:22  multiplicity:2
+arc:	  type:regular  sourceId:2  destinationId:12  multiplicity:5
+arc:	  type:regular  sourceId:10  destinationId:4  multiplicity:1
+arc:	  type:regular  sourceId:3  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:12  destinationId:5  multiplicity:1
+arc:	  type:regular  sourceId:18  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:1  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:32  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:18  destinationId:10  multiplicity:1
+arc:	  type:regular  sourceId:33  destinationId:30  multiplicity:1
+arc:	  type:inhibitor  sourceId:5  destinationId:30  multiplicity:1
+arc:	  type:regular  sourceId:35  destinationId:12  multiplicity:1
+arc:	  type:regular  sourceId:2  destinationId:29  multiplicity:2
+arc:	  type:inhibitor  sourceId:36  destinationId:45  multiplicity:1  breakPoint:-577106
+arc:	  type:inhibitor  sourceId:44  destinationId:43  multiplicity:1
+arc:	  type:regular  sourceId:36  destinationId:37  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:41  destinationId:45  multiplicity:1  breakPoint:-650218
+arc:	  type:regular  sourceId:44  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:37  multiplicity:1
+arc:	  type:regular  sourceId:39  destinationId:45  multiplicity:1
+arc:	  type:inhibitor  sourceId:44  destinationId:45  multiplicity:1  breakPoint:-654-153
+arc:	  type:inhibitor  sourceId:41  destinationId:37  multiplicity:1  breakPoint:-482215
+arc:	  type:regular  sourceId:41  destinationId:43  multiplicity:1  breakPoint:-581220
+arc:	  type:inhibitor  sourceId:41  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:39  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:44  destinationId:37  multiplicity:1  breakPoint:-484-155
+arc:	  type:reset  sourceId:32  destinationId:46  multiplicity:1
+arc:	  type:reset  sourceId:35  destinationId:47  multiplicity:1
+arc:	  type:inhibitor  sourceId:17  destinationId:43  multiplicity:1
+arc:	  type:inhibitor  sourceId:17  destinationId:37  multiplicity:1  breakPoint:-405123
+arc:	  type:inhibitor  sourceId:17  destinationId:40  multiplicity:1
+arc:	  type:inhibitor  sourceId:17  destinationId:45  multiplicity:1
+arc:	  type:regular  sourceId:5  destinationId:59  multiplicity:1
+arc:	  type:regular  sourceId:60  destinationId:59  multiplicity:1
+arc:	  type:regular  sourceId:59  destinationId:56  multiplicity:1
+arc:	  type:regular  sourceId:56  destinationId:61  multiplicity:1
+arc:	  type:regular  sourceId:62  destinationId:61  multiplicity:1
+arc:	  type:regular  sourceId:30  destinationId:18  multiplicity:1
 
 
 Reference Places dictionary...
@@ -177,7 +183,7 @@ id:24, lbl:RescueTransition, enab:True
 id:25, lbl:, enab:True
 id:27, lbl:, enab:True
 id:29, lbl:, enab:True
-id:30, lbl:, enab:True
+id:30, lbl:TakeDamageTransition, enab:True
 id:37, lbl:East, enab:True
 id:45, lbl:West, enab:True
 id:40, lbl:North, enab:True
@@ -191,85 +197,91 @@ id:75, lbl:, enab:True
 id:76, lbl:, enab:True
 id:77, lbl:, enab:True
 id:78, lbl:, enab:True
+id:79, lbl:, enab:True
+id:82, lbl:, enab:True
 
 Connections:
-src:30, dst:18, type:Regular, mul:1
-src:62, dst:61, type:Regular, mul:1
-src:56, dst:61, type:Regular, mul:1
-src:59, dst:56, type:Regular, mul:1
-src:60, dst:59, type:Regular, mul:1
-src:5, dst:59, type:Regular, mul:1
-src:17, dst:45, type:Inhibitor, mul:1
-src:17, dst:40, type:Inhibitor, mul:1
-src:17, dst:37, type:Inhibitor, mul:1
-src:17, dst:43, type:Inhibitor, mul:1
-src:35, dst:47, type:Reset, mul:1
-src:32, dst:46, type:Reset, mul:1
-src:44, dst:37, type:Inhibitor, mul:1
-src:39, dst:40, type:Inhibitor, mul:1
-src:41, dst:40, type:Inhibitor, mul:1
-src:41, dst:43, type:Regular, mul:1
-src:41, dst:37, type:Inhibitor, mul:1
-src:44, dst:45, type:Inhibitor, mul:1
-src:39, dst:45, type:Regular, mul:1
-src:39, dst:37, type:Inhibitor, mul:1
-src:44, dst:40, type:Regular, mul:1
-src:41, dst:45, type:Inhibitor, mul:1
-src:39, dst:43, type:Inhibitor, mul:1
-src:36, dst:37, type:Regular, mul:1
-src:44, dst:43, type:Inhibitor, mul:1
-src:36, dst:45, type:Inhibitor, mul:1
-src:2, dst:29, type:Regular, mul:2
-src:35, dst:12, type:Regular, mul:1
-src:5, dst:30, type:Inhibitor, mul:1
-src:33, dst:30, type:Regular, mul:1
-src:18, dst:10, type:Regular, mul:1
-src:32, dst:10, type:Regular, mul:1
-src:1, dst:30, type:Regular, mul:1
-src:18, dst:30, type:Regular, mul:1
-src:12, dst:5, type:Regular, mul:1
-src:3, dst:10, type:Regular, mul:1
-src:10, dst:4, type:Regular, mul:1
-src:2, dst:12, type:Regular, mul:5
-src:2, dst:22, type:Regular, mul:2
-src:22, dst:21, type:Regular, mul:1
-src:21, dst:20, type:Regular, mul:3
-src:14, dst:20, type:Regular, mul:1
-src:20, dst:19, type:Regular, mul:1
-src:13, dst:24, type:Regular, mul:1
-src:24, dst:6, type:Regular, mul:1
-src:6, dst:22, type:Regular, mul:1
-src:25, dst:2, type:Regular, mul:100
-src:27, dst:3, type:Regular, mul:30
-src:17, dst:29, type:Regular, mul:1
-src:3, dst:27, type:Reset, mul:1
-src:2, dst:25, type:Reset, mul:1
-src:1, dst:54, type:Inhibitor, mul:1
-src:54, dst:55, type:Regular, mul:1
-src:56, dst:12, type:Inhibitor, mul:1
-src:36, dst:43, type:Inhibitor, mul:1
-src:36, dst:40, type:Inhibitor, mul:1
-src:15, dst:27, type:Regular, mul:1
-src:16, dst:25, type:Regular, mul:1
-src:2, dst:40, type:Regular, mul:1
-src:2, dst:37, type:Regular, mul:1
-src:2, dst:43, type:Regular, mul:1
-src:2, dst:45, type:Regular, mul:1
-src:40, dst:72, type:Regular, mul:1
-src:45, dst:73, type:Regular, mul:1
-src:37, dst:71, type:Regular, mul:1
-src:43, dst:74, type:Regular, mul:1
-src:55, dst:12, type:Inhibitor, mul:1
-src:55, dst:10, type:Inhibitor, mul:1
-src:55, dst:37, type:Inhibitor, mul:1
-src:55, dst:40, type:Inhibitor, mul:1
-src:55, dst:45, type:Inhibitor, mul:1
-src:55, dst:43, type:Reset, mul:1
-src:44, dst:75, type:Regular, mul:1
-src:36, dst:78, type:Reset, mul:1
-src:41, dst:77, type:Regular, mul:1
-src:39, dst:76, type:Regular, mul:1
+src:33, dst:82, type:Regular, mul:1
+src:19, dst:79, type:Inhibitor, mul:1
+src:79, dst:55, type:Regular, mul:1
+src:2, dst:79, type:Inhibitor, mul:1
 src:10, dst:18, type:Regular, mul:1
+src:39, dst:76, type:Regular, mul:1
+src:41, dst:77, type:Regular, mul:1
+src:36, dst:78, type:Reset, mul:1
+src:44, dst:75, type:Regular, mul:1
+src:55, dst:43, type:Reset, mul:1
+src:55, dst:45, type:Inhibitor, mul:1
+src:55, dst:40, type:Inhibitor, mul:1
+src:55, dst:37, type:Inhibitor, mul:1
+src:55, dst:10, type:Inhibitor, mul:1
+src:55, dst:12, type:Inhibitor, mul:1
+src:43, dst:74, type:Regular, mul:1
+src:37, dst:71, type:Regular, mul:1
+src:45, dst:73, type:Regular, mul:1
+src:40, dst:72, type:Regular, mul:1
+src:2, dst:45, type:Regular, mul:1
+src:2, dst:43, type:Regular, mul:1
+src:2, dst:37, type:Regular, mul:1
+src:2, dst:40, type:Regular, mul:1
+src:16, dst:25, type:Regular, mul:1
+src:15, dst:27, type:Regular, mul:1
+src:36, dst:40, type:Inhibitor, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:56, dst:12, type:Inhibitor, mul:1
+src:54, dst:55, type:Regular, mul:1
+src:1, dst:54, type:Inhibitor, mul:1
+src:2, dst:25, type:Reset, mul:1
+src:3, dst:27, type:Reset, mul:1
+src:17, dst:29, type:Regular, mul:1
+src:27, dst:3, type:Regular, mul:30
+src:25, dst:2, type:Regular, mul:100
+src:6, dst:22, type:Regular, mul:1
+src:24, dst:6, type:Regular, mul:1
+src:13, dst:24, type:Regular, mul:1
+src:20, dst:19, type:Regular, mul:1
+src:14, dst:20, type:Regular, mul:1
+src:21, dst:20, type:Regular, mul:3
+src:22, dst:21, type:Regular, mul:1
+src:2, dst:22, type:Regular, mul:2
+src:2, dst:12, type:Regular, mul:5
+src:10, dst:4, type:Regular, mul:1
+src:3, dst:10, type:Regular, mul:1
+src:12, dst:5, type:Regular, mul:1
+src:18, dst:30, type:Regular, mul:1
+src:1, dst:30, type:Regular, mul:1
+src:32, dst:10, type:Regular, mul:1
+src:18, dst:10, type:Regular, mul:1
+src:33, dst:30, type:Regular, mul:1
+src:5, dst:30, type:Inhibitor, mul:1
+src:35, dst:12, type:Regular, mul:1
+src:2, dst:29, type:Regular, mul:2
+src:36, dst:45, type:Inhibitor, mul:1
+src:44, dst:43, type:Inhibitor, mul:1
+src:36, dst:37, type:Regular, mul:1
+src:39, dst:43, type:Inhibitor, mul:1
+src:41, dst:45, type:Inhibitor, mul:1
+src:44, dst:40, type:Regular, mul:1
+src:39, dst:37, type:Inhibitor, mul:1
+src:39, dst:45, type:Regular, mul:1
+src:44, dst:45, type:Inhibitor, mul:1
+src:41, dst:37, type:Inhibitor, mul:1
+src:41, dst:43, type:Regular, mul:1
+src:41, dst:40, type:Inhibitor, mul:1
+src:39, dst:40, type:Inhibitor, mul:1
+src:44, dst:37, type:Inhibitor, mul:1
+src:32, dst:46, type:Reset, mul:1
+src:35, dst:47, type:Reset, mul:1
+src:17, dst:43, type:Inhibitor, mul:1
+src:17, dst:37, type:Inhibitor, mul:1
+src:17, dst:40, type:Inhibitor, mul:1
+src:17, dst:45, type:Inhibitor, mul:1
+src:5, dst:59, type:Regular, mul:1
+src:60, dst:59, type:Regular, mul:1
+src:59, dst:56, type:Regular, mul:1
+src:56, dst:61, type:Regular, mul:1
+src:62, dst:61, type:Regular, mul:1
+src:30, dst:18, type:Regular, mul:1
 Generated Arrays
 
 Places:
@@ -288,7 +300,7 @@ id:18, lbl:RobotInNeighbourhood, toks:0, conc:True
 id:19, lbl:End, toks:0, conc:False
 id:21, lbl:RescuedSoldiers, toks:0, conc:False
 id:32, lbl:AttackButton, toks:0, conc:True
-id:33, lbl:GotShot, toks:0, conc:False
+id:33, lbl:GotShot, toks:0, conc:True
 id:35, lbl:DefendButton, toks:0, conc:True
 id:39, lbl:West, toks:0, conc:True
 id:41, lbl:South, toks:0, conc:True
@@ -312,7 +324,7 @@ id:24, lbl:RescueTransition, enab:True
 id:25, lbl:, enab:True
 id:27, lbl:, enab:True
 id:29, lbl:, enab:True
-id:30, lbl:, enab:True
+id:30, lbl:TakeDamageTransition, enab:True
 id:37, lbl:East, enab:True
 id:45, lbl:West, enab:True
 id:40, lbl:North, enab:True
@@ -326,82 +338,88 @@ id:75, lbl:, enab:True
 id:76, lbl:, enab:True
 id:77, lbl:, enab:True
 id:78, lbl:, enab:True
+id:79, lbl:, enab:True
+id:82, lbl:, enab:True
 
 Connections:
-src:30, dst:18, type:Regular, mul:1
-src:62, dst:61, type:Regular, mul:1
-src:56, dst:61, type:Regular, mul:1
-src:59, dst:56, type:Regular, mul:1
-src:60, dst:59, type:Regular, mul:1
-src:5, dst:59, type:Regular, mul:1
-src:17, dst:45, type:Inhibitor, mul:1
-src:17, dst:40, type:Inhibitor, mul:1
-src:17, dst:37, type:Inhibitor, mul:1
-src:17, dst:43, type:Inhibitor, mul:1
-src:35, dst:47, type:Reset, mul:1
-src:32, dst:46, type:Reset, mul:1
-src:44, dst:37, type:Inhibitor, mul:1
-src:39, dst:40, type:Inhibitor, mul:1
-src:41, dst:40, type:Inhibitor, mul:1
-src:41, dst:43, type:Regular, mul:1
-src:41, dst:37, type:Inhibitor, mul:1
-src:44, dst:45, type:Inhibitor, mul:1
-src:39, dst:45, type:Regular, mul:1
-src:39, dst:37, type:Inhibitor, mul:1
-src:44, dst:40, type:Regular, mul:1
-src:41, dst:45, type:Inhibitor, mul:1
-src:39, dst:43, type:Inhibitor, mul:1
-src:36, dst:37, type:Regular, mul:1
-src:44, dst:43, type:Inhibitor, mul:1
-src:36, dst:45, type:Inhibitor, mul:1
-src:2, dst:29, type:Regular, mul:2
-src:35, dst:12, type:Regular, mul:1
-src:5, dst:30, type:Inhibitor, mul:1
-src:33, dst:30, type:Regular, mul:1
-src:18, dst:10, type:Regular, mul:1
-src:32, dst:10, type:Regular, mul:1
-src:1, dst:30, type:Regular, mul:1
-src:18, dst:30, type:Regular, mul:1
-src:12, dst:5, type:Regular, mul:1
-src:3, dst:10, type:Regular, mul:1
-src:10, dst:4, type:Regular, mul:1
-src:2, dst:12, type:Regular, mul:5
-src:2, dst:22, type:Regular, mul:2
-src:22, dst:21, type:Regular, mul:1
-src:21, dst:20, type:Regular, mul:3
-src:14, dst:20, type:Regular, mul:1
-src:20, dst:19, type:Regular, mul:1
-src:13, dst:24, type:Regular, mul:1
-src:24, dst:6, type:Regular, mul:1
-src:6, dst:22, type:Regular, mul:1
-src:25, dst:2, type:Regular, mul:100
-src:27, dst:3, type:Regular, mul:30
-src:17, dst:29, type:Regular, mul:1
-src:3, dst:27, type:Reset, mul:1
-src:2, dst:25, type:Reset, mul:1
-src:1, dst:54, type:Inhibitor, mul:1
-src:54, dst:55, type:Regular, mul:1
-src:56, dst:12, type:Inhibitor, mul:1
-src:36, dst:43, type:Inhibitor, mul:1
-src:36, dst:40, type:Inhibitor, mul:1
-src:15, dst:27, type:Regular, mul:1
-src:16, dst:25, type:Regular, mul:1
-src:2, dst:40, type:Regular, mul:1
-src:2, dst:37, type:Regular, mul:1
-src:2, dst:43, type:Regular, mul:1
-src:2, dst:45, type:Regular, mul:1
-src:40, dst:72, type:Regular, mul:1
-src:45, dst:73, type:Regular, mul:1
-src:37, dst:71, type:Regular, mul:1
-src:43, dst:74, type:Regular, mul:1
-src:55, dst:12, type:Inhibitor, mul:1
-src:55, dst:10, type:Inhibitor, mul:1
-src:55, dst:37, type:Inhibitor, mul:1
-src:55, dst:40, type:Inhibitor, mul:1
-src:55, dst:45, type:Inhibitor, mul:1
-src:55, dst:43, type:Reset, mul:1
-src:44, dst:75, type:Regular, mul:1
-src:36, dst:78, type:Reset, mul:1
-src:41, dst:77, type:Regular, mul:1
-src:39, dst:76, type:Regular, mul:1
+src:33, dst:82, type:Regular, mul:1
+src:19, dst:79, type:Inhibitor, mul:1
+src:79, dst:55, type:Regular, mul:1
+src:2, dst:79, type:Inhibitor, mul:1
 src:10, dst:18, type:Regular, mul:1
+src:39, dst:76, type:Regular, mul:1
+src:41, dst:77, type:Regular, mul:1
+src:36, dst:78, type:Reset, mul:1
+src:44, dst:75, type:Regular, mul:1
+src:55, dst:43, type:Reset, mul:1
+src:55, dst:45, type:Inhibitor, mul:1
+src:55, dst:40, type:Inhibitor, mul:1
+src:55, dst:37, type:Inhibitor, mul:1
+src:55, dst:10, type:Inhibitor, mul:1
+src:55, dst:12, type:Inhibitor, mul:1
+src:43, dst:74, type:Regular, mul:1
+src:37, dst:71, type:Regular, mul:1
+src:45, dst:73, type:Regular, mul:1
+src:40, dst:72, type:Regular, mul:1
+src:2, dst:45, type:Regular, mul:1
+src:2, dst:43, type:Regular, mul:1
+src:2, dst:37, type:Regular, mul:1
+src:2, dst:40, type:Regular, mul:1
+src:16, dst:25, type:Regular, mul:1
+src:15, dst:27, type:Regular, mul:1
+src:36, dst:40, type:Inhibitor, mul:1
+src:36, dst:43, type:Inhibitor, mul:1
+src:56, dst:12, type:Inhibitor, mul:1
+src:54, dst:55, type:Regular, mul:1
+src:1, dst:54, type:Inhibitor, mul:1
+src:2, dst:25, type:Reset, mul:1
+src:3, dst:27, type:Reset, mul:1
+src:17, dst:29, type:Regular, mul:1
+src:27, dst:3, type:Regular, mul:30
+src:25, dst:2, type:Regular, mul:100
+src:6, dst:22, type:Regular, mul:1
+src:24, dst:6, type:Regular, mul:1
+src:13, dst:24, type:Regular, mul:1
+src:20, dst:19, type:Regular, mul:1
+src:14, dst:20, type:Regular, mul:1
+src:21, dst:20, type:Regular, mul:3
+src:22, dst:21, type:Regular, mul:1
+src:2, dst:22, type:Regular, mul:2
+src:2, dst:12, type:Regular, mul:5
+src:10, dst:4, type:Regular, mul:1
+src:3, dst:10, type:Regular, mul:1
+src:12, dst:5, type:Regular, mul:1
+src:18, dst:30, type:Regular, mul:1
+src:1, dst:30, type:Regular, mul:1
+src:32, dst:10, type:Regular, mul:1
+src:18, dst:10, type:Regular, mul:1
+src:33, dst:30, type:Regular, mul:1
+src:5, dst:30, type:Inhibitor, mul:1
+src:35, dst:12, type:Regular, mul:1
+src:2, dst:29, type:Regular, mul:2
+src:36, dst:45, type:Inhibitor, mul:1
+src:44, dst:43, type:Inhibitor, mul:1
+src:36, dst:37, type:Regular, mul:1
+src:39, dst:43, type:Inhibitor, mul:1
+src:41, dst:45, type:Inhibitor, mul:1
+src:44, dst:40, type:Regular, mul:1
+src:39, dst:37, type:Inhibitor, mul:1
+src:39, dst:45, type:Regular, mul:1
+src:44, dst:45, type:Inhibitor, mul:1
+src:41, dst:37, type:Inhibitor, mul:1
+src:41, dst:43, type:Regular, mul:1
+src:41, dst:40, type:Inhibitor, mul:1
+src:39, dst:40, type:Inhibitor, mul:1
+src:44, dst:37, type:Inhibitor, mul:1
+src:32, dst:46, type:Reset, mul:1
+src:35, dst:47, type:Reset, mul:1
+src:17, dst:43, type:Inhibitor, mul:1
+src:17, dst:37, type:Inhibitor, mul:1
+src:17, dst:40, type:Inhibitor, mul:1
+src:17, dst:45, type:Inhibitor, mul:1
+src:5, dst:59, type:Regular, mul:1
+src:60, dst:59, type:Regular, mul:1
+src:59, dst:56, type:Regular, mul:1
+src:56, dst:61, type:Regular, mul:1
+src:62, dst:61, type:Regular, mul:1
+src:30, dst:18, type:Regular, mul:1

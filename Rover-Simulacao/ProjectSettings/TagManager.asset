@@ -25,9 +25,9 @@ TagManager:
   - 
   - RoverNeighbourhood
   - EnemyNeighbourhood
-  - 
-  - 
-  - 
+  - RoverTrigger
+  - Soldier
+  - EnemyBulllet
   - 
   - 
   - 

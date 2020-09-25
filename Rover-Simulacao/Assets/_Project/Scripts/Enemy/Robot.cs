@@ -12,6 +12,7 @@ public class Robot : MonoBehaviour
     private bool Oeste = false;
     public int xPosition = 0;
     public int yPosition = 0;
+    public Transform RoverTransform;
 
     [SerializeField]
     private GameObject _bullet = default;
@@ -68,13 +69,11 @@ public class Robot : MonoBehaviour
         if (other.gameObject.CompareTag("RoverBullet"))
         {
             _robotPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
-            Debug.Log("Enemy Got Shoot!");
             Destroy(other.gameObject);
         }
         else if(other.gameObject.CompareTag("RoverNeighbourhood"))
         {
             _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
-            Debug.Log("Rover in Neighbourhood!");
             //transform.LookAt(other.gameObject.transform.position);
         }
     }
@@ -94,7 +93,6 @@ public class Robot : MonoBehaviour
             _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
             transform.rotation = Quaternion.identity;
             StopCoroutine(AttackCoroutine());
-            _isAttacking = false;
         }
     }
 
@@ -117,28 +115,43 @@ public class Robot : MonoBehaviour
             Oeste = true;
     }
 
+    /*private bool CheckIsPlayerVisible()
+    {
+        RaycastHit hit;
+        Vector3 direction = RoverTransform.position - transform.position;
+        Physics.Raycast(transform.position, direction / 2, out hit);
+
+        Debug.DrawRay(transform.position, direction / 2, Color.red);
+
+        if (hit.transform != null)
+        {
+            if (hit.transform.gameObject.CompareTag("Rover"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }*/
+
     private void MoveNorth()
     {
         yPosition++;
-        Debug.Log("Robot Moving North!");
     }
 
     private void MoveSouth()
     {
         yPosition--;
-        Debug.Log("Robot Moving South!");
     }
 
     private void MoveWest()
     {
         xPosition--;
-        Debug.Log("Robot Moving West!");
     }
 
     private void MoveEast()
     {
         xPosition++;
-        Debug.Log("Robot Moving East!");
     }
 
     private void Attack()
@@ -155,7 +168,7 @@ public class Robot : MonoBehaviour
         GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.transform.forward * 500);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.0f);
 
         _isAttacking = false;
         Destroy(bullet);
@@ -164,7 +177,6 @@ public class Robot : MonoBehaviour
     private IEnumerator RandomizeMovePositionCoroutine()
     {
         _moveDirection = Random.Range(0, 4);
-        Debug.Log(_moveDirection);
 
         /*if (_moveDirection != _oldDirection)
         {

@@ -28,6 +28,7 @@ public class MapGenerator : MonoBehaviour {
     public GameObject myPrefab2;
     int playerPosX, playerPosY;
     int posID;
+    bool _canFill = true;
 
     [Range(0,45)]
 	public int randomFillPercent;
@@ -293,7 +294,7 @@ public class MapGenerator : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
-        if(map != null)
+        if(map != null && _canFill)
         {
             for(int x = 0; x < width; x++)
             {

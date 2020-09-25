@@ -21,7 +21,7 @@ public class Rover : MonoBehaviour
     private GameObject _bullet = default;
     [SerializeField]
     private Transform _shootPoint = default;
-
+    
     //Placeholder - Fix it
     [SerializeField]
     private Text _ammoText = default;
@@ -303,6 +303,7 @@ public class Rover : MonoBehaviour
     {
         _roverPetriNet.GetTransitionByLabel("AttackTransition").Priority = 1;
         _roverPetriNet.GetTransitionByLabel("DefendTransition").Priority = 1;
+        _roverPetriNet.GetTransitionByLabel("TakeDamageTransition").Priority = 1;
         _roverPetriNet.GetTransitionByLabel("North").Priority = 1;
         _roverPetriNet.GetTransitionByLabel("South").Priority = 1;
         _roverPetriNet.GetTransitionByLabel("West").Priority = 1;
