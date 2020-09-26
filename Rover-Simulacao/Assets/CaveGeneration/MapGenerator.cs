@@ -31,9 +31,8 @@ public class MapGenerator : MonoBehaviour {
     bool _canFill = true;
 
     [SerializeField]
-    private List<GameObject> _fillObjects;
-    private int _currentObject = 0;
-    private bool _canInstantiate = true;
+    private List<GameObject> _fillObjects = default;
+    private int _randomObject = 0;
 
     [Range(0,45)]
 	public int randomFillPercent;
@@ -44,11 +43,13 @@ public class MapGenerator : MonoBehaviour {
     int ID = 0;
     GameObject[,] Map;
 
-    void Start() {
-		GenerateMap();
+    private void Start()
+    {
+        GenerateMap();
         Draw();
-	}
-
+        FillMapWithObjects();
+    }
+    
 	void Update() {
         //if (Input.GetMouseButtonDown(0)) {
         //          Debug.Log("Clique");
@@ -142,7 +143,7 @@ public class MapGenerator : MonoBehaviour {
         return playerPosY;
     }
 
- public   void DestroyMap()
+    public void DestroyMap()
     {
         for (int i = 0; i < width2; i++)
             for (int j = 0; j < height2; j++)
@@ -179,7 +180,6 @@ public class MapGenerator : MonoBehaviour {
 					map[x,y] = 1;
 				else if (neighbourWallTiles < 4)
 					map[x,y] = 0;
-
 			}
 		}
 	}
@@ -202,7 +202,7 @@ public class MapGenerator : MonoBehaviour {
 		return wallCount;
 	}
 
-    private void ProcessMapRegions()
+    /*private void ProcessMapRegions()
     {
         List<List<TileCoordinates>> wallRegions = GetRegions(1);
         int wallThresholdSize = 50;
@@ -231,7 +231,7 @@ public class MapGenerator : MonoBehaviour {
                 }
             }
         }
-    }
+    }*/
 
     private List<List<TileCoordinates>> GetRegions(int tileType)
     {
@@ -283,11 +283,6 @@ public class MapGenerator : MonoBehaviour {
                         {
                             mapFlags[x, y] = 1;
                             tileQueue.Enqueue(new TileCoordinates(x, y));
-
-                            /*if (_fillObjects != null && _currentObject < _fillObjects.Count)
-                            {
-                                PlaceObjectAtPosition(_fillObjects[_currentObject], new Vector3(x, 0.5f, y));
-                            }*/
                         }
                     }
                 }
@@ -304,18 +299,47 @@ public class MapGenerator : MonoBehaviour {
 
     private void PlaceObjectAtPosition(GameObject newObject, Vector3 position)
     {
-        //_canInstantiate = false;
         if(_fillObjects.Contains(newObject))
         {
             Instantiate(newObject, position, Quaternion.identity);
             _fillObjects.Remove(newObject);
-            _currentObject++;
+        }   
+    }
+    
+    private void FillMapWithObjects()
+    {
+        if (map != null && _canFill)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (map[x, y] == 0)
+                    {
+                        List<TileCoordinates> roomRegion = FillRegion(x, y);
+                        foreach (TileCoordinates tile in roomRegion)
+                        {
+                            if (_fillObjects.Count > 1)
+                            {
+                                _randomObject = UnityEngine.Random.Range(0, _fillObjects.Count - 1);
+                            }
+                            else
+                            {
+                                _randomObject = 0;
+                            }
+
+                            if (_fillObjects.Count > 0)
+                            {
+                                PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
+                            }
+                        }
+                    }
+                }
+            }
         }
-        
-        //_canInstantiate = true;
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         if(map != null && _canFill)
         {
@@ -328,13 +352,13 @@ public class MapGenerator : MonoBehaviour {
                         List<TileCoordinates> roomRegion = FillRegion(x, y);
                         foreach(TileCoordinates tile in roomRegion)
                         {
-                            /*Vector3 tilePosition = new Vector3(tile.TileX + 0.5f, 0, tile.TileY + 0.5f);
+                            Vector3 tilePosition = new Vector3(tile.TileX + 0.5f, 0, tile.TileY + 0.5f);
                             Gizmos.color = Color.blue;
-                            Gizmos.DrawCube(tilePosition, Vector3.one);*/
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
                         }
                     }
                 }
             }
         }
-    }
+    }*/
 }

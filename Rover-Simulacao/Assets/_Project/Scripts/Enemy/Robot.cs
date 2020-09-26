@@ -30,7 +30,8 @@ public class Robot : MonoBehaviour
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
         _newRotation = transform.rotation;
-
+        RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
+        M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         //StartCoroutine(RandomizeMovePositionCoroutine());
     }
     
