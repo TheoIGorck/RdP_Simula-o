@@ -76,7 +76,7 @@ public class MapGenerator : MonoBehaviour {
 
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
-                if (GetSurroundingWallCount(i, j) == 1)
+                if (GetSurroundingWallCount(i, j) == 2)
                     map[i, j] = 1;
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
