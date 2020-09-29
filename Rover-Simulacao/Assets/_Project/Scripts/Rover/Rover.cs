@@ -57,6 +57,7 @@ public class Rover : MonoBehaviour
             M.DestroyMap();
             M.GenerateMap();
             M.Draw();
+            M.FillMapWithObjects();
         }
 
         transform.position = new Vector3(_posX + 0.5f, transform.position.y, _posY + 0.5f);

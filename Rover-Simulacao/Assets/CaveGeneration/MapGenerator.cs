@@ -32,6 +32,8 @@ public class MapGenerator : MonoBehaviour {
 
     [SerializeField]
     private List<GameObject> _fillObjects = default;
+    [SerializeField]
+    private List<GameObject> _fillObjects2 = default;
     private int _randomObject = 0;
 
     [Range(0,45)]
@@ -42,7 +44,8 @@ public class MapGenerator : MonoBehaviour {
     int[,] mapID;
     int ID = 0;
     GameObject[,] Map;
-
+    List<int> randomValue = new List<int>();
+    
     private void Start()
     {
         GenerateMap();
@@ -150,6 +153,7 @@ public class MapGenerator : MonoBehaviour {
             {
                 Destroy(Map[i, j]);
             }
+        DestroyObjects(_fillObjects);
     }
 
     void RandomFillMap() {
@@ -297,17 +301,34 @@ public class MapGenerator : MonoBehaviour {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    private void PlaceObjectAtPosition(GameObject newObject, Vector3 position)
+    private GameObject PlaceObjectAtPosition(GameObject newObject, Vector3 position)
     {
+        GameObject objectID;
+
         if(_fillObjects.Contains(newObject))
         {
-            Instantiate(newObject, position, Quaternion.identity);
+            objectID = Instantiate(newObject, position, Quaternion.identity);
             _fillObjects.Remove(newObject);
-        }   
+            _fillObjects2.Add(newObject);
+            
+            return objectID;
+        }
+
+        return null;
     }
     
-    private void FillMapWithObjects()
+    public void FillMapWithObjects()
     {
+        randomValue.Clear();
+        _fillObjects2.Clear();
+
+        for(int i = 0; i < _fillObjects.Count; i++)
+        { 
+            randomValue.Add(UnityEngine.Random.Range(0, ID));
+        }
+
+        int idTile = 0;
+
         if (map != null && _canFill)
         {
             for (int x = 0; x < width; x++)
@@ -319,6 +340,7 @@ public class MapGenerator : MonoBehaviour {
                         List<TileCoordinates> roomRegion = FillRegion(x, y);
                         foreach (TileCoordinates tile in roomRegion)
                         {
+                            idTile++;
                             if (_fillObjects.Count > 1)
                             {
                                 _randomObject = UnityEngine.Random.Range(0, _fillObjects.Count - 1);
@@ -328,7 +350,7 @@ public class MapGenerator : MonoBehaviour {
                                 _randomObject = 0;
                             }
 
-                            if (_fillObjects.Count > 0)
+                            if (_fillObjects.Count > 0 && randomValue.Contains(idTile))
                             {
                                 PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
                             }
@@ -336,6 +358,16 @@ public class MapGenerator : MonoBehaviour {
                     }
                 }
             }
+        }
+        
+        _fillObjects = _fillObjects2;
+    }
+
+    void DestroyObjects(List<GameObject> objs)
+    {
+        for(int i = 0; i < objs.Count; i++)
+        {
+            Destroy(objs[i]);
         }
     }
 

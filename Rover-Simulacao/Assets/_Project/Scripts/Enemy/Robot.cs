@@ -30,11 +30,17 @@ public class Robot : MonoBehaviour
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
         _newRotation = transform.rotation;
-        RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
-        M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         //StartCoroutine(RandomizeMovePositionCoroutine());
     }
-    
+
+    public void Start()
+    {
+        RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
+        M = GameObject.Find("Generator").GetComponent<MapGenerator>();
+        xPosition = (int)transform.position.x;
+        yPosition = (int)transform.position.y;
+    }
+
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
@@ -72,11 +78,11 @@ public class Robot : MonoBehaviour
             _robotPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
             Destroy(other.gameObject);
         }
-        else if(other.gameObject.CompareTag("RoverNeighbourhood"))
+        /*else if(other.gameObject.CompareTag("RoverNeighbourhood"))
         {
             _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
             //transform.LookAt(other.gameObject.transform.position);
-        }
+        }*/
     }
 
     private void OnTriggerStay(Collider other)
@@ -91,7 +97,7 @@ public class Robot : MonoBehaviour
     {
         if (other.gameObject.CompareTag("RoverNeighbourhood"))
         {
-            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
+            //_robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
             transform.rotation = Quaternion.identity;
             StopCoroutine(AttackCoroutine());
         }
