@@ -10,6 +10,7 @@ public class RoverController : MonoBehaviour
 
     public void OnAwake()
     {
+        _rover = GameObject.Find("Rover(Clone)").GetComponent<Rover>();
         _rover.OnAwake();
     }
     

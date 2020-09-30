@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Rover : MonoBehaviour
 {
+    public GameObject MapGen;
     public MapGenerator M;
 
     private PetriNet _roverPetriNet;
@@ -34,8 +35,15 @@ public class Rover : MonoBehaviour
 
     public void OnAwake()
     {
+        M = GameObject.Find("Generator").GetComponent<MapGenerator>();
+        _ammoText = GameObject.Find("AmmoText").GetComponent<Text>();
+        _healthText = GameObject.Find("HealthText").GetComponent<Text>();
+        _fuelText = GameObject.Find("FuelText").GetComponent<Text>();
+        _soldiersText = GameObject.Find("SoldiersText").GetComponent<Text>();
         _roverPetriNet = new PetriNet("Assets/_Project/PetriNets/Rover.pflow");
         SetPetriNetCallbacks();
+        _posX = (int)transform.position.x;
+        _posY = (int)transform.position.z;
         SetPetriNetTransitionsPriority();
 
         _newRotation = transform.rotation;
@@ -43,17 +51,9 @@ public class Rover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_reset)
-        {
-            _posX = M.getPlayerPositionX();
-            _posY = M.getPlayerPositionY();
-            _reset = false;
-        }
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Clique");
-            _posX = M.getPlayerPositionX();
-            _posY = M.getPlayerPositionY();
             M.DestroyMap();
             M.GenerateMap();
             M.Draw();

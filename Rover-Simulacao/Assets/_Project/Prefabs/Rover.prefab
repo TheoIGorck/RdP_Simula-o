@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78cceb73d09520e45b2a61a5f98c0969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MapGen: {fileID: 3493176382486100706, guid: 93c6e103994ef3f4da8a38ae87391860, type: 3}
   M: {fileID: 0}
   _bullet: {fileID: 2572007223979218854, guid: 43b6a93d6ec0bc642b93275e84108b17, type: 3}
   _shootPoint: {fileID: 6748361386287712559}

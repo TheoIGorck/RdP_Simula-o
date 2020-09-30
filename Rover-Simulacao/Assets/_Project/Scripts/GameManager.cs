@@ -11,14 +11,19 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        
+    }
+
+    private void Start()
+    {
         _roverController.OnAwake();
 
         for (int i = 0; i < _enemyManager.GetNumberOfRobots(); i++)
         {
-            _enemyManager.OnAwake(i);
+            _enemyManager.OnStart(i);
         }
     }
-    
+
     private void Update()
     {
         _roverController.OnUpdate();

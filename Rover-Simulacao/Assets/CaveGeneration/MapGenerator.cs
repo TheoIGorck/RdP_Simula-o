@@ -34,6 +34,8 @@ public class MapGenerator : MonoBehaviour {
     private List<GameObject> _fillObjects = default;
     [SerializeField]
     private List<GameObject> _fillObjects2 = default;
+    [SerializeField]
+    private List<GameObject> _fillObjects3 = default;
     private int _randomObject = 0;
 
     [Range(0,45)]
@@ -46,7 +48,7 @@ public class MapGenerator : MonoBehaviour {
     GameObject[,] Map;
     List<int> randomValue = new List<int>();
     
-    private void Start()
+    private void Awake()
     {
         GenerateMap();
         Draw();
@@ -73,20 +75,20 @@ public class MapGenerator : MonoBehaviour {
         Map = new GameObject[width, height];
         RandomFillMap();
 
-		for (int i = 0; i < 5; i ++) {
+		for (int i = 0; i < 1; i ++) {
 			SmoothMap();
 		}
 
-        for (int i = 0; i < width; i++)
+        /*for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 if (GetSurroundingWallCount(i, j) == 2)
-                    map[i, j] = 1;
+                    map[i, j] = 1;*/
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 if (map[i,j] == 0)
                     mapID[i, j] = ID++;
 
-       posID = UnityEngine.Random.Range(1, ID);
+       /*posID = UnityEngine.Random.Range(1, ID);
                 for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 if (mapID[i, j] == posID)
@@ -95,13 +97,13 @@ public class MapGenerator : MonoBehaviour {
                     playerPosY = j;
                     //Debug.Log(playerPosX);
                     //Debug.Log(playerPosY);
-                }
+                }*/
 
         //MeshGenerator meshGen = GetComponent<MeshGenerator>();
         //meshGen.GenerateMesh(map, 1);
     }
 
-  public  void Draw()
+  public void Draw()
     {
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
@@ -153,7 +155,7 @@ public class MapGenerator : MonoBehaviour {
             {
                 Destroy(Map[i, j]);
             }
-        DestroyObjects(_fillObjects);
+        DestroyObjects(_fillObjects3);
     }
 
     void RandomFillMap() {
@@ -309,7 +311,6 @@ public class MapGenerator : MonoBehaviour {
         {
             objectID = Instantiate(newObject, position, Quaternion.identity);
             _fillObjects.Remove(newObject);
-            _fillObjects2.Add(newObject);
             
             return objectID;
         }
@@ -321,6 +322,7 @@ public class MapGenerator : MonoBehaviour {
     {
         randomValue.Clear();
         _fillObjects2.Clear();
+       _fillObjects2.AddRange(_fillObjects);
 
         for(int i = 0; i < _fillObjects.Count; i++)
         { 
@@ -352,7 +354,7 @@ public class MapGenerator : MonoBehaviour {
 
                             if (_fillObjects.Count > 0 && randomValue.Contains(idTile))
                             {
-                                PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
+                                _fillObjects3.Add(PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f)));
                             }
                         }
                     }
@@ -360,7 +362,7 @@ public class MapGenerator : MonoBehaviour {
             }
         }
         
-        _fillObjects = _fillObjects2;
+        _fillObjects.AddRange(_fillObjects2);
     }
 
     void DestroyObjects(List<GameObject> objs)
@@ -369,6 +371,8 @@ public class MapGenerator : MonoBehaviour {
         {
             Destroy(objs[i]);
         }
+
+        objs.Clear();
     }
 
     /*private void OnDrawGizmos()

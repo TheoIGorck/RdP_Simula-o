@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
+    public GameObject MapGen;
     public MapGenerator M;
     private bool Norte = false;
     private bool Sul = false;
@@ -25,22 +26,18 @@ public class Robot : MonoBehaviour
     private bool _isAttacking = false;
     private bool _changeDirection = false;
 
-    public void OnAwake()
+    public void OnStart()
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
         _newRotation = transform.rotation;
-        //StartCoroutine(RandomizeMovePositionCoroutine());
-    }
-
-    public void Start()
-    {
-        RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
+        //RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         xPosition = (int)transform.position.x;
-        yPosition = (int)transform.position.y;
+        yPosition = (int)transform.position.z;
+        StartCoroutine(RandomizeMovePositionCoroutine());
     }
-
+    
     public void OnUpdate()
     {
         _robotPetriNet.ExecCycle();
@@ -78,11 +75,11 @@ public class Robot : MonoBehaviour
             _robotPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
             Destroy(other.gameObject);
         }
-        /*else if(other.gameObject.CompareTag("RoverNeighbourhood"))
+        else if(other.gameObject.CompareTag("RoverNeighbourhood"))
         {
-            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
+            //_robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
             //transform.LookAt(other.gameObject.transform.position);
-        }*/
+        }
     }
 
     private void OnTriggerStay(Collider other)

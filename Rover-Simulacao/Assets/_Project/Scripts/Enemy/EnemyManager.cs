@@ -7,11 +7,13 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Robot[] _robot = default;
 
-    public void OnAwake(int index)
+    public void OnStart(int index)
     {
+        _robot = GameObject.FindObjectsOfType<Robot>();
+
         if (_robot[index] != null)
         {
-            _robot[index].OnAwake();
+            _robot[index].OnStart();
         }
     }
 

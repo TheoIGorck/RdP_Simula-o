@@ -55,7 +55,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28d9c9a44774034ab0c0828505570aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MapGen: {fileID: 3493176382486100706, guid: 93c6e103994ef3f4da8a38ae87391860, type: 3}
   M: {fileID: 0}
   xPosition: 5
   yPosition: 5
