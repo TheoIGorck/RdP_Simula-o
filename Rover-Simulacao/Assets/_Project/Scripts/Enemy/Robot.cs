@@ -20,7 +20,7 @@ public class Robot : MonoBehaviour
     [SerializeField]
     private GameObject _shootPoint = default;
     private PetriNet _robotPetriNet;
-    private Quaternion _newRotation;
+    //private Quaternion _newRotation;
     private int _moveDirection;
     private int _oldDirection;
     private bool _isAttacking = false;
@@ -30,8 +30,7 @@ public class Robot : MonoBehaviour
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
-        _newRotation = transform.rotation;
-        //RoverTransform = GameObject.Find("Rover").GetComponent<Transform>();
+        //_newRotation = transform.rotation;
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         xPosition = (int)transform.position.x;
         yPosition = (int)transform.position.z;
@@ -40,21 +39,41 @@ public class Robot : MonoBehaviour
     
     public void OnUpdate()
     {
-        _robotPetriNet.ExecCycle();
-        ChecarColisao(xPosition, yPosition);
-        transform.position = new Vector3(xPosition + 0.5f, transform.position.y, yPosition + 0.5f);
+        if (!IsDead())
+        {
+            _robotPetriNet.ExecCycle();
+            ChecarColisao(xPosition, yPosition);
+            transform.position = new Vector3(xPosition + 0.5f, transform.position.y, yPosition + 0.5f);
 
-        if (IsDead())
+            if (_changeDirection && !_isAttacking)
+            {
+                StartCoroutine(RandomizeMovePositionCoroutine());
+            }
+        }
+        else if (IsDead())
         {
             StopCoroutine(AttackCoroutine());
             StopCoroutine(RandomizeMovePositionCoroutine());
-            Destroy(gameObject);
+            M.RemoveFromActiveList(gameObject);
+            M.setObjectToNotActiveList(gameObject);
+            gameObject.SetActive(false);
             _isAttacking = false;
         }
+    }
 
-        if(_changeDirection && !_isAttacking)
+    public void Reset()
+    {
+        xPosition = (int)transform.position.x;
+        yPosition = (int)transform.position.z;
+        transform.rotation = Quaternion.identity;
+        _robotPetriNet.GetPlaceByLabel("Health").Tokens = 5;
+        _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").Tokens = 0;
+
+        if (IsDead())
         {
+            _robotPetriNet.GetPlaceByLabel("Dead").Tokens = 0;
             StartCoroutine(RandomizeMovePositionCoroutine());
+            //Debug.Log("Voltei a vida!");
         }
     }
 
@@ -77,7 +96,7 @@ public class Robot : MonoBehaviour
         }
         else if(other.gameObject.CompareTag("RoverNeighbourhood"))
         {
-            //_robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").AddTokens(1);
             //transform.LookAt(other.gameObject.transform.position);
         }
     }
@@ -94,7 +113,7 @@ public class Robot : MonoBehaviour
     {
         if (other.gameObject.CompareTag("RoverNeighbourhood"))
         {
-            //_robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
+            _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").RemTokens(1);
             transform.rotation = Quaternion.identity;
             StopCoroutine(AttackCoroutine());
         }
@@ -169,32 +188,38 @@ public class Robot : MonoBehaviour
 
     private IEnumerator AttackCoroutine()
     {
-        GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.transform.forward * 500);
+        if (!IsDead())
+        {
+            GameObject bullet = Instantiate(_bullet, _shootPoint.transform.position, Quaternion.identity);
+            bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.transform.forward * 500);
 
-        yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(1.0f);
 
-        _isAttacking = false;
-        Destroy(bullet);
+            _isAttacking = false;
+            Destroy(bullet);
+        }
     }
 
     private IEnumerator RandomizeMovePositionCoroutine()
     {
-        _moveDirection = Random.Range(0, 4);
-
-        /*if (_moveDirection != _oldDirection)
+        if (!IsDead())
         {
-            
-        }*/
+            _moveDirection = Random.Range(0, 4);
 
-        InsertDirectionInPetriNet();
+            /*if (_moveDirection != _oldDirection)
+            {
 
-        _changeDirection = false;
+            }*/
 
-        yield return new WaitForSeconds(0.5f);
+            InsertDirectionInPetriNet();
 
-        _changeDirection = true;
-        //_oldDirection = _moveDirection;
+            _changeDirection = false;
+
+            yield return new WaitForSeconds(0.5f);
+
+            _changeDirection = true;
+            //_oldDirection = _moveDirection;
+        }
     }
 
     private void InsertDirectionInPetriNet()

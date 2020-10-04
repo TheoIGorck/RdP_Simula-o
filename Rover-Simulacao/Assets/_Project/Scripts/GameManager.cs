@@ -8,15 +8,10 @@ public class GameManager : MonoBehaviour
     private RoverController _roverController = default;
     [SerializeField]
     private EnemyManager _enemyManager = default;
-
-    private void Awake()
-    {
-        
-    }
-
+    
     private void Start()
     {
-        _roverController.OnAwake();
+        _roverController.OnStart();
 
         for (int i = 0; i < _enemyManager.GetNumberOfRobots(); i++)
         {
@@ -30,11 +25,14 @@ public class GameManager : MonoBehaviour
         
         for (int i = 0; i < _enemyManager.GetNumberOfRobots(); i++)
         {
-             _enemyManager.OnUpdate(i);
-
-            if(_enemyManager.GetRobots(i).IsDead() == true)
+            if (_enemyManager.GetRobots(i).isActiveAndEnabled)
             {
-                _roverController.RemTokensAtRoverPetriNet("RobotInNeighbourhood", 1);
+                _enemyManager.OnUpdate(i);
+
+                if (_enemyManager.GetRobots(i).IsDead() == true)
+                {
+                    _roverController.RemTokensAtRoverPetriNet("RobotInNeighbourhood", 1);
+                }
             }
         }
         

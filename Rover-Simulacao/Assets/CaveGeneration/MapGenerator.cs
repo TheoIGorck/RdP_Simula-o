@@ -15,6 +15,83 @@ public struct TileCoordinates
     }
 }
 
+public class Room : IComparable<Room>
+{
+    public List<TileCoordinates> tiles;
+    public List<TileCoordinates> edgeTiles;
+    public List<Room> connectedRooms;
+    public int roomSize;
+    public bool isAccessibleFromMainRoom;
+    public bool isMainRoom;
+
+    public Room()
+    {
+
+    }
+
+    public Room(List<TileCoordinates> roomTiles, int[,] map)
+    {
+        tiles = roomTiles;
+        roomSize = tiles.Count;
+        connectedRooms = new List<Room>();
+
+        edgeTiles = new List<TileCoordinates>();
+        foreach(TileCoordinates tile in tiles)
+        {
+            for(int x = tile.TileX - 1; x < tile.TileX + 1; x++)
+            {
+                for(int y = tile.TileY; y < tile.TileY + 1; y++)
+                {
+                    if(x == tile.TileX || y == tile.TileY)
+                    {
+                        if(map[x, y] == 1)
+                        {
+                            edgeTiles.Add(tile);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void SetAccessibleFromMainRoom()
+    {
+        if(!isAccessibleFromMainRoom)
+        {
+            isAccessibleFromMainRoom = true;
+            foreach(Room connectedRoom in connectedRooms)
+            {
+                connectedRoom.SetAccessibleFromMainRoom();
+            }
+        }
+    }
+
+    public static void ConnectRooms(Room roomA, Room roomB)
+    {
+        if(roomA.isAccessibleFromMainRoom)
+        {
+            roomB.SetAccessibleFromMainRoom();
+        }
+        else if(roomB.isAccessibleFromMainRoom)
+        {
+            roomA.SetAccessibleFromMainRoom();
+        }
+
+        roomA.connectedRooms.Add(roomB);
+        roomB.connectedRooms.Add(roomA);
+    }
+
+    public bool IsConnected(Room otherRoom)
+    {
+        return connectedRooms.Contains(otherRoom);
+    }
+
+    public int CompareTo(Room otherRoom)
+    {
+        return otherRoom.roomSize.CompareTo(roomSize);
+    }
+}
+
 public class MapGenerator : MonoBehaviour {
 
 	public int width;
@@ -33,12 +110,16 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     private List<GameObject> _fillObjects = default;
     [SerializeField]
-    private List<GameObject> _fillObjects2 = default;
+    private List<GameObject> _notActiveObjects = default;
     [SerializeField]
-    private List<GameObject> _fillObjects3 = default;
+    private List<GameObject> _activeObjects = default;
     private int _randomObject = 0;
 
-    [Range(0,45)]
+    private List<int> randomPosition = new List<int>();
+    [SerializeField]
+    private List<GameObject> _replacedObjects = new List<GameObject>();
+
+    [Range(0, 100)]
 	public int randomFillPercent;
 
     public bool Norte, Sul, Leste, Oeste;
@@ -75,7 +156,7 @@ public class MapGenerator : MonoBehaviour {
         Map = new GameObject[width, height];
         RandomFillMap();
 
-		for (int i = 0; i < 1; i ++) {
+		for (int i = 0; i < 2; i ++) {
 			SmoothMap();
 		}
 
@@ -88,19 +169,21 @@ public class MapGenerator : MonoBehaviour {
                 if (map[i,j] == 0)
                     mapID[i, j] = ID++;
 
-       /*posID = UnityEngine.Random.Range(1, ID);
-                for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                if (mapID[i, j] == posID)
-                {
-                    playerPosX = i;
-                    playerPosY = j;
-                    //Debug.Log(playerPosX);
-                    //Debug.Log(playerPosY);
-                }*/
+        /*posID = UnityEngine.Random.Range(1, ID);
+                 for (int i = 0; i < width; i++)
+             for (int j = 0; j < height; j++)
+                 if (mapID[i, j] == posID)
+                 {
+                     playerPosX = i;
+                     playerPosY = j;
+                     //Debug.Log(playerPosX);
+                     //Debug.Log(playerPosY);
+                 }*/
 
         //MeshGenerator meshGen = GetComponent<MeshGenerator>();
         //meshGen.GenerateMesh(map, 1);
+        
+        ProcessMapRegions();
     }
 
   public void Draw()
@@ -155,7 +238,7 @@ public class MapGenerator : MonoBehaviour {
             {
                 Destroy(Map[i, j]);
             }
-        DestroyObjects(_fillObjects3);
+        //DestroyObjects(_fillObjects3);
     }
 
     void RandomFillMap() {
@@ -208,10 +291,10 @@ public class MapGenerator : MonoBehaviour {
 		return wallCount;
 	}
 
-    /*private void ProcessMapRegions()
+    private void ProcessMapRegions()
     {
         List<List<TileCoordinates>> wallRegions = GetRegions(1);
-        int wallThresholdSize = 50;
+        int wallThresholdSize = 5;
 
         foreach(List<TileCoordinates> wallRegion in wallRegions)
         {
@@ -225,7 +308,8 @@ public class MapGenerator : MonoBehaviour {
         }
 
         List<List<TileCoordinates>> roomRegions = GetRegions(0);
-        int roomThresholdSize = 50;
+        int roomThresholdSize = 5;
+        List<Room> survivingRooms = new List<Room>();
 
         foreach (List<TileCoordinates> roomRegion in roomRegions)
         {
@@ -236,8 +320,205 @@ public class MapGenerator : MonoBehaviour {
                     map[tile.TileX, tile.TileY] = 1;
                 }
             }
+            else
+            {
+                survivingRooms.Add(new Room(roomRegion, map));
+            }
         }
-    }*/
+
+        survivingRooms.Sort();
+        survivingRooms[0].isMainRoom = true;
+        survivingRooms[0].isAccessibleFromMainRoom = true;
+
+        ConnectClosestRooms(survivingRooms);
+    }
+
+    private void ConnectClosestRooms(List<Room> rooms, bool forceAccessibilityFromMainRoom = false)
+    {
+        List<Room> roomListA = new List<Room>();
+        List<Room> roomListB = new List<Room>();
+
+        if(forceAccessibilityFromMainRoom)
+        {
+            foreach(Room room in rooms)
+            {
+                if(room.isAccessibleFromMainRoom)
+                {
+                    roomListB.Add(room);
+                }
+                else
+                {
+                    roomListA.Add(room);
+                }
+            }
+        }
+        else
+        {
+            roomListA = rooms;
+            roomListB = rooms;
+        }
+
+        int bestDistance = 0;
+        TileCoordinates bestTileRoom = new TileCoordinates();
+        TileCoordinates bestTileComparedRoom = new TileCoordinates();
+        Room bestRoom = new Room();
+        Room bestComparedRoom = new Room();
+        bool possibleConnectionFound = false;
+
+        foreach(Room room in roomListA)
+        {
+            if (!forceAccessibilityFromMainRoom)
+            {
+                possibleConnectionFound = false; //Consider other rooms before make the connection with main room
+
+                if(room.connectedRooms.Count > 0)
+                {
+                    continue;
+                }
+            }
+
+            foreach(Room comparedRoom in roomListB)
+            {
+                if(room == comparedRoom || room.IsConnected(comparedRoom))
+                {
+                    continue;
+                }
+
+                for(int roomTileIndex = 0; roomTileIndex < room.edgeTiles.Count; roomTileIndex++)
+                {
+                    for(int comparedRoomTileIndex = 0; comparedRoomTileIndex < comparedRoom.edgeTiles.Count; comparedRoomTileIndex++)
+                    {
+                        TileCoordinates roomTile = room.edgeTiles[roomTileIndex];
+                        TileCoordinates comparedRoomTile = comparedRoom.edgeTiles[comparedRoomTileIndex];
+                        int distanceBetweenRooms = (int)(Mathf.Pow(roomTile.TileX - comparedRoomTile.TileX, 2) + Mathf.Pow(roomTile.TileY - comparedRoomTile.TileY, 2));
+
+                        if(distanceBetweenRooms < bestDistance || !possibleConnectionFound)
+                        {
+                            bestDistance = distanceBetweenRooms;
+                            possibleConnectionFound = true;
+                            bestTileRoom = roomTile;
+                            bestTileComparedRoom = comparedRoomTile;
+                            bestRoom = room;
+                            bestComparedRoom = comparedRoom;
+                        }
+                    }
+                }
+            }
+
+            if(possibleConnectionFound && !forceAccessibilityFromMainRoom)
+            {
+                CreatePassage(bestRoom, bestComparedRoom, bestTileRoom, bestTileComparedRoom);
+            }
+        }
+
+        if(possibleConnectionFound && forceAccessibilityFromMainRoom)
+        {
+            CreatePassage(bestRoom, bestComparedRoom, bestTileRoom, bestTileComparedRoom);
+            ConnectClosestRooms(rooms, true);
+        }
+
+        if(!forceAccessibilityFromMainRoom)
+        {
+            ConnectClosestRooms(rooms, true);
+        }
+    }
+
+    private void CreatePassage(Room room, Room otherRoom, TileCoordinates tileRoom, TileCoordinates tileOtherRoom)
+    {
+        Room.ConnectRooms(room, otherRoom);
+        //Debug.DrawLine(CoordToWorldPoint(tileRoom), CoordToWorldPoint(tileOtherRoom), Color.green, 100);
+
+        List<TileCoordinates> line = GetLine(tileRoom, tileOtherRoom);
+        foreach(TileCoordinates coordinate in line)
+        {
+            DrawCircle(coordinate, 2);
+        }
+    }
+
+    void DrawCircle(TileCoordinates coordinate, int radius)
+    {
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                if(x*x + y*y <= radius*radius)
+                { 
+                    int drawX = coordinate.TileX + x;
+                    int drawY = coordinate.TileY + y;
+                    if(drawX >= 2 && drawX < width - 2 && drawY >= 2 && drawY < height - 2)
+                    {
+                        map[drawX, drawY] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    List<TileCoordinates> GetLine(TileCoordinates from, TileCoordinates to)
+    {
+        List<TileCoordinates> line = new List<TileCoordinates>();
+
+        int x = from.TileX;
+        int y = from.TileY;
+
+        int dx = to.TileX - from.TileX;
+        int dy = to.TileY - from.TileY;
+
+        bool inverted = false;
+        int step = Math.Sign(dx);
+        int gradientStep = Math.Sign(dy);
+
+        int longest = Mathf.Abs(dx);
+        int shortest = Mathf.Abs(dy);
+
+        if(longest < shortest)
+        {
+            inverted = true;
+            longest = Mathf.Abs(dy);
+            shortest = Mathf.Abs(dx);
+
+            step = Math.Sign(dy);
+            gradientStep = Math.Sign(dx);
+        }
+
+        int gradientAccumulation = longest / 2;
+
+        for(int i = 0; i < longest; i++)
+        {
+            line.Add(new TileCoordinates(x, y));
+
+            if(inverted)
+            {
+                y += step;
+            }
+            else
+            {
+                x += step;
+            }
+
+            gradientAccumulation += shortest;
+            if(gradientAccumulation >= longest)
+            {
+                if(inverted)
+                {
+                    x += gradientStep;
+                }
+                else
+                {
+                    y += gradientStep;
+                }
+                gradientAccumulation -= longest;
+            }
+        }
+
+        return line;
+    }
+
+    private Vector3 CoordToWorldPoint(TileCoordinates tile)
+    {
+        //return new Vector3(-width / 2 + 0.5f + tile.TileX, 2, -height / 2 + 0.5f + tile.TileY);
+        return new Vector3(tile.TileX + 0.5f, 2, tile.TileY + 0.5f);
+    }
 
     private List<List<TileCoordinates>> GetRegions(int tileType)
     {
@@ -317,12 +598,19 @@ public class MapGenerator : MonoBehaviour {
 
         return null;
     }
-    
+
+    private void ReplaceObjectAtPosition(GameObject newObject, Vector3 position)
+    {
+        if (_activeObjects.Contains(newObject))
+        {
+            newObject.transform.position = position;
+            _activeObjects.Remove(newObject);
+        }
+    }
+
     public void FillMapWithObjects()
     {
         randomValue.Clear();
-        _fillObjects2.Clear();
-       _fillObjects2.AddRange(_fillObjects);
 
         for(int i = 0; i < _fillObjects.Count; i++)
         { 
@@ -352,20 +640,112 @@ public class MapGenerator : MonoBehaviour {
                                 _randomObject = 0;
                             }
 
-                            if (_fillObjects.Count > 0 && randomValue.Contains(idTile))
+                            if (_fillObjects.Count > 0 && randomValue.Contains(idTile) && map[tile.TileX, tile.TileY] == 0)
                             {
-                                _fillObjects3.Add(PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f)));
+                                _activeObjects.Add(PlaceObjectAtPosition(_fillObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f)));
                             }
                         }
                     }
                 }
             }
         }
-        
-        _fillObjects.AddRange(_fillObjects2);
     }
 
-    void DestroyObjects(List<GameObject> objs)
+    public void setObjectToNotActiveList(GameObject obj)
+    {
+        _notActiveObjects.Add(obj);
+    }
+
+    public void RemoveFromNotActiveList(GameObject obj)
+    {
+        _notActiveObjects.Remove(obj);
+    }
+
+    public void setObjectToActiveList(GameObject obj)
+    {
+        _activeObjects.Add(obj);
+    }
+
+    public void RemoveFromActiveList(GameObject obj)
+    {
+        _activeObjects.Remove(obj);
+    }
+
+    public void activateObjects()
+    {
+        Debug.Log(_notActiveObjects.Count);
+        for(int i = 0; i < _notActiveObjects.Count; i++)
+        {
+            if(_notActiveObjects != null)
+            {
+                _activeObjects.Add(_notActiveObjects[i]);
+                _notActiveObjects[i].gameObject.SetActive(true);
+            }
+        }
+
+        _notActiveObjects.Clear();
+        resetObjectsPosition();
+
+        for (int i = 0; i < _activeObjects.Count; i++)
+        {
+            if (_activeObjects[i].gameObject.CompareTag("Enemy"))
+            {
+                _activeObjects[i].GetComponent<Robot>().Reset();
+            }
+            else if (_activeObjects[i].gameObject.CompareTag("Rover"))
+            {
+                _activeObjects[i].GetComponent<Rover>().Reset();
+            }
+        }
+    }
+
+    private void resetObjectsPosition()
+    {
+        randomPosition.Clear();
+        _replacedObjects.AddRange(_activeObjects);
+
+        for (int i = 0; i < _activeObjects.Count; i++)
+        {
+            randomPosition.Add(UnityEngine.Random.Range(0, ID));
+        }
+
+        int idTile = 0;
+
+        if (map != null && _canFill)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (map[x, y] == 0)
+                    {
+                        List<TileCoordinates> roomRegion = FillRegion(x, y);
+                        foreach (TileCoordinates tile in roomRegion)
+                        {
+                            idTile++;
+                            if (_activeObjects.Count > 1)
+                            {
+                                _randomObject = UnityEngine.Random.Range(0, _activeObjects.Count - 1);
+                            }
+                            else
+                            {
+                                _randomObject = 0;
+                            }
+
+                            if (_activeObjects.Count > 0 && randomPosition.Contains(idTile))
+                            {
+                                ReplaceObjectAtPosition(_activeObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        _activeObjects.AddRange(_replacedObjects);
+        _replacedObjects.Clear();
+    }
+    /*void DestroyObjects(List<GameObject> objs)
     {
         for(int i = 0; i < objs.Count; i++)
         {
@@ -373,7 +753,7 @@ public class MapGenerator : MonoBehaviour {
         }
 
         objs.Clear();
-    }
+    }*/
 
     /*private void OnDrawGizmos()
     {

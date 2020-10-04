@@ -13,7 +13,7 @@
             <x>191</x>
             <y>-209</y>
             <label>Health</label>
-            <tokens>50</tokens>
+            <tokens>30</tokens>
             <isStatic>false</isStatic>
         </place>
         <place>
@@ -559,6 +559,10 @@
             <sourceId>56</sourceId>
             <destinationId>12</destinationId>
             <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>183</x>
+                <y>82</y>
+            </breakPoint>
         </arc>
         <arc>
             <type>regular</type>
@@ -689,6 +693,10 @@
             <sourceId>12</sourceId>
             <destinationId>5</destinationId>
             <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>241</x>
+                <y>7</y>
+            </breakPoint>
         </arc>
         <arc>
             <type>regular</type>
@@ -921,6 +929,16 @@
             <sourceId>30</sourceId>
             <destinationId>18</destinationId>
             <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>inhibitor</type>
+            <sourceId>5</sourceId>
+            <destinationId>12</destinationId>
+            <multiplicity>1</multiplicity>
+            <breakPoint>
+                <x>243</x>
+                <y>40</y>
+            </breakPoint>
         </arc>
     </subnet>
     <roles/>

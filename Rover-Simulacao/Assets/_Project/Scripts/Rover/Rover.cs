@@ -14,7 +14,6 @@ public class Rover : MonoBehaviour
     private float _shieldTime = 3.0f;
     private float _shieldReloadTime = 3.0f;
     private bool _canUseShield = true;
-    private bool _reset = true;
     private int _posX, _posY;
     private Vector3 _direction = Vector3.zero;
     private Quaternion _newRotation = Quaternion.identity;
@@ -33,7 +32,7 @@ public class Rover : MonoBehaviour
     [SerializeField]
     private Text _soldiersText = default;
 
-    public void OnAwake()
+    public void OnStart()
     {
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         _ammoText = GameObject.Find("AmmoText").GetComponent<Text>();
@@ -48,22 +47,7 @@ public class Rover : MonoBehaviour
 
         _newRotation = transform.rotation;
     }
-
-    private void FixedUpdate()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Clique");
-            M.DestroyMap();
-            M.GenerateMap();
-            M.Draw();
-            M.FillMapWithObjects();
-        }
-
-        transform.position = new Vector3(_posX + 0.5f, transform.position.y, _posY + 0.5f);
-        M.ChecarColisao(_posX, _posY);
-    }
-
+    
     public void OnUpdate()
     {
         //Debug.Log(_roverPetriNet.GetPlaceByLabel("North").Tokens + ": " + M.Norte);
@@ -86,12 +70,46 @@ public class Rover : MonoBehaviour
         }
 
         _roverPetriNet.ExecCycle();
-        
+        transform.position = new Vector3(_posX + 0.5f, transform.position.y, _posY + 0.5f);
+        M.ChecarColisao(_posX, _posY);
+
         //Fix it
         _ammoText.text = "Ammo: " + _roverPetriNet.GetPlaceByLabel("Ammo").Tokens.ToString();
         _healthText.text = "Health: " + _roverPetriNet.GetPlaceByLabel("Health").Tokens.ToString();
         _fuelText.text = "Fuel: " + _roverPetriNet.GetPlaceByLabel("Fuel").Tokens.ToString();
         _soldiersText.text = "Rescued Soldiers: " + _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens.ToString();
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            M.DestroyMap();
+            M.GenerateMap();
+            M.Draw();
+            M.activateObjects();
+        }
+    }
+
+    public void Reset()
+    {
+        _posX = (int)transform.position.x;
+        _posY = (int)transform.position.z;
+        transform.rotation = Quaternion.identity;
+        _roverPetriNet.GetPlaceByLabel("Health").Tokens = 30;
+        _roverPetriNet.GetPlaceByLabel("Ammo").Tokens = 30;
+        _roverPetriNet.GetPlaceByLabel("Fuel").Tokens = 100;
+        _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("End").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("Quadrant:Portal").AddTokens(0);
+
+        /*_roverPetriNet.GetPlaceByLabel("Defend").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("ShieldHasOver").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("ReloadShield").Tokens = 0;
+        _roverPetriNet.GetPlaceByLabel("ShieldHasReload").Tokens = 0;*/
+
+        if (IsDead())
+        {
+            _roverPetriNet.GetPlaceByLabel("Dead").Tokens = 0;
+        }
     }
 
     public void AddTokensAtPlace(string label, int nTokens)
@@ -129,19 +147,25 @@ public class Rover : MonoBehaviour
         if (other.gameObject.CompareTag("Fuel"))
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:RefillFuel").AddTokens(1);
-            Destroy(other.gameObject);
+            M.RemoveFromActiveList(other.gameObject);
+            M.setObjectToNotActiveList(other.gameObject);
+            other.gameObject.SetActive(false);
             //Debug.Log("Fuel!");
         }
         else if (other.gameObject.CompareTag("Ammo"))
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:ReloadAmmo").AddTokens(1);
-            Destroy(other.gameObject);
+            M.RemoveFromActiveList(other.gameObject);
+            M.setObjectToNotActiveList(other.gameObject);
+            other.gameObject.SetActive(false);
             //Debug.Log("Ammo!");
         }
         else if (other.gameObject.tag == "Soldier")
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:Soldier").AddTokens(1);
-            Destroy(other.gameObject);
+            M.RemoveFromActiveList(other.gameObject);
+            M.setObjectToNotActiveList(other.gameObject);
+            other.gameObject.SetActive(false);
             //Debug.Log("Soldier!");
         }
         else if (other.gameObject.CompareTag("Portal"))
@@ -167,6 +191,11 @@ public class Rover : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyNeighbourhood"))
         {
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").RemTokens(1);
+        }
+        else if (other.gameObject.CompareTag("Portal"))
+        {
+            _roverPetriNet.GetPlaceByLabel("Quadrant:Portal").RemTokens(1);
+            Debug.Log("Portal!");
         }
     }
 

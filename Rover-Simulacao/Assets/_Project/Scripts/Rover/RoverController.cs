@@ -8,10 +8,10 @@ public class RoverController : MonoBehaviour
     [SerializeField]
     private Rover _rover = default;
 
-    public void OnAwake()
+    public void OnStart()
     {
         _rover = GameObject.Find("Rover(Clone)").GetComponent<Rover>();
-        _rover.OnAwake();
+        _rover.OnStart();
     }
     
     public void OnUpdate()

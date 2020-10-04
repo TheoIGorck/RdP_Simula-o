@@ -4,7 +4,7 @@ id:
 x:	
 y:	
 label:	
-place:	  id:1  x:191  y:-209  label:Health  tokens:50  isStatic:false
+place:	  id:1  x:191  y:-209  label:Health  tokens:30  isStatic:false
 place:	  id:2  x:-149  y:24  label:Fuel  tokens:100  isStatic:false
 place:	  id:3  x:-20  y:-220  label:Ammo  tokens:30  isStatic:false
 place:	  id:4  x:38  y:-147  label:Attack  tokens:0  isStatic:false
@@ -84,7 +84,7 @@ arc:	  type:regular  sourceId:16  destinationId:25  multiplicity:1
 arc:	  type:regular  sourceId:15  destinationId:27  multiplicity:1
 arc:	  type:inhibitor  sourceId:36  destinationId:40  multiplicity:1
 arc:	  type:inhibitor  sourceId:36  destinationId:43  multiplicity:1
-arc:	  type:inhibitor  sourceId:56  destinationId:12  multiplicity:1
+arc:	  type:inhibitor  sourceId:56  destinationId:12  multiplicity:1  breakPoint:18382
 arc:	  type:regular  sourceId:54  destinationId:55  multiplicity:1
 arc:	  type:inhibitor  sourceId:1  destinationId:54  multiplicity:1
 arc:	  type:reset  sourceId:2  destinationId:25  multiplicity:1  breakPoint:-143-36
@@ -103,7 +103,7 @@ arc:	  type:regular  sourceId:2  destinationId:22  multiplicity:2
 arc:	  type:regular  sourceId:2  destinationId:12  multiplicity:5
 arc:	  type:regular  sourceId:10  destinationId:4  multiplicity:1
 arc:	  type:regular  sourceId:3  destinationId:10  multiplicity:1
-arc:	  type:regular  sourceId:12  destinationId:5  multiplicity:1
+arc:	  type:regular  sourceId:12  destinationId:5  multiplicity:1  breakPoint:2417
 arc:	  type:regular  sourceId:18  destinationId:30  multiplicity:1
 arc:	  type:regular  sourceId:1  destinationId:30  multiplicity:1
 arc:	  type:regular  sourceId:32  destinationId:10  multiplicity:1
@@ -138,13 +138,14 @@ arc:	  type:regular  sourceId:59  destinationId:56  multiplicity:1
 arc:	  type:regular  sourceId:56  destinationId:61  multiplicity:1
 arc:	  type:regular  sourceId:62  destinationId:61  multiplicity:1
 arc:	  type:regular  sourceId:30  destinationId:18  multiplicity:1
+arc:	  type:inhibitor  sourceId:5  destinationId:12  multiplicity:1  breakPoint:24340
 
 
 Reference Places dictionary...
 Generated Arrays
 
 Places:
-id:1, lbl:Health, toks:50, conc:False
+id:1, lbl:Health, toks:30, conc:False
 id:2, lbl:Fuel, toks:100, conc:False
 id:3, lbl:Ammo, toks:30, conc:False
 id:4, lbl:Attack, toks:0, conc:False
@@ -282,10 +283,11 @@ src:59, dst:56, type:Regular, mul:1
 src:56, dst:61, type:Regular, mul:1
 src:62, dst:61, type:Regular, mul:1
 src:30, dst:18, type:Regular, mul:1
+src:5, dst:12, type:Inhibitor, mul:1
 Generated Arrays
 
 Places:
-id:1, lbl:Health, toks:50, conc:False
+id:1, lbl:Health, toks:30, conc:False
 id:2, lbl:Fuel, toks:100, conc:True
 id:3, lbl:Ammo, toks:30, conc:True
 id:4, lbl:Attack, toks:0, conc:False
@@ -423,3 +425,4 @@ src:59, dst:56, type:Regular, mul:1
 src:56, dst:61, type:Regular, mul:1
 src:62, dst:61, type:Regular, mul:1
 src:30, dst:18, type:Regular, mul:1
+src:5, dst:12, type:Inhibitor, mul:1
