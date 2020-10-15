@@ -694,10 +694,10 @@ public class MapGenerator : MonoBehaviour {
         return dis[row - 1, col - 1];
     }
 
-    cell A(int x, int y, int[,] grid)
-    {
-        return 
-    }
+    //cell A(int x, int y, int[,] grid)
+    //{
+    //    return;
+    //}
 
     public void GenerateRandomCostMatrix()
     {
