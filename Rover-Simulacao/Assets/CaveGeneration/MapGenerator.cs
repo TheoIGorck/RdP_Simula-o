@@ -94,10 +94,15 @@ public class Room : IComparable<Room>
 
 public class MapGenerator : MonoBehaviour {
 
-	public int width;
-    public int width2;
+    public int level = 0;
+    public int MaxLevels = 0;
+    public GameObject Soldier;
+    public GameObject Robot;
+
+    public int width;
+    private int width2;
     public int height;
-    public int height2;
+    private int height2;
     public int x1, x2;
     public string seed;
 	public bool useRandomSeed;
@@ -106,6 +111,15 @@ public class MapGenerator : MonoBehaviour {
     int playerPosX, playerPosY;
     int posID;
     bool _canFill = true;
+    
+    public int MaxAmmo = 0;
+    public int MaxHealth = 0;
+    public int MaxFuel = 0;
+
+    [SerializeField]
+    public List<GameObject> SoldiersQuantity = new List<GameObject>();
+    [SerializeField]
+    public List<GameObject> RobotsQuantity = new List<GameObject>();
 
     [SerializeField]
     private List<GameObject> _fillObjects = default;
@@ -128,6 +142,8 @@ public class MapGenerator : MonoBehaviour {
     int ID = 0;
     GameObject[,] Map;
     List<int> randomValue = new List<int>();
+
+    private int[,] _costMap;
     
     private void Awake()
     {
@@ -142,9 +158,9 @@ public class MapGenerator : MonoBehaviour {
         //          DestroyMap();
         //          GenerateMap();
         //          Draw();} 
-        if (Input.GetMouseButtonDown(1)) {
+        /*if (Input.GetMouseButtonDown(1)) {
             ChecarColisao(x1, x2);
-        }
+        }*/
     }
 
     public void GenerateMap() {;
@@ -184,6 +200,7 @@ public class MapGenerator : MonoBehaviour {
         //meshGen.GenerateMesh(map, 1);
         
         ProcessMapRegions();
+        //GenerateRandomCostMatrix();
     }
 
   public void Draw()
@@ -599,6 +616,131 @@ public class MapGenerator : MonoBehaviour {
         return null;
     }
 
+    //
+    struct cell
+    {
+        public int x, y;
+        public int distance;
+        public int id;
+        public cell(int x, int y, int distance, int id)
+        {
+            this.x = x;
+            this.y = y;
+            this.distance = distance;
+            this.id = id;
+        }
+    };
+    
+    private int Shortest(int[,] grid, int row, int col)
+    {
+        int[,] dis = new int[width, height]; 
+
+       // initializing distance array by INT_MAX 
+       for (int i = 0; i<row; i++) 
+           for (int j = 0; j<col; j++) 
+               dis[i,j] = int.MaxValue; 
+
+       // direction arrays for simplification of getting 
+       // neighbour 
+       int[] dx = { -1, 0, 1, 0 };
+       int[] dy = { 0, 1, 0, -1 };
+    
+        
+        List<cell> cellsList = new List<cell>();
+
+        // insert (0, 0) cell with 0 distance 
+        cellsList.Add(new cell(0, 0, 0, 0));
+
+       // initialize distance of (0, 0) with its grid value 
+       dis[0, 0] = grid[0, 0]; 
+
+       // loop for standard dijkstra's algorithm 
+       while (cellsList.Count != 0) 
+       {
+            // get the cell with minimum distance and delete 
+            // it from the set 
+            cell k = cellsList[0];
+            cellsList.Remove(cellsList[0]);
+
+           // looping through all neighbours 
+           for (int i = 0; i< 4; i++) 
+           { 
+               int x = k.x + dx[i];
+               int y = k.y + dy[i]; 
+
+               // if not inside boundary, ignore them 
+               if (!IsInMapRange(x, y)) 
+                   continue; 
+
+               // If distance from current cell is smaller, then 
+               // update distance of neighbour cell 
+               if (dis[x, y] > dis[k.x, k.y] + grid[x, y]) 
+               {
+                    // If cell is already there in set, then 
+                    // remove its previous entry 
+                    if (dis[x, y] != int.MaxValue)
+                        //cellsList.RemoveAt(k.id);
+                    
+                       //st.erase(st.find(cell(x, y, dis[x][y]))); 
+
+                   // update the distance and insert new updated 
+                   // cell in set 
+                   dis[x, y] = dis[k.x, k.y] + grid[x, y]; 
+                   //cellsList.Add(new cell(x, y, dis[x, y])); 
+               } 
+           } 
+       } 
+    
+        return dis[row - 1, col - 1];
+    }
+
+    cell A(int x, int y, int[,] grid)
+    {
+        return 
+    }
+
+    public void GenerateRandomCostMatrix()
+    {
+        _costMap = new int[width, height];
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int randomCost = UnityEngine.Random.Range(0, 5);
+                _costMap[x, y] = randomCost;
+                Debug.Log(_costMap[x, y]);
+            }
+        }
+
+        //Maybe not here
+
+
+    }
+
+    void GetSurroundingNeighbours(int gridX, int gridY)
+    {
+        for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
+        {
+            for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++)
+            {
+                if (IsInMapRange(neighbourX, neighbourY))
+                {
+                    if (neighbourX != gridX || neighbourY != gridY) 
+                    {
+
+                    }
+                }
+                else
+                {
+
+                }
+            }
+        }
+    }
+
+
+
     private void ReplaceObjectAtPosition(GameObject newObject, Vector3 position)
     {
         if (_activeObjects.Contains(newObject))
@@ -610,6 +752,8 @@ public class MapGenerator : MonoBehaviour {
 
     public void FillMapWithObjects()
     {
+        _fillObjects.AddRange(SoldiersQuantity);
+        _fillObjects.AddRange(RobotsQuantity);
         randomValue.Clear();
 
         for(int i = 0; i < _fillObjects.Count; i++)
@@ -671,9 +815,9 @@ public class MapGenerator : MonoBehaviour {
         _activeObjects.Remove(obj);
     }
 
-    public void activateObjects()
+    public void ActivateObjects()
     {
-        Debug.Log(_notActiveObjects.Count);
+        //Debug.Log(_notActiveObjects.Count);
         for(int i = 0; i < _notActiveObjects.Count; i++)
         {
             if(_notActiveObjects != null)
@@ -682,8 +826,9 @@ public class MapGenerator : MonoBehaviour {
                 _notActiveObjects[i].gameObject.SetActive(true);
             }
         }
-
+        
         _notActiveObjects.Clear();
+        CreateMoreObjects();
         resetObjectsPosition();
 
         for (int i = 0; i < _activeObjects.Count; i++)
@@ -694,8 +839,42 @@ public class MapGenerator : MonoBehaviour {
             }
             else if (_activeObjects[i].gameObject.CompareTag("Rover"))
             {
-                _activeObjects[i].GetComponent<Rover>().Reset();
+                _activeObjects[i].GetComponent<Rover>().Reset(MaxAmmo, MaxFuel, MaxHealth, SoldiersQuantity.Count); 
             }
+        }
+    }
+
+    public void CreateMoreObjects()
+    {
+        int soldiersCount = (int)Mathf.Log(level, 2f);
+        int soldiersToAdd = soldiersCount - SoldiersQuantity.Count;
+        //Debug.Log(soldiersToAdd);
+
+        if (soldiersToAdd > 0)
+        {
+            GameObject soldier = Instantiate(Soldier, transform.position, Quaternion.identity);
+            _activeObjects.Add(soldier);
+            SoldiersQuantity.Add(soldier);
+        }
+
+        int robotsCount = (int)Mathf.Log(level, 2f);
+        int robotsToAdd = robotsCount - RobotsQuantity.Count;
+        //Debug.Log(soldiersToAdd);
+
+        if (robotsToAdd > 0)
+        {
+            GameObject robot = Instantiate(Robot, transform.position, Quaternion.identity);
+            _activeObjects.Add(robot);
+            RobotsQuantity.Add(robot);
+        }
+    }
+
+    public void DecrementFuelAndAmmo()
+    {
+        if (level % 5 == 0)
+        {
+            MaxFuel -= 5;
+            MaxAmmo -= 2;
         }
     }
 
@@ -704,56 +883,63 @@ public class MapGenerator : MonoBehaviour {
         randomPosition.Clear();
         _replacedObjects.AddRange(_activeObjects);
 
-        for (int i = 0; i < _activeObjects.Count; i++)
+        while (_activeObjects.Count > 0)
         {
-            randomPosition.Add(UnityEngine.Random.Range(0, ID));
-        }
-
-        int idTile = 0;
-
-        if (map != null && _canFill)
-        {
-            for (int x = 0; x < width; x++)
+            for (int i = 0; i < _activeObjects.Count; i++)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    if (map[x, y] == 0)
-                    {
-                        List<TileCoordinates> roomRegion = FillRegion(x, y);
-                        foreach (TileCoordinates tile in roomRegion)
-                        {
-                            idTile++;
-                            if (_activeObjects.Count > 1)
-                            {
-                                _randomObject = UnityEngine.Random.Range(0, _activeObjects.Count - 1);
-                            }
-                            else
-                            {
-                                _randomObject = 0;
-                            }
+                randomPosition.Add(UnityEngine.Random.Range(0, ID));
+            }
 
-                            if (_activeObjects.Count > 0 && randomPosition.Contains(idTile))
+            int idTile = 0;
+
+            if (map != null && _canFill)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        if (map[x, y] == 0)
+                        {
+                            List<TileCoordinates> roomRegion = FillRegion(x, y);
+                            foreach (TileCoordinates tile in roomRegion)
                             {
-                                ReplaceObjectAtPosition(_activeObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
+                                idTile++;
+                                if (_activeObjects.Count > 1)
+                                {
+                                    _randomObject = UnityEngine.Random.Range(0, _activeObjects.Count - 1);
+                                }
+                                else
+                                {
+                                    _randomObject = 0;
+                                }
+
+                                if (_activeObjects.Count > 0 && randomPosition.Contains(idTile))
+                                {
+                                    ReplaceObjectAtPosition(_activeObjects[_randomObject], new Vector3(tile.TileX + 0.5f, 0.5f, tile.TileY + 0.5f));
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
         _activeObjects.AddRange(_replacedObjects);
         _replacedObjects.Clear();
     }
-    /*void DestroyObjects(List<GameObject> objs)
+    
+    public void CreateNewLevel()
     {
-        for(int i = 0; i < objs.Count; i++)
+        if (level < MaxLevels)
         {
-            Destroy(objs[i]);
+            level++;
         }
 
-        objs.Clear();
-    }*/
+        DestroyMap();
+        GenerateMap();
+        Draw();
+        DecrementFuelAndAmmo();
+        ActivateObjects();
+    }
 
     /*private void OnDrawGizmos()
     {
@@ -777,4 +963,5 @@ public class MapGenerator : MonoBehaviour {
             }
         }
     }*/
-}
+ }
+

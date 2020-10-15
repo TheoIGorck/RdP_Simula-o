@@ -13,31 +13,28 @@ public class Robot : MonoBehaviour
     private bool Oeste = false;
     public int xPosition = 0;
     public int yPosition = 0;
-    public Transform RoverTransform;
 
     [SerializeField]
     private GameObject _bullet = default;
     [SerializeField]
     private GameObject _shootPoint = default;
     private PetriNet _robotPetriNet;
-    //private Quaternion _newRotation;
     private int _moveDirection;
     private int _oldDirection;
     private bool _isAttacking = false;
     private bool _changeDirection = false;
 
-    public void OnStart()
+    public void Start()
     {
         _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
         SetPetriNetCallbacks();
-        //_newRotation = transform.rotation;
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
         xPosition = (int)transform.position.x;
         yPosition = (int)transform.position.z;
         StartCoroutine(RandomizeMovePositionCoroutine());
     }
     
-    public void OnUpdate()
+    public void Update()
     {
         if (!IsDead())
         {
@@ -66,6 +63,12 @@ public class Robot : MonoBehaviour
         xPosition = (int)transform.position.x;
         yPosition = (int)transform.position.z;
         transform.rotation = Quaternion.identity;
+
+        if(_robotPetriNet == null)
+        {
+            _robotPetriNet = new PetriNet("Assets/_Project/PetriNets/Robot.pflow");
+        }
+  
         _robotPetriNet.GetPlaceByLabel("Health").Tokens = 5;
         _robotPetriNet.GetPlaceByLabel("RoverInNeighbourhood").Tokens = 0;
 

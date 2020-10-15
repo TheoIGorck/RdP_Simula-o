@@ -5,10 +5,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class RoverStatusArgs : EventArgs
+{
+    public int Ammo { get; }
+    public int Fuel { get; }
+    public int Health { get; }
+    public int RescuedSoldiers { get; }
+
+    public RoverStatusArgs(int ammo, int fuel, int health, int rescuedSoldiers)
+    {
+        Ammo = ammo;
+        Fuel = fuel;
+        Health = health;
+        RescuedSoldiers = rescuedSoldiers;
+    }
+}
+
 public class Rover : MonoBehaviour
 {
     public GameObject MapGen;
     public MapGenerator M;
+    public int MaxFillPercent = 0;
 
     private PetriNet _roverPetriNet;
     private float _shieldTime = 3.0f;
@@ -21,36 +38,35 @@ public class Rover : MonoBehaviour
     private GameObject _bullet = default;
     [SerializeField]
     private Transform _shootPoint = default;
-    
-    //Placeholder - Fix it
-    [SerializeField]
-    private Text _ammoText = default;
-    [SerializeField]
-    private Text _healthText = default;
-    [SerializeField]
-    private Text _fuelText = default;
-    [SerializeField]
-    private Text _soldiersText = default;
+
+    public event EventHandler<RoverStatusArgs> OnRoverStatusChanged;
 
     public void OnStart()
     {
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
-        _ammoText = GameObject.Find("AmmoText").GetComponent<Text>();
-        _healthText = GameObject.Find("HealthText").GetComponent<Text>();
-        _fuelText = GameObject.Find("FuelText").GetComponent<Text>();
-        _soldiersText = GameObject.Find("SoldiersText").GetComponent<Text>();
+
         _roverPetriNet = new PetriNet("Assets/_Project/PetriNets/Rover.pflow");
+        _roverPetriNet.GetPlaceByLabel("Health").Tokens = Mathf.Max(M.MaxHealth, 0);
+        _roverPetriNet.GetPlaceByLabel("Ammo").Tokens = Mathf.Max(M.MaxAmmo, 0);
+        _roverPetriNet.GetPlaceByLabel("Fuel").Tokens = Mathf.Max(M.MaxFuel, 0);
+        _roverPetriNet.GetConnection(_roverPetriNet.GetPlaceByLabel("RescuedSoldiers").ID, _roverPetriNet.GetTransitionByLabel("EndTransition").Id).Multiplicity = Mathf.Max(M.SoldiersQuantity.Count, 0);
+
         SetPetriNetCallbacks();
-        _posX = (int)transform.position.x;
-        _posY = (int)transform.position.z;
         SetPetriNetTransitionsPriority();
 
+        _posX = (int)transform.position.x;
+        _posY = (int)transform.position.z;
         _newRotation = transform.rotation;
     }
-    
+
     public void OnUpdate()
     {
         //Debug.Log(_roverPetriNet.GetPlaceByLabel("North").Tokens + ": " + M.Norte);
+
+        if (OnRoverStatusChanged != null)
+        {
+            OnRoverStatusChanged.Invoke(this, new RoverStatusArgs(_roverPetriNet.GetPlaceByLabel("Ammo").Tokens, _roverPetriNet.GetPlaceByLabel("Fuel").Tokens, _roverPetriNet.GetPlaceByLabel("Health").Tokens, _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens));
+        }      
 
         if (_roverPetriNet.GetPlaceByLabel("North").Tokens == 1 && M.Norte == true)
         {
@@ -72,34 +88,31 @@ public class Rover : MonoBehaviour
         _roverPetriNet.ExecCycle();
         transform.position = new Vector3(_posX + 0.5f, transform.position.y, _posY + 0.5f);
         M.ChecarColisao(_posX, _posY);
-
-        //Fix it
-        _ammoText.text = "Ammo: " + _roverPetriNet.GetPlaceByLabel("Ammo").Tokens.ToString();
-        _healthText.text = "Health: " + _roverPetriNet.GetPlaceByLabel("Health").Tokens.ToString();
-        _fuelText.text = "Fuel: " + _roverPetriNet.GetPlaceByLabel("Fuel").Tokens.ToString();
-        _soldiersText.text = "Rescued Soldiers: " + _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens.ToString();
         
         if (Input.GetMouseButtonDown(0))
         {
-            M.DestroyMap();
-            M.GenerateMap();
-            M.Draw();
-            M.activateObjects();
+            M.CreateNewLevel();
         }
     }
 
-    public void Reset()
+    public void Reset(int ammo, int fuel, int health, int soldiersQuantity)
     {
         _posX = (int)transform.position.x;
         _posY = (int)transform.position.z;
         transform.rotation = Quaternion.identity;
-        _roverPetriNet.GetPlaceByLabel("Health").Tokens = 30;
-        _roverPetriNet.GetPlaceByLabel("Ammo").Tokens = 30;
-        _roverPetriNet.GetPlaceByLabel("Fuel").Tokens = 100;
+        _roverPetriNet.GetPlaceByLabel("Health").Tokens = Mathf.Max(health, 0);
+        _roverPetriNet.GetPlaceByLabel("Ammo").Tokens = Mathf.Max(ammo, 0);
+        _roverPetriNet.GetPlaceByLabel("Fuel").Tokens = Mathf.Max(fuel, 0);
         _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens = 0;
         _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").Tokens = 0;
         _roverPetriNet.GetPlaceByLabel("End").Tokens = 0;
         _roverPetriNet.GetPlaceByLabel("Quadrant:Portal").AddTokens(0);
+        _roverPetriNet.GetConnection(_roverPetriNet.GetPlaceByLabel("RescuedSoldiers").ID, _roverPetriNet.GetTransitionByLabel("EndTransition").Id).Multiplicity = Mathf.Max(soldiersQuantity, 0);
+
+        if (M.randomFillPercent < MaxFillPercent)
+        {
+            M.randomFillPercent++;
+        }
 
         /*_roverPetriNet.GetPlaceByLabel("Defend").Tokens = 0;
         _roverPetriNet.GetPlaceByLabel("ShieldHasOver").Tokens = 0;
@@ -136,6 +149,8 @@ public class Rover : MonoBehaviour
     {
         if (_roverPetriNet.GetPlaceByLabel("End").Tokens > 0)
         {
+            M.CreateNewLevel();
+            //_roverPetriNet.GetConnection(_roverPetriNet.GetPlaceByLabel("RescuedSoldiers").ID, _roverPetriNet.GetTransitionByLabel("EndTransition").Id).Multiplicity = 10;
             return true;
         }
 
@@ -171,7 +186,7 @@ public class Rover : MonoBehaviour
         else if (other.gameObject.CompareTag("Portal"))
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:Portal").AddTokens(1);
-            Debug.Log("Portal!");
+            //Debug.Log("Portal!");
         }
         else if (other.gameObject.CompareTag("EnemyBullet"))
         {
