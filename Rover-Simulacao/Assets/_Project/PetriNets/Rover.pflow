@@ -240,6 +240,14 @@
             <tokens>0</tokens>
             <isStatic>false</isStatic>
         </place>
+        <place>
+            <id>83</id>
+            <x>-200</x>
+            <y>319</y>
+            <label>Dijkstra</label>
+            <tokens>0</tokens>
+            <isStatic>false</isStatic>
+        </place>
         <transition>
             <id>10</id>
             <x>-21</x>
@@ -382,6 +390,12 @@
             <id>82</id>
             <x>191</x>
             <y>-18</y>
+            <label/>
+        </transition>
+        <transition>
+            <id>84</id>
+            <x>-175</x>
+            <y>177</y>
             <label/>
         </transition>
         <arc>
@@ -938,6 +952,18 @@
             <type>regular</type>
             <sourceId>33</sourceId>
             <destinationId>82</destinationId>
+            <multiplicity>1</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>2</sourceId>
+            <destinationId>84</destinationId>
+            <multiplicity>5</multiplicity>
+        </arc>
+        <arc>
+            <type>regular</type>
+            <sourceId>83</sourceId>
+            <destinationId>84</destinationId>
             <multiplicity>1</multiplicity>
         </arc>
     </subnet>

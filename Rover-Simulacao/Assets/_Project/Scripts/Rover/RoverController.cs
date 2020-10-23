@@ -29,6 +29,11 @@ public class RoverController : MonoBehaviour
         _rover.RemoveTokensAtPlace(label, nTokens);
     }
 
+    public void ShowLessCostlyPath()
+    {
+        _rover.ShowLessCostlyPath();
+    }
+
     public bool IsRoverDead()
     {
         return _rover.IsDead();

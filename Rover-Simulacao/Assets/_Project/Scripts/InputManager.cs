@@ -35,5 +35,10 @@ public class InputManager : MonoBehaviour
         {
             _roverController.AddTokensAtRoverPetriNet("DefendButton", 1);
         }
+
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            _roverController.ShowLessCostlyPath();
+        }
     }
 }

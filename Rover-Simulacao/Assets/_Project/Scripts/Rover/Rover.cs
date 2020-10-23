@@ -30,7 +30,9 @@ public class Rover : MonoBehaviour
     private PetriNet _roverPetriNet;
     private float _shieldTime = 3.0f;
     private float _shieldReloadTime = 3.0f;
+    private float _dijkstraReloadTime = 10.0f;
     private bool _canUseShield = true;
+    private bool _canUseDijkstra = true;
     private int _posX, _posY;
     private Vector3 _direction = Vector3.zero;
     private Quaternion _newRotation = Quaternion.identity;
@@ -125,6 +127,34 @@ public class Rover : MonoBehaviour
         }
     }
 
+    public void ShowLessCostlyPath()
+    {
+        if (_canUseDijkstra)
+        {
+            M.Dijkstra(_posX, _posY);
+            _roverPetriNet.GetPlaceByLabel("Dijkstra").AddTokens(1);
+            _canUseDijkstra = false;
+            StartCoroutine(StartReloadDijkstraCountdownCoroutine());
+        }
+    }
+
+    private IEnumerator StartReloadDijkstraCountdownCoroutine()
+    {
+        while (_dijkstraReloadTime > 0 && !_canUseDijkstra)
+        {
+            _dijkstraReloadTime -= Time.deltaTime;
+
+            if (_dijkstraReloadTime < 0)
+            {
+                _dijkstraReloadTime = 10.0f;
+                _canUseDijkstra = true;
+                Debug.Log("Dijkstra Available!");
+            }
+
+            yield return null;
+        }
+    }
+
     public void AddTokensAtPlace(string label, int nTokens)
     {
         _roverPetriNet.GetPlaceByLabel(label).AddTokens(nTokens);
@@ -192,12 +222,12 @@ public class Rover : MonoBehaviour
         {
             _roverPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
             Destroy(other.gameObject);
-            Debug.Log("GotShot!");
+            //Debug.Log("GotShot!");
         }
         else if (other.gameObject.CompareTag("EnemyNeighbourhood"))
         {
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").AddTokens(1);
-            Debug.Log("Robot in Neighbourhood!");
+            //Debug.Log("Robot in Neighbourhood!");
         }
     }
 
