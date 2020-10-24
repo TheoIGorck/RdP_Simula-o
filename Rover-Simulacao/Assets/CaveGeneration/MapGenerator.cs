@@ -144,12 +144,22 @@ public class MapGenerator : MonoBehaviour {
     List<int> randomValue = new List<int>();
 
     private int[,] _costMap;
-    
+    private int[,] _distanceMap;
+    private Dictionary<Vector2, int> _minCost = new Dictionary<Vector2, int>();
+    private Dictionary<Vector2, Vector2> _prevPos = new Dictionary<Vector2, Vector2>();
+    private List<Vector2> _visitedTiles = new List<Vector2>();
+    List<Vector2> _finishedPath = new List<Vector2>(); //Lista de posições que montam o caminho;
+    public GameObject _from;
+    private MaterialPropertyBlock _propertyBlock;
+
     private void Awake()
     {
         GenerateMap();
         Draw();
         FillMapWithObjects();
+        _propertyBlock = new MaterialPropertyBlock();
+
+        _from = GameObject.Find("Rover(Clone)");
     }
     
 	void Update() {
@@ -200,7 +210,7 @@ public class MapGenerator : MonoBehaviour {
         //meshGen.GenerateMesh(map, 1);
         
         ProcessMapRegions();
-        //GenerateRandomCostMatrix();
+        GenerateRandomCostMatrix();
     }
 
   public void Draw()
@@ -616,89 +626,6 @@ public class MapGenerator : MonoBehaviour {
         return null;
     }
 
-    //
-    struct cell
-    {
-        public int x, y;
-        public int distance;
-        public int id;
-        public cell(int x, int y, int distance, int id)
-        {
-            this.x = x;
-            this.y = y;
-            this.distance = distance;
-            this.id = id;
-        }
-    };
-    
-    private int Shortest(int[,] grid, int row, int col)
-    {
-        int[,] dis = new int[width, height]; 
-
-       // initializing distance array by INT_MAX 
-       for (int i = 0; i<row; i++) 
-           for (int j = 0; j<col; j++) 
-               dis[i,j] = int.MaxValue; 
-
-       // direction arrays for simplification of getting 
-       // neighbour 
-       int[] dx = { -1, 0, 1, 0 };
-       int[] dy = { 0, 1, 0, -1 };
-    
-        
-        List<cell> cellsList = new List<cell>();
-
-        // insert (0, 0) cell with 0 distance 
-        cellsList.Add(new cell(0, 0, 0, 0));
-
-       // initialize distance of (0, 0) with its grid value 
-       dis[0, 0] = grid[0, 0]; 
-
-       // loop for standard dijkstra's algorithm 
-       while (cellsList.Count != 0) 
-       {
-            // get the cell with minimum distance and delete 
-            // it from the set 
-            cell k = cellsList[0];
-            cellsList.Remove(cellsList[0]);
-
-           // looping through all neighbours 
-           for (int i = 0; i< 4; i++) 
-           { 
-               int x = k.x + dx[i];
-               int y = k.y + dy[i]; 
-
-               // if not inside boundary, ignore them 
-               if (!IsInMapRange(x, y)) 
-                   continue; 
-
-               // If distance from current cell is smaller, then 
-               // update distance of neighbour cell 
-               if (dis[x, y] > dis[k.x, k.y] + grid[x, y]) 
-               {
-                    // If cell is already there in set, then 
-                    // remove its previous entry 
-                    if (dis[x, y] != int.MaxValue)
-                        //cellsList.RemoveAt(k.id);
-                    
-                       //st.erase(st.find(cell(x, y, dis[x][y]))); 
-
-                   // update the distance and insert new updated 
-                   // cell in set 
-                   dis[x, y] = dis[k.x, k.y] + grid[x, y]; 
-                   //cellsList.Add(new cell(x, y, dis[x, y])); 
-               } 
-           } 
-       } 
-    
-        return dis[row - 1, col - 1];
-    }
-
-    //cell A(int x, int y, int[,] grid)
-    //{
-    //    return;
-    //}
-
     public void GenerateRandomCostMatrix()
     {
         _costMap = new int[width, height];
@@ -707,39 +634,204 @@ public class MapGenerator : MonoBehaviour {
         {
             for (int y = 0; y < height; y++)
             {
-                int randomCost = UnityEngine.Random.Range(0, 5);
-                _costMap[x, y] = randomCost;
-                Debug.Log(_costMap[x, y]);
+                if (map[x, y] != 1)
+                {
+                    int randomCost = UnityEngine.Random.Range(1, 5);
+                    _costMap[x, y] = randomCost;
+                }
+            }
+        }
+    }
+
+    public void Dijkstra(int fromX, int fromY)
+    {
+        _distanceMap = new int[width, height];
+        _minCost.Clear();
+        _visitedTiles.Clear();
+        _prevPos.Clear();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                _distanceMap[x, y] = int.MaxValue;
             }
         }
 
-        //Maybe not here
+        _distanceMap[fromX, fromY] = 0;
+        _minCost.Add(new Vector2(fromX, fromY), _distanceMap[fromX, fromY]);
 
+        if (!_prevPos.ContainsKey(new Vector2(fromX, fromY)))
+        {
+            _prevPos.Add(new Vector2(fromX, fromY), new Vector2(fromX, fromY));
+        }
 
+        while (_minCost.Count != 0)
+        {
+            KeyValuePair<Vector2, int> newSmallest = GetMinorCostAndRemove();
+            
+            Dictionary<Vector2, int> smallestNeighbours = GetSurroundingNeighboursCost((int)newSmallest.Key.x, (int)newSmallest.Key.y);
+
+            foreach (KeyValuePair<Vector2, int> neighbour in smallestNeighbours)
+            {
+                if (!_visitedTiles.Contains(neighbour.Key))
+                {
+                    int alternativePathCost = _distanceMap[(int)newSmallest.Key.x, (int)newSmallest.Key.y] + _costMap[(int)neighbour.Key.x, (int)neighbour.Key.y];
+
+                    if (alternativePathCost < _distanceMap[(int)neighbour.Key.x, (int)neighbour.Key.y])
+                    {
+                        _distanceMap[(int)neighbour.Key.x, (int)neighbour.Key.y] = alternativePathCost;
+                        if (_minCost.ContainsKey(neighbour.Key))
+                        {
+                            _minCost.Remove(neighbour.Key);
+                        }
+                        _minCost.Add(neighbour.Key, _distanceMap[(int)neighbour.Key.x, (int)neighbour.Key.y]);
+
+                        if (_prevPos.ContainsKey(neighbour.Key))
+                        {
+                            _prevPos.Remove(neighbour.Key);
+                        }
+                        _prevPos.Add(neighbour.Key, newSmallest.Key);
+                    }
+                }
+            }
+
+            _visitedTiles.Add(newSmallest.Key);
+        }
+
+        _finishedPath.Clear();
+
+        GameObject minorDistance = GetObjectWithMinorDistance(_activeObjects);
+        if (minorDistance != null)
+        {
+            CreateLessCostlyPath(new Vector2(minorDistance.transform.position.x, minorDistance.transform.position.z));
+            StartCoroutine(DrawLessCostlyPathCoroutine());
+        }
     }
 
-    void GetSurroundingNeighbours(int gridX, int gridY)
+    public KeyValuePair<Vector2, int> GetMinorCostAndRemove()
     {
+        KeyValuePair<Vector2, int> minorCostPair;
+        int minorCost = -1;
+
+        foreach (Vector2 position in _minCost.Keys)
+        {
+            foreach (int cost in _minCost.Values)
+            {
+                if (minorCost < 0)
+                {
+                    minorCost = cost;
+                    minorCostPair = new KeyValuePair<Vector2, int>(position, cost);
+                }
+
+                if (cost < minorCost)
+                {
+                    minorCost = cost;
+                    minorCostPair = new KeyValuePair<Vector2, int>(position, cost);
+                }
+            }
+        }
+
+        _minCost.Remove(minorCostPair.Key);
+        return minorCostPair;
+    }
+
+    public Dictionary<Vector2, int> GetSurroundingNeighboursCost(int gridX, int gridY)
+    {
+        Dictionary<Vector2, int> _neighboursCost = new Dictionary<Vector2, int>();
+
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
         {
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++)
             {
                 if (IsInMapRange(neighbourX, neighbourY))
                 {
-                    if (neighbourX != gridX || neighbourY != gridY) 
+                    if ((neighbourX == gridX || neighbourY == gridY) && map[neighbourX, neighbourY] != 1)
                     {
-
+                        if (neighbourX != gridX || neighbourY != gridY)
+                        {
+                            _neighboursCost.Add(new Vector2(neighbourX, neighbourY), _costMap[neighbourX, neighbourY]);
+                        }
                     }
-                }
-                else
-                {
-
                 }
             }
         }
+        
+        return _neighboursCost;
     }
 
+    public List<Vector2> CreateLessCostlyPath(Vector2 position)
+    {
+        Vector2 integerPosition = new Vector2((int)position.x, (int)position.y);
 
+        if (_prevPos.ContainsKey(integerPosition))
+        {
+            Vector2 previousPosition = _prevPos[integerPosition];
+
+            _finishedPath.Add(integerPosition);
+
+            if (position != new Vector2((int)_from.transform.position.x, (int)_from.transform.position.z))
+            {
+                CreateLessCostlyPath(previousPosition);
+            }
+            /*else
+            {
+                Debug.Log("Cheguei no fim");
+            }*/
+        }
+
+        return _finishedPath;
+    }
+
+    public IEnumerator DrawLessCostlyPathCoroutine()
+    {
+        foreach (Vector2 tile in _finishedPath)
+        {
+            Renderer _render = Map[(int)tile.x, (int)tile.y].GetComponent<Renderer>();
+
+            _render.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor("_Color", Color.black);
+            _render.SetPropertyBlock(_propertyBlock);
+        }
+
+        yield return new WaitForSeconds(5f);
+
+        foreach (Vector2 tile in _finishedPath)
+        {
+            Renderer _render = Map[(int)tile.x, (int)tile.y].GetComponent<Renderer>();
+
+            _render.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor("_Color", new Color(1.0f, 0.722f, 0.96f, 1.0f));
+            _render.SetPropertyBlock(_propertyBlock);
+        }
+    }
+
+    public GameObject GetObjectWithMinorDistance(List<GameObject> objects)
+    {
+        float minorDistance = -1;
+        GameObject minorDistanceObject = default;
+
+        foreach (GameObject obj in objects)
+        {
+            if (!obj.CompareTag("Rover") && !obj.CompareTag("Enemy") && !obj.CompareTag("Portal"))
+            {
+                float distance = Vector3.Distance(_from.transform.position, obj.transform.position);
+
+                if (minorDistance < 0)
+                {
+                    minorDistance = distance;
+                    minorDistanceObject = obj;
+                }
+                if (distance < minorDistance)
+                {
+                    minorDistance = distance;
+                    minorDistanceObject = obj;
+                }
+            }
+        }
+
+        return minorDistanceObject;
+    }
 
     private void ReplaceObjectAtPosition(GameObject newObject, Vector3 position)
     {
@@ -963,5 +1055,43 @@ public class MapGenerator : MonoBehaviour {
             }
         }
     }*/
- }
+
+    private void OnDrawGizmos()
+    {
+        if(map != null && _canFill)
+        {
+            for(int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if(map[x,y] == 0)
+                    {
+                        Vector3 tilePosition = new Vector3(x + 0.5f, 0, y + 0.5f);
+
+                        if (_costMap[x,y] == 1)
+                        {
+                            Gizmos.color = Color.blue;
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                        }
+                        if (_costMap[x, y] == 2)
+                        {
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                        }
+                        if (_costMap[x, y] == 3)
+                        {
+                            Gizmos.color = Color.red;
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                        }
+                        if (_costMap[x, y] == 4)
+                        {
+                            Gizmos.color = Color.yellow;
+                            Gizmos.DrawCube(tilePosition, Vector3.one);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
