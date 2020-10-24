@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class RoverStatusArgs : EventArgs
 {
     public int Ammo { get; }
     public int Fuel { get; }
     public int Health { get; }
     public int RescuedSoldiers { get; }
+    
 
     public RoverStatusArgs(int ammo, int fuel, int health, int rescuedSoldiers)
     {
@@ -40,6 +42,7 @@ public class Rover : MonoBehaviour
     private GameObject _bullet = default;
     [SerializeField]
     private Transform _shootPoint = default;
+    private int cooldown = 0;
 
     public event EventHandler<RoverStatusArgs> OnRoverStatusChanged;
 
@@ -63,6 +66,8 @@ public class Rover : MonoBehaviour
 
     public void OnUpdate()
     {
+
+        cooldown--;
         //Debug.Log(_roverPetriNet.GetPlaceByLabel("North").Tokens + ": " + M.Norte);
 
         if (OnRoverStatusChanged != null)
@@ -223,6 +228,15 @@ public class Rover : MonoBehaviour
             _roverPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
             Destroy(other.gameObject);
             //Debug.Log("GotShot!");
+        }
+        else if (other.gameObject.CompareTag("Glider"))
+        {
+            if (cooldown < 0)
+            {
+                _roverPetriNet.GetPlaceByLabel("Glider").AddTokens(1);
+                Debug.Log("Glider");
+                cooldown = 200;
+            }
         }
         else if (other.gameObject.CompareTag("EnemyNeighbourhood"))
         {
