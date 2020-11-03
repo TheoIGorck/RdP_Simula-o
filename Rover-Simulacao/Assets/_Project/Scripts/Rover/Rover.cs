@@ -66,7 +66,6 @@ public class Rover : MonoBehaviour
 
     public void OnUpdate()
     {
-
         cooldown--;
         //Debug.Log(_roverPetriNet.GetPlaceByLabel("North").Tokens + ": " + M.Norte);
 

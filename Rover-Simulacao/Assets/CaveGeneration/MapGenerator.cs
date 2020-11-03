@@ -155,9 +155,9 @@ public class MapGenerator : MonoBehaviour {
     private void Awake()
     {
         GenerateMap();
+        _propertyBlock = new MaterialPropertyBlock();
         Draw();
         FillMapWithObjects();
-        _propertyBlock = new MaterialPropertyBlock();
 
         _from = GameObject.Find("Rover(Clone)");
     }
@@ -219,9 +219,40 @@ public class MapGenerator : MonoBehaviour {
             for (int j = 0; j < height; j++)
             {
                 if (map[i, j] == 0)
-                    Map[i,j] = Instantiate(myPrefab, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                {
+                    Map[i, j] = Instantiate(myPrefab, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                    
+                    Renderer _render = Map[i, j].GetComponent<Renderer>();
+                    
+                    if (_costMap[i, j] == 1)
+                    {
+                        _render.GetPropertyBlock(_propertyBlock);
+                        _propertyBlock.SetColor("_Color", Color.blue);
+                        _render.SetPropertyBlock(_propertyBlock);
+                    }
+                    if (_costMap[i, j] == 2)
+                    {
+                        _render.GetPropertyBlock(_propertyBlock);
+                        _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.8f, 1.0f));
+                        _render.SetPropertyBlock(_propertyBlock);
+                    }
+                    if (_costMap[i, j] == 3)
+                    {
+                        _render.GetPropertyBlock(_propertyBlock);
+                        _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.6f, 1.0f));
+                        _render.SetPropertyBlock(_propertyBlock);
+                    }
+                    if (_costMap[i, j] == 4)
+                    {
+                        _render.GetPropertyBlock(_propertyBlock);
+                        _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.4f, 1.0f));
+                        _render.SetPropertyBlock(_propertyBlock);
+                    }
+                }
                 else if (map[i, j] == 1)
+                {
                     Map[i, j] = Instantiate(myPrefab2, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
+                }
             }
     }
    public void ChecarColisao(int x, int y)
@@ -1056,7 +1087,7 @@ public class MapGenerator : MonoBehaviour {
         }
     }*/
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         if(map != null && _canFill)
         {
@@ -1092,6 +1123,6 @@ public class MapGenerator : MonoBehaviour {
                 }
             }
         }
-    }
+    }*/
 }
 
