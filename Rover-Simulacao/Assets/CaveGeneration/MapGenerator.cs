@@ -223,31 +223,27 @@ public class MapGenerator : MonoBehaviour {
                     Map[i, j] = Instantiate(myPrefab, new Vector3(i + 0.5f, 0, j + 0.5f), Quaternion.identity);
                     
                     Renderer _render = Map[i, j].GetComponent<Renderer>();
-                    
+                    _render.GetPropertyBlock(_propertyBlock);
+
                     if (_costMap[i, j] == 1)
                     {
-                        _render.GetPropertyBlock(_propertyBlock);
                         _propertyBlock.SetColor("_Color", Color.blue);
-                        _render.SetPropertyBlock(_propertyBlock);
                     }
                     if (_costMap[i, j] == 2)
                     {
-                        _render.GetPropertyBlock(_propertyBlock);
                         _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.8f, 1.0f));
-                        _render.SetPropertyBlock(_propertyBlock);
                     }
                     if (_costMap[i, j] == 3)
                     {
-                        _render.GetPropertyBlock(_propertyBlock);
                         _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.6f, 1.0f));
-                        _render.SetPropertyBlock(_propertyBlock);
                     }
                     if (_costMap[i, j] == 4)
                     {
-                        _render.GetPropertyBlock(_propertyBlock);
                         _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.4f, 1.0f));
-                        _render.SetPropertyBlock(_propertyBlock);
+                        
                     }
+
+                    _render.SetPropertyBlock(_propertyBlock);
                 }
                 else if (map[i, j] == 1)
                 {
@@ -821,7 +817,7 @@ public class MapGenerator : MonoBehaviour {
             Renderer _render = Map[(int)tile.x, (int)tile.y].GetComponent<Renderer>();
 
             _render.GetPropertyBlock(_propertyBlock);
-            _propertyBlock.SetColor("_Color", Color.black);
+            _propertyBlock.SetColor("_Color", new Color(0.98f, 0.73f, 0.05f, 0.5f));
             _render.SetPropertyBlock(_propertyBlock);
         }
 
@@ -830,9 +826,26 @@ public class MapGenerator : MonoBehaviour {
         foreach (Vector2 tile in _finishedPath)
         {
             Renderer _render = Map[(int)tile.x, (int)tile.y].GetComponent<Renderer>();
-
             _render.GetPropertyBlock(_propertyBlock);
-            _propertyBlock.SetColor("_Color", new Color(1.0f, 0.722f, 0.96f, 1.0f));
+
+            if (_costMap[(int)tile.x, (int)tile.y] == 1)
+            {
+                _propertyBlock.SetColor("_Color", Color.blue);
+            }
+            if (_costMap[(int)tile.x, (int)tile.y] == 2)
+            {
+                _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.8f, 1.0f));
+            }
+            if (_costMap[(int)tile.x, (int)tile.y] == 3)
+            {
+                _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.6f, 1.0f));
+            }
+            if (_costMap[(int)tile.x, (int)tile.y] == 4)
+            {
+                _propertyBlock.SetColor("_Color", new Color(0.0f, 0.0f, 0.4f, 1.0f));
+
+            }
+
             _render.SetPropertyBlock(_propertyBlock);
         }
     }
