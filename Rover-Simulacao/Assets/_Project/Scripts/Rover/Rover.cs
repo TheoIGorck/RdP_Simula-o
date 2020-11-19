@@ -51,8 +51,8 @@ public class Rover : MonoBehaviour
     private int cooldown = 0;
 
     private int _damage = 0;
-    private bool _isDrowning = false;
-    private Coroutine _drownCoroutine;
+    private bool _canTakeDamage = true;
+    private Coroutine _takeDamageCooldown;
 
     public LCGRandom randomGenerator;
 
@@ -259,14 +259,28 @@ public class Rover : MonoBehaviour
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").AddTokens(1);
             //Debug.Log("Robot in Neighbourhood!");
         }
-        /*else if (other.gameObject.CompareTag("Water"))
+        else if (other.gameObject.CompareTag("Water"))
         {
-            if (!_isDrowning)
+            if (_canTakeDamage)
             {
-                _drownCoroutine = StartCoroutine(DrownCoroutine());
+                _canTakeDamage = false;
+                _takeDamageCooldown = StartCoroutine(TakeDamageCoolDown());
             }
-        }*/
+        }
     }
+
+    /*private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Water"))
+        {
+            if (_canTakeDamage)
+            {
+                _canTakeDamage = false;
+                _roverPetriNet.GetPlaceByLabel("IsDrowning").AddTokens(1);
+                _takeDamageCooldown = StartCoroutine(TakeDamageCoolDown());
+            }
+        }
+    }*/
 
     private void OnTriggerExit(Collider other)
     {
@@ -280,13 +294,11 @@ public class Rover : MonoBehaviour
             _damage = 0;
             Debug.Log("Portal!");
         }
-        /*if (other.gameObject.CompareTag("Water"))
+        if (other.gameObject.CompareTag("Water"))
         {
-            Debug.Log("Water Exit");
-
-            StopCoroutine(_drownCoroutine);
-            _isDrowning = false;
-        }*/
+            StopCoroutine(_takeDamageCooldown);
+            _canTakeDamage = true;
+        }
     }
 
     private IEnumerator StartShieldCountdownCoroutine()
@@ -333,18 +345,16 @@ public class Rover : MonoBehaviour
             yield return new WaitForSeconds((int)randomGenerator.Uniform(15, 25));
         }
     }
-
-    /*private IEnumerator DrownCoroutine()
+    
+    private IEnumerator TakeDamageCoolDown()
     {
-        for (; ; )
+        for(; ; )
         {
-            _isDrowning = true;
-
-            yield return new WaitForSeconds(2);
-
             _roverPetriNet.GetPlaceByLabel("IsDrowning").AddTokens(1);
+
+            yield return new WaitForSeconds(2f);
         }
-    }*/
+    }
 
     private void MoveNorth()
     {

@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5912994300814284231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208459547271305273}
+  - component: {fileID: 4208242413582224203}
+  m_Layer: 13
+  m_Name: WaterTrigger
+  m_TagString: Rover
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &208459547271305273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912994300814284231}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.00233, z: 0}
+  m_LocalScale: {x: 0.67369, y: 0.67369, z: 0.67369}
+  m_Children: []
+  m_Father: {fileID: 6748361386201166616}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4208242413582224203
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912994300814284231}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.008064724, y: 0.0052146125, z: 0.008914046}
+  m_Center: {x: -0.00004976809, y: 0.0066761863, z: 0.000264529}
 --- !u!1 &6748361386201166598
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +79,7 @@ Transform:
   - {fileID: 6748361386271496947}
   - {fileID: 6748361386287712559}
   - {fileID: 6748361387282097417}
+  - {fileID: 208459547271305273}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55,6 +100,7 @@ MonoBehaviour:
   MaxFillPercent: 54
   _bullet: {fileID: 2572007223979218854, guid: 43b6a93d6ec0bc642b93275e84108b17, type: 3}
   _shootPoint: {fileID: 6748361386287712559}
+  randomGenerator: {fileID: 0}
 --- !u!33 &6748361386201166618
 MeshFilter:
   m_ObjectHideFlags: 0
