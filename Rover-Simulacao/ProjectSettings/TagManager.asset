@@ -15,6 +15,7 @@ TagManager:
   - RoverNeighbourhood
   - EnemyNeighbourhood
   - Glider
+  - Water
   layers:
   - Default
   - TransparentFX
