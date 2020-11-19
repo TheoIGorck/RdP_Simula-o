@@ -12,14 +12,20 @@ public class RoverStatusArgs : EventArgs
     public int Fuel { get; }
     public int Health { get; }
     public int RescuedSoldiers { get; }
+    public bool Dijkstra { get; }
+    public bool Shield { get; }
+    public bool EmptyShield { get; }
     
 
-    public RoverStatusArgs(int ammo, int fuel, int health, int rescuedSoldiers)
+    public RoverStatusArgs(int ammo, int fuel, int health, int rescuedSoldiers, bool dijkstra, bool shield, bool emptyShield)
     {
         Ammo = ammo;
         Fuel = fuel;
         Health = health;
         RescuedSoldiers = rescuedSoldiers;
+        Dijkstra = dijkstra;
+        Shield = shield;
+        EmptyShield = emptyShield;
     }
 }
 
@@ -44,11 +50,18 @@ public class Rover : MonoBehaviour
     private Transform _shootPoint = default;
     private int cooldown = 0;
 
+    private int _damage = 0;
+    private bool _canTakeDamage = true;
+    private Coroutine _takeDamageCooldown;
+
+    public LCGRandom randomGenerator;
+
     public event EventHandler<RoverStatusArgs> OnRoverStatusChanged;
 
     public void OnStart()
     {
         M = GameObject.Find("Generator").GetComponent<MapGenerator>();
+        randomGenerator = GameObject.Find("RandomGenerator").GetComponent<LCGRandom>();
 
         _roverPetriNet = new PetriNet("Assets/_Project/PetriNets/Rover.pflow");
         _roverPetriNet.GetPlaceByLabel("Health").Tokens = Mathf.Max(M.MaxHealth, 0);
@@ -62,6 +75,8 @@ public class Rover : MonoBehaviour
         _posX = (int)transform.position.x;
         _posY = (int)transform.position.z;
         _newRotation = transform.rotation;
+
+        StartCoroutine(Damage());
     }
 
     public void OnUpdate()
@@ -71,7 +86,7 @@ public class Rover : MonoBehaviour
 
         if (OnRoverStatusChanged != null)
         {
-            OnRoverStatusChanged.Invoke(this, new RoverStatusArgs(_roverPetriNet.GetPlaceByLabel("Ammo").Tokens, _roverPetriNet.GetPlaceByLabel("Fuel").Tokens, _roverPetriNet.GetPlaceByLabel("Health").Tokens, _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens));
+            OnRoverStatusChanged.Invoke(this, new RoverStatusArgs(_roverPetriNet.GetPlaceByLabel("Ammo").Tokens, _roverPetriNet.GetPlaceByLabel("Fuel").Tokens, _roverPetriNet.GetPlaceByLabel("Health").Tokens, _roverPetriNet.GetPlaceByLabel("RescuedSoldiers").Tokens, _canUseDijkstra, _roverPetriNet.GetPlaceByLabel("Defend").Tokens > 0, _roverPetriNet.GetPlaceByLabel("ReloadShield").Tokens > 0));
         }      
 
         if (_roverPetriNet.GetPlaceByLabel("North").Tokens == 1 && M.Norte == true)
@@ -95,10 +110,12 @@ public class Rover : MonoBehaviour
         transform.position = new Vector3(_posX + 0.5f, transform.position.y, _posY + 0.5f);
         M.ChecarColisao(_posX, _posY);
         
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
             M.CreateNewLevel();
-        }
+        }*/
+
+        //Debug.Log(_damage);
     }
 
     public void Reset(int ammo, int fuel, int health, int soldiersQuantity)
@@ -138,11 +155,11 @@ public class Rover : MonoBehaviour
             M.Dijkstra(_posX, _posY);
             _roverPetriNet.GetPlaceByLabel("Dijkstra").AddTokens(1);
             _canUseDijkstra = false;
-            StartCoroutine(StartReloadDijkstraCountdownCoroutine());
+            StartCoroutine(ReloadDijkstraCountdownCoroutine());
         }
     }
 
-    private IEnumerator StartReloadDijkstraCountdownCoroutine()
+    private IEnumerator ReloadDijkstraCountdownCoroutine()
     {
         while (_dijkstraReloadTime > 0 && !_canUseDijkstra)
         {
@@ -224,7 +241,7 @@ public class Rover : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("EnemyBullet"))
         {
-            _roverPetriNet.GetPlaceByLabel("GotShot").AddTokens(1);
+            _roverPetriNet.GetPlaceByLabel("GotShot").AddTokens(_damage);
             Destroy(other.gameObject);
             //Debug.Log("GotShot!");
         }
@@ -242,7 +259,28 @@ public class Rover : MonoBehaviour
             _roverPetriNet.GetPlaceByLabel("RobotInNeighbourhood").AddTokens(1);
             //Debug.Log("Robot in Neighbourhood!");
         }
+        else if (other.gameObject.CompareTag("Water"))
+        {
+            if (_canTakeDamage)
+            {
+                _canTakeDamage = false;
+                _takeDamageCooldown = StartCoroutine(TakeDamageCoolDown());
+            }
+        }
     }
+
+    /*private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Water"))
+        {
+            if (_canTakeDamage)
+            {
+                _canTakeDamage = false;
+                _roverPetriNet.GetPlaceByLabel("IsDrowning").AddTokens(1);
+                _takeDamageCooldown = StartCoroutine(TakeDamageCoolDown());
+            }
+        }
+    }*/
 
     private void OnTriggerExit(Collider other)
     {
@@ -253,7 +291,13 @@ public class Rover : MonoBehaviour
         else if (other.gameObject.CompareTag("Portal"))
         {
             _roverPetriNet.GetPlaceByLabel("Quadrant:Portal").RemTokens(1);
+            _damage = 0;
             Debug.Log("Portal!");
+        }
+        if (other.gameObject.CompareTag("Water"))
+        {
+            StopCoroutine(_takeDamageCooldown);
+            _canTakeDamage = true;
         }
     }
 
@@ -291,7 +335,27 @@ public class Rover : MonoBehaviour
             yield return null;
         }
     }
+
+    private IEnumerator Damage()
+    {
+        for (; ;)
+        {
+            _damage += 1;
+
+            yield return new WaitForSeconds((int)randomGenerator.Uniform(15, 25));
+        }
+    }
     
+    private IEnumerator TakeDamageCoolDown()
+    {
+        for(; ; )
+        {
+            _roverPetriNet.GetPlaceByLabel("IsDrowning").AddTokens(1);
+
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
     private void MoveNorth()
     {
         if (M.Norte == false)

@@ -152,6 +152,8 @@ public class MapGenerator : MonoBehaviour {
     public GameObject _from;
     private MaterialPropertyBlock _propertyBlock;
 
+    public Flood _flood;
+
     private void Awake()
     {
         GenerateMap();
@@ -210,7 +212,7 @@ public class MapGenerator : MonoBehaviour {
         //meshGen.GenerateMesh(map, 1);
         
         ProcessMapRegions();
-        GenerateRandomCostMatrix();
+        GenerateCostMatrix();
     }
 
   public void Draw()
@@ -599,7 +601,7 @@ public class MapGenerator : MonoBehaviour {
         return regions;
     }
 
-    private List<TileCoordinates> FillRegion(int startX, int startY) 
+    public List<TileCoordinates> FillRegion(int startX, int startY) 
     {
         List<TileCoordinates> tiles = new List<TileCoordinates>();
         int[,] mapFlags = new int[width, height]; //Indicates if the tile has been filled
@@ -633,7 +635,7 @@ public class MapGenerator : MonoBehaviour {
         return tiles;
     }
 
-    private bool IsInMapRange(int x, int y)
+    public bool IsInMapRange(int x, int y)
     {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
@@ -653,9 +655,43 @@ public class MapGenerator : MonoBehaviour {
         return null;
     }
 
-    public void GenerateRandomCostMatrix()
+    private void GenerateCostMatrix()
     {
         _costMap = new int[width, height];
+
+        GenerateRandomCostMatrix();
+
+        SmoothCostMatrix();
+    }
+    
+    public void GenerateRandomCostMatrix()
+    {
+        if (useRandomSeed)
+        {
+            seed = Time.time.ToString();
+        }
+
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (IsInMapRange(x, y))
+                {
+                    if (map[x, y] != 1)
+                    {
+                        int randomCost = pseudoRandom.Next(1, 5);
+                        _costMap[x, y] = randomCost;
+                    }
+                }
+            }
+        }
+    }
+
+    private void SmoothCostMatrix()
+    {
+        int[,] _visitedTiles = new int[width, height];
 
         for (int x = 0; x < width; x++)
         {
@@ -663,11 +699,43 @@ public class MapGenerator : MonoBehaviour {
             {
                 if (map[x, y] != 1)
                 {
-                    int randomCost = UnityEngine.Random.Range(1, 5);
-                    _costMap[x, y] = randomCost;
+                    if (_visitedTiles[x, y] != 1)
+                    {
+                        _visitedTiles[x, y] = 1;
+
+                        foreach (TileCoordinates tile in GetMooreNeighbours(x, y))
+                        {
+                            if (_visitedTiles[tile.TileX, tile.TileY] != 1)
+                            {
+                                _costMap[tile.TileX, tile.TileY] = _costMap[x, y];
+                                _visitedTiles[tile.TileX, tile.TileY] = 1;
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public List<TileCoordinates> GetMooreNeighbours(int gridX, int gridY)
+    {
+        List<TileCoordinates> neighbours = new List<TileCoordinates>();
+
+        for (int x = gridX - 1; x <= gridX + 1; x++)
+        {
+            for (int y = gridY - 1; y <= gridY + 1; y++)
+            {
+                if (IsInMapRange(x, y))
+                {
+                    if (map[x, y] != 1 && x != gridX || y != gridY)
+                    {
+                        neighbours.Add(new TileCoordinates(x, y));
+                    }
+                }
+            }
+        }
+
+        return neighbours;
     }
 
     public void Dijkstra(int fromX, int fromY)
@@ -1073,8 +1141,9 @@ public class MapGenerator : MonoBehaviour {
         DestroyMap();
         GenerateMap();
         Draw();
-        DecrementFuelAndAmmo();
+        //DecrementFuelAndAmmo();
         ActivateObjects();
+        _flood.ResetFlood();
     }
 
     /*private void OnDrawGizmos()
